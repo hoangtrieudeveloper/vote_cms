@@ -1,18 +1,16 @@
-.css-1sumxir-MuiFormLabel-root-MuiInputLabel-root.Mui-focused{
-    color:#ced4da !important;
-}
-.css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root{
-    color: #ced4da !important;
-}
-.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input{
-    color:#ced4da !important;
-}
-.css-1sumxir-MuiFormLabel-root-MuiInputLabel-root{
-    color: #ced4da !important;
-}
 .label-sidebar{
-    color: white;
     font-weight: bold !important;
     font-size: 20px !important;
     margin-top: 14px !important;
+}
+.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input{
+    height:24px !important;
+    padding:8px 14px !important;
+}
+.css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root{
+    top:-8px !important;
+}
+.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input{
+    height:24px !important;
+    padding:8px 14px !important;
 }

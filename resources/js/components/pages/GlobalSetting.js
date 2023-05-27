@@ -1,7 +1,7 @@
 class MyGlobleSetting {
     constructor() {
-        // this.url = '/';
-        this.url = 'http://cms.vote.vn/';
+        this.url = '/';
+        // this.url = 'http://cms.vote.vn/';
     }
 }
 

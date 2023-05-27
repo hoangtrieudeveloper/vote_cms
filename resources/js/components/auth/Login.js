@@ -143,11 +143,8 @@ const Login = () => {
                                                                 'input': {
                                                                     '&::placeholder': {
                                                                         fontSize: 16,
-                                                                        color: '#ced4da'
                                                                     }
                                                                 },
-                                                                color: '#ced4da',
-                                                                border: '3px solid #2a4562',
                                                             }}
                                                             label="Nhập tài khoản"
                                                             variant="outlined"
@@ -166,11 +163,8 @@ const Login = () => {
                                                                 'input': {
                                                                     '&::placeholder': {
                                                                         fontSize: 16,
-                                                                        color: '#ced4da'
                                                                     }
                                                                 },
-                                                                color: '#ced4da',
-                                                                border: '3px solid #2a4562',
                                                             }}
                                                             label="Mật khẩu"
                                                             variant="outlined"

@@ -1,171 +1,245 @@
 import React, {Component, useEffect, useState} from 'react';
 import {
-    Box, Typography,
+    Box,
+    Button,
+    Typography,
+    TextField,
 } from "@mui/material";
-import {Link, useHistory} from "react-router-dom";
-import Status from "../pages/Status";
-import {userService} from "../../model/userService";
-import Loading from "../pages/Loading";
-import ToastNotifi from "../pages/ToastNotifi";
-import {toast} from "react-toastify";
-import Paginate from "../pages/Paginate";
-import Helpers from "../pages/Helpers";
+import {Link, useHistory} from 'react-router-dom';
+import LoadingButton from "@mui/lab/LoadingButton";
+import {userService} from "../../../model/userService";
+import Checkbox from '@mui/material/Checkbox';
+import Loading from "../../pages/Loading";
+import Helpers from "../../pages/Helpers";
+import ToastNotifi from "../../pages/ToastNotifi";
 
-function ListUser() {
-    const [loading, setLoading] = useState(false);
-    const [linkPage, setLinkPage] = useState([]);
-    const [pageCurrent, setPageCurrent] = useState(1);
-    const [pageLast, setPageLast] = useState(1);
+const label = {inputProps: {'aria-label': 'Checkbox demo'}};
+
+function UpdateGroupRole() {
+    const params = new URLSearchParams(window.location.search);
+    const [idObject, setIdObject] = useState({
+        id: params.get('id') || "",
+    });
+    const [scopesData, setScopesData] = useState([]);
     const [dataList, setDataList] = useState([]);
-    const [listGroup, setListGroup] = useState([]);
-    const deleteCt = (id) => {
-        setLoading(true);
-        userService.deleteUser(id)
-            .then(
-                data => {
-                    setLoading(false);
-                    if (data.status == 1) {
-                        getListUser();
-                        Helpers.showToast('success', data?.messager);
-                    } else Helpers.showToast('error', data?.messager);
+    const [scopeList, setScopeList] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState('');
+    const [object, setObject] = useState({
+        name: "",
+        scope: "",
+        id: ""
+    });
+
+    const {name, scope} = object;
+    const onInputChange = e => {
+        setObject({...object, [e.target.name]: e.target.value});
+    };
+    const handleCheckboxChange = (value, parent, routeParent) => {
+        const newList = scopesData.map((item, key) => {
+            if (parent === 'parent') {
+                if (item.route === routeParent) {
+                    item.checked = !item.checked;
+                    item.children.map((i) => {
+                        i.checked = item.checked;
+                    })
                 }
-            );
+            } else {
+                if (item.route == routeParent) {
+                    item.children.map((i) => {
+                        if (i.route === value) {
+                            i.checked = !i.checked;
+                        }
+                    })
+                }
+            }
+            return item;
+        });
+        setScopesData(newList);
+    };
+
+    async function updateGroup() {
+        let listScope = [];
+        scopesData.map((item) => {
+            if (item.checked === true) {
+                listScope.push(item.route);
+                item.children.map((i) => {
+                    if (i.checked === true) {
+                        listScope.push(i.route);
+                    }
+                })
+            } else {
+                item.children.map((i) => {
+                    if (i.checked === true) {
+                        listScope.push(i.route);
+                    }
+                })
+            }
+        });
+        if (object.name === '') {
+            Helpers.showToast('error', 'Vui lòng nhập tên nhóm quyền!');
+        } else if (scopeList.length === 0) {
+            Helpers.showToast('error', 'Vui lòng chọn quyền!');
+        } else {
+            setLoading(true);
+            object.scope = listScope;
+            object.id = idObject.id;
+            userService.updateGroupRole(object)
+                .then(
+                    data => {
+                        setLoading(false);
+                        if (data?.status == 1) {
+                            Helpers.showToast('success', data?.messager);
+                            setObject({name: "", scope: "", id: ""});
+                            setScopeList([]);
+                            setScopesData([]);
+                            setDataList([]);
+                            getByidGroup(idObject);
+                            setTimeout(() => {
+                                setErrors('');
+                            }, 10000)
+                        } else {
+                            Helpers.showToast('error', data?.messager);
+                            setErrors(data);
+                        }
+                    }
+                );
+        }
     }
-    const getListUser = (page) => {
-        setLoading(true);
-        userService.getListUser(page)
+
+    const getByidGroup = (id) => {
+        userService.getByidGroupRole(id)
             .then(
                 data => {
-                    setLoading(false);
                     if (data.status == 1) {
-                        setDataList(data?.data?.data);
-                        setListGroup(data.group_name);
-                        setLinkPage(data?.data?.links);
-                        setPageLast(parseInt(data?.data?.last_page));
+                        setDataList(data.data);
+                        setScopeList(data.data.curent);
+                        data.data.scopes.map((item) => {
+                            if (data.data.curent.includes(item.route)) {
+                                item.checked = true;
+                                item.children.map((i) => {
+                                    if (data.data.curent.includes(i.route)) i.checked = true; else i.checked = false;
+                                })
+                            } else {
+                                item.checked = false
+                                item.children.map((i) => {
+                                    if (data.data.curent.includes(i.route)) i.checked = true; else i.checked = false;
+                                })
+                            }
+                        })
+                        setScopesData(data.data.scopes);
+                        setObject({name: data?.data?.group?.group_name, scope: "", id: ""})
                     }
                 }
             );
     }
-    const trangThai = (st) => {
-        return st;
-    }
     //useEffect
     useEffect(() => {
-        getListUser(pageCurrent);
+        setIdObject({id: params.get('id')})
+        getByidGroup(idObject);
     }, []);
-    return (<Box className="page-wrapper">
-        <Box className="main-content">
-            <Box className="row">
-                <Box className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <Box className="card chart-card">
-                        <ToastNotifi></ToastNotifi>
-                        <Loading load={loading}></Loading>
-                        <Box className="card-header p-3">
-                            <Typography variant="h5">Danh sách nhân viên</Typography>
-                            <Link to="/createuser"
-                                  className="btn btn-info squer-btn mt-2 mr-2 sm-btn"><i
-                                className={"fas fa-plus"}></i> Tạo mới
-                            </Link>
-                        </Box>
-                        <Box className="card-body pb-4">
-                            <Box className="chart-holder">
-                                <Box className="table-responsive pt-1" sx={{overflowX: 'initial'}}>
-                                    <table className="table table-styled mb-0">
-                                        <thead>
-                                        <tr>
-                                            <th className="text-center">
-                                                STT
-                                            </th>
-                                            <th>Họ tên</th>
-                                            <th>Email</th>
-                                            <th>Điện thoại</th>
-                                            <th>Nhóm quyền</th>
-                                            <th>Ngày tạo</th>
-                                            <th>Trạng thái</th>
-                                            <th></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {dataList.length > 0 ? dataList.map((i, index) => (
-                                            <tr key={index}>
-                                                <td className="text-center">
-                                                    {index + 1}
-                                                </td>
-                                                <td>
-                                                    {i.name}
-                                                </td>
-                                                <td>
-                                                    <label
-                                                        className="mb-0 badge badge-primary">
-                                                        <Typography variant="inherit"
-                                                                    color="white">
-                                                            {i.email}
-                                                        </Typography>
-                                                    </label>
-                                                </td>
-                                                <td>
-                                                    <Typography variant="subtitle1">
-                                                        {i.phone_number}
-                                                    </Typography>
-                                                </td>
-                                                <td>
-                                                    {listGroup[i.group_scope]}
-                                                </td>
-                                                <td>
-                                                    <Typography variant="subtitle1">
-                                                        {i.created_at}
-                                                    </Typography>
-                                                </td>
-                                                <td>
-                                                    <Status status={trangThai(i.trang_thai)}></Status>
-                                                </td>
-                                                <td className="relative">
-                                                    <Typography variant={"body1"} className="action-btn "
-                                                                href="/#">
-                                                        <svg className="default-size "
-                                                             viewBox="0 0 341.333 341.333 ">
-                                                            <g>
-                                                                <g>
-                                                                    <g>
-                                                                        <path
-                                                                            d="M170.667,85.333c23.573,0,42.667-19.093,42.667-42.667C213.333,19.093,194.24,0,170.667,0S128,19.093,128,42.667 C128,66.24,147.093,85.333,170.667,85.333z "></path>
-                                                                        <path
-                                                                            d="M170.667,128C147.093,128,128,147.093,128,170.667s19.093,42.667,42.667,42.667s42.667-19.093,42.667-42.667 S194.24,128,170.667,128z "></path>
-                                                                        <path
-                                                                            d="M170.667,256C147.093,256,128,275.093,128,298.667c0,23.573,19.093,42.667,42.667,42.667s42.667-19.093,42.667-42.667 C213.333,275.093,194.24,256,170.667,256z "></path>
-                                                                    </g>
-                                                                </g>
-                                                            </g>
-                                                        </svg>
-                                                    </Typography>
-                                                    <Box className="action-option ">
-                                                        <ul>
-                                                            <li>
-                                                                <Link to={"/updateuser?id=" + i.id}><i
-                                                                    className="far fa-edit mr-2 "></i>Chi tiết</Link>
-                                                            </li>
-                                                            <li>
-                                                                <Link onClick={() => {
-                                                                    deleteCt(i.id)
-                                                                }} to={"#/"}><i
-                                                                    className="far fa-trash-alt mr-2 "></i>Xóa</Link>
-                                                            </li>
-                                                        </ul>
-                                                    </Box>
-                                                </td>
-                                            </tr>
-                                        )) : <tr>
-                                            <td colSpan="9" className="text-center"><Typography variant="subtitle1">Không
-                                                có dữ liệu!</Typography>
-                                            </td>
-                                        </tr>}
-                                        </tbody>
-                                    </table>
-                                </Box>
-                                <Paginate linkPage={linkPage} pageCurrent={pageCurrent} pageLast={pageLast}
-                                          pageCurentRollBack={e => getListUser(e)}></Paginate>
+
+    return (<Box>
+        <Box className="page-wrapper">
+            <Box className="main-content">
+                <ToastNotifi></ToastNotifi>
+                <Loading load={loading}></Loading>
+                <Box className="row">
+                    <Box className="colxl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <Box className="page-title-wrapper mb-0">
+                            <Box className="page-title-box">
+                                <Link to="/list-group-role"
+                                      className="btn btn-info squer-btn mt-2 mr-2 sm-btn"><i
+                                    className={"fas fa-arrow-left"}></i>
+                                </Link>
+                                <Typography color='#1F2738' variant='h5' sx={{
+                                    lineHeight: 2.0,
+                                    fontWeight: 700,
+                                    pr: 2
+                                }} className="page-title bold"> Cập nhật nhóm quyền</Typography>
                             </Box>
                         </Box>
+                    </Box>
+                    <Box className="col-xl-12">
+                        <Box className="card">
+                            <Box className="card-content">
+                                <Box className="card-body p-1">
+                                    <Box className="ad-auth-form">
+                                        <Box className="ad-auth-feilds mb-30">
+                                            <label htmlFor="member-email" className="col-form-label"><b>Tên nhóm
+                                                quyền <Typography variant="span" color="red">*</Typography></b></label>
+                                            <TextField
+                                                fullWidth
+                                                name="name"
+                                                type='text'
+                                                required
+                                                onChange={e => onInputChange(e)}
+                                                sx={{
+                                                    'input': {
+                                                        '&::placeholder': {
+                                                            fontSize: 16,
+                                                        }
+                                                    },
+                                                }}
+                                                label="Tên nhóm quyền"
+                                                variant="outlined"
+                                                value={object.name}
+                                            />
+                                        </Box>
+                                    </Box>
+                                    <Box className="ad-auth-form">
+                                        <Box className="choose-scope col-md-12">
+                                            <label><b>Quyền</b></label>
+                                            <Box className="row">
+                                                {scopesData.map((i, id) => (
+                                                    <Box className="scope-root col-md-3 mb-2" key={id}>
+                                                        <Box className="d-flex">
+                                                            <Checkbox {...label}
+                                                                      className={"p-0"}
+                                                                      value={i['route']}
+                                                                      checked={i['checked']}
+                                                                      onChange={e => handleCheckboxChange(e.target.value, 'parent', i['route'])}/>
+                                                            &nbsp;
+                                                            <Typography variant={"span"}
+                                                                        className="p-2 text-primary"><b>{i['name']}</b></Typography>
+                                                        </Box>
+                                                        {i.children.map((it, d) => (
+                                                            <Box key={d} className="d-flex ml2r">
+                                                                <Checkbox {...label} className={"p-0"}
+                                                                          value={it['route']}
+                                                                          checked={it['checked']}
+                                                                          onChange={e => handleCheckboxChange(e.target.value, '', i['route'])}/>
+                                                                &nbsp;
+                                                                <Typography variant={"span"}
+                                                                            className="p-1"
+                                                                            sx={{fontSize: 14}}>{it['name']}</Typography>
+                                                            </Box>
+                                                        ))}
+                                                    </Box>
+                                                ))}
+                                            </Box>
+                                        </Box>
+                                    </Box>
+                                </Box>
+                            </Box>
+                        </Box>
+                    </Box>
+                    <Box className={"juscontent-right"}>
+                        <LoadingButton
+                            onClick={updateGroup}
+                            className="ad-btn ad-login-member"
+                            variant="outlined"
+                            loading={loading}
+                            disabled={loading}
+                            sx={{
+                                backgroundColor: '#11a1fd',
+                                color: 'white',
+                                fontSize: 13,
+                                fontWeight: 400,
+                            }}
+                        >
+                            {!loading ? 'Cập nhật' : ''}
+                        </LoadingButton>
                     </Box>
                 </Box>
             </Box>
@@ -173,4 +247,4 @@ function ListUser() {
     </Box>)
 }
 
-export default ListUser;
+export default UpdateGroupRole;

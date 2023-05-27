@@ -133,14 +133,14 @@ function ListUser() {
                                                         </td>
                                                         <td>
                                                             <Box className="hstack gap-3 fs-15">
-                                                                <a href="/updateuser"
+                                                                <Link to={"/updateuser?id="+i.id}
                                                                    className="link-primary"><i
-                                                                    className="ri-settings-4-line"></i></a>
-                                                                <a href="/listuser" className="link-danger"
+                                                                    className="ri-settings-4-line"></i></Link>
+                                                                <Link to="/listuser" className="link-danger"
                                                                    onClick={() => {
                                                                        deleteCt(i.id)
                                                                    }}><i
-                                                                    className="ri-delete-bin-5-line"></i></a>
+                                                                    className="ri-delete-bin-5-line"></i></Link>
                                                             </Box>
                                                         </td>
                                                     </tr>
