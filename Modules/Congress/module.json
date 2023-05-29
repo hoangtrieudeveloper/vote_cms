@@ -1,0 +1,13 @@
+{
+    "name": "Congress",
+    "alias": "congress",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Congress\\Providers\\CongressServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

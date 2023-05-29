@@ -23,7 +23,10 @@ import UpdateUser from "./users/UpdateUser";
 import ListBot from "./bot/Index";
 import CreateBot from "./bot/Create";
 import UpdateBot from "./bot/Update";
-import ToastNotifi from "./pages/ToastNotifi";
+//thủ tục đại hội
+import ListCongress from "./Congress/Index";
+import CreateCongress from "./Congress/Create";
+import UpdateCongress from "./Congress/Update";
 export default function Layout() {
     return (
         <Router>
@@ -35,6 +38,23 @@ export default function Layout() {
                     <Route path="/errorscope">
                         <ErrorScope/>
                     </Route>
+                    <PrivateRoute path="/khai-bao-thu-tuc-khai-mac">
+                        <Header/>
+                        <Sidebar/>
+                        <ListCongress/>
+                    </PrivateRoute>
+                    <PrivateRoute path="/tao-moi-thu-tuc-khai-mac">
+                        <Header/>
+                        <Sidebar/>
+                        <CreateCongress/>
+                    </PrivateRoute>
+                    <PrivateRoute path="/cap-nhat-thu-tuc-khai-mac">
+                        <Header/>
+                        <Sidebar/>
+                        <UpdateCongress/>
+                    </PrivateRoute>
+
+
                     <PrivateRoute path="/index-bot">
                         <Header/>
                         <Sidebar/>

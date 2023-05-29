@@ -61,6 +61,21 @@ export default function Sidebar({...props}) {
                                 </ul>
                             </Box>
                         </li>}
+                        {localStorage.getItem('scopes').includes('khai-bao-thu-tuc-khai-mac') && <li className="nav-item">
+                            <a className="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse"
+                               role="button" aria-expanded="false" aria-controls="sidebarApps">
+                                <i className="ri-apps-2-line"></i> <span data-key="t-apps"> Khai báo nội dung Đại Hội</span>
+                            </a>
+                            <Box className="collapse menu-dropdown" id="sidebarApps">
+                                <ul className="nav nav-sm flex-column">
+                                    {JSON.parse(localStorage.getItem('scopes')).includes('khai-bao-thu-tuc-khai-mac') &&
+                                        <li className="nav-item">
+                                            <a href="/khai-bao-thu-tuc-khai-mac" className="nav-link"
+                                               data-key="t-calendar"> Khai báo thủ tục khai mạc </a>
+                                        </li>}
+                                </ul>
+                            </Box>
+                        </li>}
                         {JSON.parse(localStorage.getItem('scopes')).includes('list-group-role') &&
                             <li className="nav-item">
                                 <a className="nav-link menu-link" href="/list-group-role">
