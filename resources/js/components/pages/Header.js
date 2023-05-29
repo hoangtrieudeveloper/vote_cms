@@ -66,12 +66,12 @@ export default function Header() {
                                 <i className='bx bx-fullscreen fs-22'></i>
                             </button>
                         </Box>
-                        <Box className="ms-1 header-item d-none d-sm-flex">
-                            <button type="button"
-                                    className="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle light-dark-mode">
-                                <i className='bx bx-moon fs-22'></i>
-                            </button>
-                        </Box>
+                        {/*<Box className="ms-1 header-item d-none d-sm-flex">*/}
+                        {/*    <button type="button"*/}
+                        {/*            className="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle light-dark-mode">*/}
+                        {/*        <i className='bx bx-moon fs-22'></i>*/}
+                        {/*    </button>*/}
+                        {/*</Box>*/}
                         <Box className="dropdown topbar-head-dropdown ms-1 header-item" id="notificationDropdown">
                             <button type="button" className="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
                                     id="page-header-notifications-dropdown" data-bs-toggle="dropdown"
