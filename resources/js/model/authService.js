@@ -11,7 +11,6 @@ function getInfoReloadPage() {
     };
     return fetch(`${GlobalSetting.url}api/getInfo?id=` + user.id, requestOptions).then(handleResponse);
 }
-
 function handleResponse(response) {
     return response.text().then(text => {
         const data = response.ok ? JSON.parse(text) : text;
@@ -31,7 +30,6 @@ function handleResponse(response) {
         return data;
     });
 }
-
 function authHeader() {
     if (user && user.remember_token) {
         return {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + user.remember_token};

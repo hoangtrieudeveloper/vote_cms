@@ -20,9 +20,6 @@ import ListGroupRole from "./users/group/ListGroupRole";
 import ListUser from "./users/ListUser";
 import CreateUser from "./users/CreateUser";
 import UpdateUser from "./users/UpdateUser";
-import ListBot from "./bot/Index";
-import CreateBot from "./bot/Create";
-import UpdateBot from "./bot/Update";
 //thủ tục đại hội
 import ListCongress from "./Congress/Index";
 import CreateCongress from "./Congress/Create";
@@ -55,21 +52,6 @@ export default function Layout() {
                     </PrivateRoute>
 
 
-                    <PrivateRoute path="/index-bot">
-                        <Header/>
-                        <Sidebar/>
-                        <ListBot/>
-                    </PrivateRoute>
-                    <PrivateRoute path="/created-bot">
-                        <Header/>
-                        <Sidebar/>
-                        <CreateBot/>
-                    </PrivateRoute>
-                    <PrivateRoute path="/updated-bot">
-                        <Header/>
-                        <Sidebar/>
-                        <UpdateBot/>
-                    </PrivateRoute>
                     <PrivateRoute path="/listuser">
                         <Header/>
                         <Sidebar/>

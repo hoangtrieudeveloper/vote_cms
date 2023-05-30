@@ -64,26 +64,7 @@ function Index() {
     }, []);
     return (
         <Box className="main-content">
-     {/*       <Modal class="modal fade show" tabindex="-1" style="display: block;"
-                   open={open}
-                   onClose={handleClose}
-                   aria-labelledby="modal-modal-title"
-                   aria-describedby="modal-modal-description"
-                   aria-modal="true" role="dialog">
-                <Box class="modal-dialog">
-                    <Box class="modal-content">
-                        <Box class="modal-header">
-                            aaaa
-                        </Box>
-                        <Box class="modal-body">
-                            bb
-                        </Box>
-                        <Box class="modal-footer">
-                            cc
-                        </Box>
-                    </Box>
-                </Box>
-            </Modal>*/}
+
             <Box className="page-content">
                 <Box className="container-fluid">
                     <Box className="row">
@@ -114,7 +95,7 @@ function Index() {
                                     <Box className="live-preview">
                                         <Box className="table-responsive table-card">
                                             <table
-                                                className="table align-middle table-nowrap table-striped-columns mb-0">
+                                                className="table align-middle mb-0">
                                                 <thead className="table-light">
                                                 <tr>
                                                     <th scope="col">
@@ -122,8 +103,7 @@ function Index() {
                                                     </th>
                                                     <th scope="col">Tên nội dung</th>
                                                     <th scope="col">Tên nội dung (Tiếng Anh)</th>
-                                                    <th scope="col">Thứ tự hiển thị</th>
-                                                    <th scope="col">Ngày tạo</th>
+                                                    <th scope="col">Thứ tự</th>
                                                     <th scope="col"></th>
                                                 </tr>
                                                 </thead>
@@ -143,11 +123,6 @@ function Index() {
                                                             {i.sort}
                                                         </td>
                                                         <td>
-                                                            <Typography variant="subtitle1">
-                                                                {i.created_at}
-                                                            </Typography>
-                                                        </td>
-                                                        <td>
                                                             <Box className="hstack gap-3 fs-15">
                                                                 <Link to={"/cap-nhat-thu-tuc-khai-mac?id=" + i.id}
                                                                       className="link-primary"><i
@@ -156,7 +131,6 @@ function Index() {
                                                                       onClick={() => {
                                                                           deleteCongress(i.id)
                                                                       }}
-                                                                      // onClick={() => handleOpen()}
                                                                       data-bs-toggle="modal"
                                                                       data-bs-target="#myModal"><i
                                                                     className="ri-delete-bin-5-line"></i></Link>

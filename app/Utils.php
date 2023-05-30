@@ -13,6 +13,10 @@ class Utils
             "jpeg",
             "png",
             "gif",
+            "pdf",
+            "csv",
+            "docs",
+            "xls",
         ];
         $fileParts = strtolower(pathinfo($_FILES[$key]['name'], PATHINFO_EXTENSION));
         $folder_name = '/general/';
@@ -20,9 +24,54 @@ class Utils
             'jpg',
             'jpeg',
             'gif',
-            'png'
+            'png',
+            'pdf',
+            'csv',
+            'docs',
+            'xls',
         ])) {
             $folder_name = 'picture/';
+        }
+        if (!file_exists($target_dir . $folder . $folder_name)) mkdir($target_dir . $folder . $folder_name, 0777, true);
+        $target_file = $folder . $folder_name . Utils::generateRandomString(10) . '-' . Utils::removeTitle($_FILES["$key"]["name"]);
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        if (file_exists($target_file)) return null;
+        if ($_FILES["$key"]["size"] <= 0) return null;
+        if (!in_array($imageFileType, $listallow)) return null;
+        move_uploaded_file($_FILES["$key"]['tmp_name'], $target_dir . $target_file);
+        $url_file = $target_dir . $target_file;
+        chmod($url_file, 0777);
+        return $target_file;
+    }
+
+    public static function post_file_key_vn($key, $id = null)
+    {
+        if (!isset($_FILES["$key"])) return null;
+        $target_dir = base_path('public');
+        $folder = "/";
+        $listallow = [
+            "jpg",
+            "jpeg",
+            "png",
+            "gif",
+            "pdf",
+            "csv",
+            "docs",
+            "xls",
+        ];
+        $fileParts = strtolower(pathinfo($_FILES[$key]['name'], PATHINFO_EXTENSION));
+        $folder_name = '/general/';
+        if (in_array($fileParts, [
+            'jpg',
+            'jpeg',
+            'gif',
+            'png',
+            'pdf',
+            'csv',
+            'docs',
+            'xls',
+        ])) {
+            $folder_name = 'file_congress/';
         }
         if (!file_exists($target_dir . $folder . $folder_name)) mkdir($target_dir . $folder . $folder_name, 0777, true);
         $target_file = $folder . $folder_name . Utils::generateRandomString(10) . '-' . Utils::removeTitle($_FILES["$key"]["name"]);
@@ -80,5 +129,14 @@ class Utils
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return $randomString;
+    }
+
+    public static function messegerAlert(int $status = null,string $alert = null,string $mess = null,$data = null){
+        return [
+            'status' => $status,
+            'alert' => $alert,
+            'mess' => $mess,
+            'data' => $data
+        ];
     }
 }

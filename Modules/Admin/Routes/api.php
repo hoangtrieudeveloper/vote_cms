@@ -18,14 +18,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::any('/getByIdUser', [UserController::class, 'getByIdUser'])->name('get-info-user'); // tạo nhân viên
     Route::any('/updateUser', [UserController::class, 'updateUser'])->name('update-user'); // tạo nhân viên
     Route::any('/isChangeStatus', [UserController::class, 'isChangeStatus'])->name('change-status-user'); // cập nhật trạng thái nhân viên
-    //bot
-    Route::any('/getDetailChat', [BotController::class, 'getDetailChat'])->name('detail-chat-Bot'); // Danh sách nội dung phiên chat Bot
-    Route::any('/getListChat', [BotController::class, 'getListChat'])->name('list-chat-Bot'); // Danh sách phiên chat Bot
-    Route::any('/getListBot', [BotController::class, 'getListBot'])->name('list-Bot'); // Danh sách Bot
-    Route::any('/registerBot', [BotController::class, 'registerBot'])->name('created-Bot'); // tạo Bot
-    Route::any('/getByIdBot', [BotController::class, 'getByIdBot'])->name('get-info-Bot'); // lấy thông tin Bot
-    Route::any('/updateBot', [BotController::class, 'updateBot'])->name('update-Bot'); // tạo Bot
-    Route::any('/deleteBot', [BotController::class, 'deleteBot'])->name('deleted-Bot'); // xoa Bot
+
     //group role user
     Route::any('/getListGroup', [GroupUserController::class, 'getListGroup'])->name('get-list-group-role'); // Danh sách nhóm quyền
     Route::any('/getListGroupCreated', [GroupUserController::class, 'getListGroupCreated'])->name('get-list-group-create-role'); // Danh sách nhóm quyền-khoi-tao

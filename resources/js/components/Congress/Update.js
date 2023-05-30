@@ -1,16 +1,16 @@
 import React, {Component, useEffect, useState} from 'react';
 import {
     Box,
-    Button,
     Typography,
     TextField
 } from "@mui/material";
-import {Link, useHistory} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import LoadingButton from "@mui/lab/LoadingButton";
 import {congressService} from "../../model/congressService";
 import Loading from "../pages/Loading";
 import ToastNotifi from "../pages/ToastNotifi";
 import Helpers from "../pages/Helpers";
+import helpers from "../pages/Helpers";
 
 function Update() {
     const params = new URLSearchParams(window.location.search);
@@ -26,11 +26,10 @@ function Update() {
         file_content_en: "",
     });
 
-    const {id,name_vn, name_en, file_content_vn, file_content_en, type, sort} = congress;
+    const {id, name_vn, name_en, file_content_vn, file_content_en, type, sort} = congress;
     const onInputChange = e => {
         setCongress({...congress, [e.target.name]: e.target.value});
     };
-
     async function UpdateCongress() {
         if (congress.name_vn === '') {
             Helpers.showToast('error', 'Vui lòng nhập tên nội dung!');
@@ -38,6 +37,8 @@ function Update() {
             Helpers.showToast('error', 'Vui lòng nhập tên nội dung (Tiếng Anh)!');
         } else {
             setLoading(true);
+            congress.file_content_vn = JSON.stringify(listFile);
+            congress.file_content_en = JSON.stringify(listFileEng);
             congressService.update(congress)
                 .then(
                     data => {
@@ -66,11 +67,42 @@ function Update() {
                             file_content_vn: data?.data?.file_content_vn,
                             file_content_en: data?.data?.file_content_en,
                             sort: data?.data?.sort,
-                        })
+                        });
+                        setListFile(data?.data?.file_content_vn || '');
+                        setListFileEng(data?.data?.file_content_en || '');
+                    } else {
+                        helpers.showToast('error', data?.mess)
                     }
                 }
             );
     }
+
+    //upload file TV
+    const [listFile, setListFile] = useState('');
+    const handleUploadImage = (e) => {
+        const file = e.target.files[0];
+        congressService.uploadFileAction(file)
+            .then(data => {
+                setListFile(data);
+            });
+    }
+    const removeFile = () => {
+        setListFile('');
+    }
+
+    //upload File ENG
+    const [listFileEng, setListFileEng] = useState('');
+    const handleUploadImageEng = (e) => {
+        const file = e.target.files[0];
+        congressService.uploadFileAction(file)
+            .then(dataEng => {
+                setListFileEng(dataEng);
+            });
+    }
+    const removeFileEng = () => {
+        setListFileEng('');
+    }
+    //end upload file
 
 
     //useEffect
@@ -90,7 +122,7 @@ function Update() {
                             <Box className="page-title-box d-sm-flex align-items-center justify-content-between">
                                 <Link to="/khai-bao-thu-tuc-khai-mac"
                                       className="btn btn-info squer-btn mt-2 mr-2 sm-btn"><i
-                                    className={"fas fa-arrow-left"}></i> Quay lại
+                                    className="mdi mdi-arrow-left"></i> Quay lại
                                 </Link>
                                 <Box className="page-title-right">
                                     <ol className="breadcrumb m-0">
@@ -108,6 +140,102 @@ function Update() {
                                     <h4 className="card-title mb-0">Cập nhật thủ tục khai mạc</h4>
                                 </Box>
                                 <Box className="card-body">
+                                    <Box className="row">
+                                        <Box className="col-lg-6">
+                                            <Box className="card">
+                                                <Box className="card-body">
+                                                    <Box>
+                                                        <label onChange={handleUploadImage} htmlFor="formId"
+                                                               className={"btn btn-default mb-3 w-100"}>
+                                                            <Box className="mb-3">
+                                                                <i className="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                                                            </Box>
+                                                            <input name="fileTv" type="file" id="formId" hidden
+                                                                   accept="application/pdf"/>
+                                                            <h6>Upload File Nội dung</h6>
+                                                        </label>
+                                                    </Box>
+                                                    {listFile != '' &&
+                                                        <ul className="list-unstyled mb-0" id="dropzone-preview">
+                                                            <li className="mt-2">
+                                                                <Box className="border rounded">
+                                                                    <Box className="d-flex p-2">
+                                                                        <Box className="flex-shrink-0 me-3">
+                                                                            <Box className="avatar-sm bg-light rounded">
+                                                                                <img
+                                                                                    className="img-fluid rounded d-block"
+                                                                                    src="assets/images/pdf.png"
+                                                                                    alt="Dropzone-Image"/>
+                                                                            </Box>
+                                                                        </Box>
+                                                                        <Box className="flex-grow-1">
+                                                                            <Box className="pt-1">
+                                                                                <h5 className="fs-14 mb-1">{listFile}</h5>
+                                                                                <p className="fs-13 text-muted mb-0"></p>
+                                                                                <strong
+                                                                                    className="error text-danger"></strong>
+                                                                            </Box>
+                                                                        </Box>
+                                                                        <Box className="flex-shrink-0 ms-3">
+                                                                            <button onClick={() => removeFile()}
+                                                                                    className="btn btn-sm btn-danger">Xóa
+                                                                            </button>
+                                                                        </Box>
+                                                                    </Box>
+                                                                </Box>
+                                                            </li>
+                                                        </ul>}
+                                                </Box>
+                                            </Box>
+                                        </Box>
+                                        <Box className="col-lg-6">
+                                            <Box className="card">
+                                                <Box className="card-body">
+                                                    <Box>
+                                                        <label onChange={handleUploadImageEng} htmlFor="formIdEng"
+                                                               className={"btn btn-default mb-3 w-100"}>
+                                                            <Box className="mb-3">
+                                                                <i className="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                                                            </Box>
+                                                            <input name="fileEng" type="file" id="formIdEng" hidden
+                                                                   accept="application/pdf"/>
+                                                            <h6>Upload File Nội dung (Tiếng anh)</h6>
+                                                        </label>
+                                                    </Box>
+                                                    {listFileEng != '' &&
+                                                        <ul className="list-unstyled mb-0" id="dropzone-preview">
+                                                            <li className="mt-2">
+                                                                <Box className="border rounded">
+                                                                    <Box className="d-flex p-2">
+                                                                        <Box className="flex-shrink-0 me-3">
+                                                                            <Box className="avatar-sm bg-light rounded">
+                                                                                <img
+                                                                                    className="img-fluid rounded d-block"
+                                                                                    src="assets/images/pdf.png"
+                                                                                    alt="Dropzone-Image"/>
+                                                                            </Box>
+                                                                        </Box>
+                                                                        <Box className="flex-grow-1">
+                                                                            <Box className="pt-1">
+                                                                                <h5 className="fs-14 mb-1">{listFileEng}</h5>
+                                                                                <p className="fs-13 text-muted mb-0"></p>
+                                                                                <strong
+                                                                                    className="error text-danger"></strong>
+                                                                            </Box>
+                                                                        </Box>
+                                                                        <Box className="flex-shrink-0 ms-3">
+                                                                            <button onClick={() => removeFileEng()}
+                                                                                    className="btn btn-sm btn-danger">Xóa
+                                                                            </button>
+                                                                        </Box>
+                                                                    </Box>
+                                                                </Box>
+                                                            </li>
+                                                        </ul>}
+                                                </Box>
+                                            </Box>
+                                        </Box>
+                                    </Box>
                                     <Box>
                                         <Box className="row">
                                             <Box className="col-xl-6">
@@ -162,38 +290,22 @@ function Update() {
                                             </Box>
                                         </Box>
                                     </Box>
-                                    <Box className="row">
-                                        <Box className="col-xl-6">
-                                        </Box>
-                                        <Box className="col-xl-6">
-                                        </Box>
-                                    </Box>
-                                    <Box className="row">
-                                        <Box className="col-xl-6">
-                                        </Box>
-                                        <Box className="row">
-                                            <Box className="col-xl-6">
-                                                <Box className="mb-3 mb-xl-0">
-                                                    <Box className={"juscontent-right"}>
-                                                        <LoadingButton
-                                                            onClick={UpdateCongress}
-                                                            className="ad-btn ad-login-member"
-                                                            variant="outlined"
-                                                            loading={loading}
-                                                            disabled={loading}
-                                                            sx={{
-                                                                backgroundColor: '#11a1fd',
-                                                                color: 'white',
-                                                                fontSize: 13,
-                                                                fontWeight: 400,
-                                                            }}
-                                                        >
-                                                            {!loading ? 'Cập nhật' : ''}
-                                                        </LoadingButton>
-                                                    </Box>
-                                                </Box>
-                                            </Box>
-                                        </Box>
+                                    <Box className="text-center">
+                                        <LoadingButton
+                                            onClick={UpdateCongress}
+                                            className="ad-btn ad-login-member bg-success mt-3"
+                                            variant="outlined"
+                                            startIcon={<i className="mdi mdi-plus"></i>}
+                                            loading={loading}
+                                            disabled={loading}
+                                            sx={{
+                                                color: 'white',
+                                                fontSize: 13,
+                                                fontWeight: 400,
+                                            }}
+                                        >
+                                            {!loading ? 'Cập nhật' : ''}
+                                        </LoadingButton>
                                     </Box>
                                 </Box>
                             </Box>

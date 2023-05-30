@@ -22812,24 +22812,22 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 function Create() {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
+  var params = new URLSearchParams(window.location.search);
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
-    pageCurrent = _useState2[0],
-    setPageCurrent = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-    _useState4 = _slicedToArray(_useState3, 2),
-    loading = _useState4[0],
-    setLoading = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+    loading = _useState2[0],
+    setLoading = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
       name_vn: "",
       name_en: "",
       file_content_vn: "",
       file_content_en: ""
     }),
-    _useState6 = _slicedToArray(_useState5, 2),
-    congress = _useState6[0],
-    setCongress = _useState6[1];
+    _useState4 = _slicedToArray(_useState3, 2),
+    congress = _useState4[0],
+    setCongress = _useState4[1];
   var name_vn = congress.name_vn,
     name_en = congress.name_en,
     file_content_vn = congress.file_content_vn,
@@ -22839,11 +22837,11 @@ function Create() {
   var onInputChange = function onInputChange(e) {
     setCongress(_objectSpread(_objectSpread({}, congress), {}, _defineProperty({}, e.target.name, e.target.value)));
   };
-  function RegisterCongress() {
-    return _RegisterCongress.apply(this, arguments);
-  } //useEffect
-  function _RegisterCongress() {
-    _RegisterCongress = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+  function CreateCongress() {
+    return _CreateCongress.apply(this, arguments);
+  } //upload file TV
+  function _CreateCongress() {
+    _CreateCongress = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
@@ -22853,6 +22851,8 @@ function Create() {
               _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', 'Vui lòng nhập tên nội dung (Tiếng Anh)!');
             } else {
               setLoading(true);
+              congress.file_content_vn = JSON.stringify(listFile);
+              congress.file_content_en = JSON.stringify(listFileEng);
               _model_congressService__WEBPACK_IMPORTED_MODULE_1__.congressService.register(congress).then(function (data) {
                 setLoading(false);
                 if ((data === null || data === void 0 ? void 0 : data.status) == 1) {
@@ -22863,7 +22863,6 @@ function Create() {
                     file_content_vn: "",
                     file_content_en: ""
                   });
-                  _model_congressService__WEBPACK_IMPORTED_MODULE_1__.congressService.getList(pageCurrent);
                 } else {
                   _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.messager);
                 }
@@ -22875,8 +22874,39 @@ function Create() {
         }
       }, _callee);
     }));
-    return _RegisterCongress.apply(this, arguments);
+    return _CreateCongress.apply(this, arguments);
   }
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    _useState6 = _slicedToArray(_useState5, 2),
+    listFile = _useState6[0],
+    setListFile = _useState6[1];
+  var handleUploadImage = function handleUploadImage(e) {
+    var file = e.target.files[0];
+    _model_congressService__WEBPACK_IMPORTED_MODULE_1__.congressService.uploadFileAction(file).then(function (data) {
+      setListFile(data);
+    });
+  };
+  var removeFile = function removeFile() {
+    setListFile('');
+  };
+
+  //upload File ENG
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    _useState8 = _slicedToArray(_useState7, 2),
+    listFileEng = _useState8[0],
+    setListFileEng = _useState8[1];
+  var handleUploadImageEng = function handleUploadImageEng(e) {
+    var file = e.target.files[0];
+    _model_congressService__WEBPACK_IMPORTED_MODULE_1__.congressService.uploadFileAction(file).then(function (dataEng) {
+      setListFileEng(dataEng);
+    });
+  };
+  var removeFileEng = function removeFileEng() {
+    setListFileEng('');
+  };
+  //end upload file
+
+  //useEffect
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {}, []);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
     className: "main-content"
@@ -22896,7 +22926,7 @@ function Create() {
     to: "/khai-bao-thu-tuc-khai-mac",
     className: "btn btn-info squer-btn mt-2 mr-2 sm-btn"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
-    className: "fas fa-arrow-left"
+    className: "mdi mdi-arrow-left"
   }), " Quay l\u1EA1i"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
     className: "page-title-right"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ol", {
@@ -22907,7 +22937,7 @@ function Create() {
     href: "#"
   }, "KHAI B\xC1O TH\u1EE6 T\u1EE4C KHAI M\u1EA0C")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", {
     className: "breadcrumb-item active"
-  }, "T\u1EA1o m\u1EDBi")))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, "Th\xEAm M\u1EDBi")))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
     className: "row"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
     className: "col-lg-12"
@@ -22917,9 +22947,119 @@ function Create() {
     className: "card-header"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", {
     className: "card-title mb-0"
-  }, "T\u1EA1o m\u1EDBi th\u1EE7 t\u1EE5c khai m\u1EA1c")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, "Th\xEAm m\u1EDBi th\u1EE7 t\u1EE5c khai m\u1EA1c")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
     className: "card-body"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "col-lg-6"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "card"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "card-body"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    onChange: handleUploadImage,
+    htmlFor: "formId",
+    className: "btn btn-default mb-3 w-100"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "mb-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
+    className: "display-4 text-muted ri-upload-cloud-2-fill"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    name: "fileTv",
+    type: "file",
+    id: "formId",
+    hidden: true,
+    accept: "application/pdf"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h6", null, "Upload File N\u1ED9i dung"))), listFile != '' && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", {
+    className: "list-unstyled mb-0",
+    id: "dropzone-preview"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", {
+    className: "mt-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "border rounded"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "d-flex p-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "flex-shrink-0 me-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "avatar-sm bg-light rounded"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
+    className: "img-fluid rounded d-block",
+    src: "assets/images/pdf.png",
+    alt: "Dropzone-Image"
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "flex-grow-1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "pt-1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h5", {
+    className: "fs-14 mb-1"
+  }, listFile), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+    className: "fs-13 text-muted mb-0"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", {
+    className: "error text-danger"
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "flex-shrink-0 ms-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    onClick: function onClick() {
+      return removeFile();
+    },
+    className: "btn btn-sm btn-danger"
+  }, "X\xF3a"))))))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "col-lg-6"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "card"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "card-body"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    onChange: handleUploadImageEng,
+    htmlFor: "formIdEng",
+    className: "btn btn-default mb-3 w-100"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "mb-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
+    className: "display-4 text-muted ri-upload-cloud-2-fill"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    name: "fileEng",
+    type: "file",
+    id: "formIdEng",
+    hidden: true,
+    accept: "application/pdf"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h6", null, "Upload File N\u1ED9i dung (Ti\u1EBFng anh)"))), listFileEng != '' && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", {
+    className: "list-unstyled mb-0",
+    id: "dropzone-preview"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", {
+    className: "mt-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "border rounded"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "d-flex p-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "flex-shrink-0 me-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "avatar-sm bg-light rounded"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
+    className: "img-fluid rounded d-block",
+    src: "assets/images/pdf.png",
+    alt: "Dropzone-Image"
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "flex-grow-1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "pt-1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h5", {
+    className: "fs-14 mb-1"
+  }, listFileEng), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+    className: "fs-13 text-muted mb-0"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", {
+    className: "error text-danger"
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "flex-shrink-0 ms-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    onClick: function onClick() {
+      return removeFileEng();
+    },
+    className: "btn btn-sm btn-danger"
+  }, "X\xF3a")))))))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
     className: "row"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
     className: "col-xl-6"
@@ -22980,36 +23120,22 @@ function Create() {
     variant: "outlined",
     value: congress.name_en
   }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "row"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "col-xl-6"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "col-xl-6"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "row"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "col-xl-6"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "row"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "col-xl-6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "mb-3 mb-xl-0"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "juscontent-right"
+    className: "text-center"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_lab_LoadingButton__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    onClick: RegisterCongress,
-    className: "ad-btn ad-login-member",
+    onClick: CreateCongress,
+    className: "ad-btn ad-login-member bg-success mt-3",
     variant: "outlined",
+    startIcon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
+      className: "mdi mdi-plus"
+    }),
     loading: loading,
     disabled: loading,
     sx: {
-      backgroundColor: '#11a1fd',
       color: 'white',
       fontSize: 13,
       fontWeight: 400
     }
-  }, !loading ? 'Khởi tạo' : ''))))))))))))));
+  }, !loading ? 'Thêm Mới' : ''))))))))));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Create);
 
@@ -23165,7 +23291,7 @@ function Index() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
     className: "table-responsive table-card"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("table", {
-    className: "table align-middle table-nowrap table-striped-columns mb-0"
+    className: "table align-middle mb-0"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("thead", {
     className: "table-light"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
@@ -23176,18 +23302,14 @@ function Index() {
     scope: "col"
   }, "T\xEAn n\u1ED9i dung (Ti\u1EBFng Anh)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
     scope: "col"
-  }, "Th\u1EE9 t\u1EF1 hi\u1EC3n th\u1ECB"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
-    scope: "col"
-  }, "Ng\xE0y t\u1EA1o"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
+  }, "Th\u1EE9 t\u1EF1"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
     scope: "col"
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tbody", null, dataList.length > 0 ? dataList.map(function (i, index) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", {
       key: index
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
       className: "text-center"
-    }, index + 1), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.name_vn), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.name_en), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.sort), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-      variant: "subtitle1"
-    }, i.created_at)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    }, index + 1), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.name_vn), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.name_en), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.sort), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
       className: "hstack gap-3 fs-15"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Link, {
       to: "/cap-nhat-thu-tuc-khai-mac?id=" + i.id,
@@ -23198,9 +23320,7 @@ function Index() {
       to: "/khai-bao-thu-tuc-khai-mac",
       onClick: function onClick() {
         deleteCongress(i.id);
-      }
-      // onClick={() => handleOpen()}
-      ,
+      },
       "data-bs-toggle": "modal",
       "data-bs-target": "#myModal"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
@@ -23269,6 +23389,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 function Update() {
   var params = new URLSearchParams(window.location.search);
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
@@ -23315,6 +23436,8 @@ function Update() {
               _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', 'Vui lòng nhập tên nội dung (Tiếng Anh)!');
             } else {
               setLoading(true);
+              congress.file_content_vn = JSON.stringify(listFile);
+              congress.file_content_en = JSON.stringify(listFileEng);
               _model_congressService__WEBPACK_IMPORTED_MODULE_1__.congressService.update(congress).then(function (data) {
                 setLoading(false);
                 if ((data === null || data === void 0 ? void 0 : data.status) == 1) {
@@ -23341,7 +23464,7 @@ function Update() {
   }
   function getCongressById(_x2) {
     return _getCongressById.apply(this, arguments);
-  } //useEffect
+  } //upload file TV
   function _getCongressById() {
     _getCongressById = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(id) {
       return _regeneratorRuntime().wrap(function _callee2$(_context2) {
@@ -23349,7 +23472,7 @@ function Update() {
           case 0:
             _model_congressService__WEBPACK_IMPORTED_MODULE_1__.congressService.getByIdCongress(id).then(function (data) {
               if (data.status == 1) {
-                var _data$data, _data$data2, _data$data3, _data$data4, _data$data5;
+                var _data$data, _data$data2, _data$data3, _data$data4, _data$data5, _data$data6, _data$data7;
                 setCongress({
                   id: idObject === null || idObject === void 0 ? void 0 : idObject.id,
                   name_vn: data === null || data === void 0 ? void 0 : (_data$data = data.data) === null || _data$data === void 0 ? void 0 : _data$data.name_vn,
@@ -23358,6 +23481,10 @@ function Update() {
                   file_content_en: data === null || data === void 0 ? void 0 : (_data$data4 = data.data) === null || _data$data4 === void 0 ? void 0 : _data$data4.file_content_en,
                   sort: data === null || data === void 0 ? void 0 : (_data$data5 = data.data) === null || _data$data5 === void 0 ? void 0 : _data$data5.sort
                 });
+                setListFile((data === null || data === void 0 ? void 0 : (_data$data6 = data.data) === null || _data$data6 === void 0 ? void 0 : _data$data6.file_content_vn) || '');
+                setListFileEng((data === null || data === void 0 ? void 0 : (_data$data7 = data.data) === null || _data$data7 === void 0 ? void 0 : _data$data7.file_content_en) || '');
+              } else {
+                _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.mess);
               }
             });
           case 1:
@@ -23368,6 +23495,37 @@ function Update() {
     }));
     return _getCongressById.apply(this, arguments);
   }
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    _useState8 = _slicedToArray(_useState7, 2),
+    listFile = _useState8[0],
+    setListFile = _useState8[1];
+  var handleUploadImage = function handleUploadImage(e) {
+    var file = e.target.files[0];
+    _model_congressService__WEBPACK_IMPORTED_MODULE_1__.congressService.uploadFileAction(file).then(function (data) {
+      setListFile(data);
+    });
+  };
+  var removeFile = function removeFile() {
+    setListFile('');
+  };
+
+  //upload File ENG
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    _useState10 = _slicedToArray(_useState9, 2),
+    listFileEng = _useState10[0],
+    setListFileEng = _useState10[1];
+  var handleUploadImageEng = function handleUploadImageEng(e) {
+    var file = e.target.files[0];
+    _model_congressService__WEBPACK_IMPORTED_MODULE_1__.congressService.uploadFileAction(file).then(function (dataEng) {
+      setListFileEng(dataEng);
+    });
+  };
+  var removeFileEng = function removeFileEng() {
+    setListFileEng('');
+  };
+  //end upload file
+
+  //useEffect
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     setIdObject({
       id: params.get('id')
@@ -23392,7 +23550,7 @@ function Update() {
     to: "/khai-bao-thu-tuc-khai-mac",
     className: "btn btn-info squer-btn mt-2 mr-2 sm-btn"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
-    className: "fas fa-arrow-left"
+    className: "mdi mdi-arrow-left"
   }), " Quay l\u1EA1i"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
     className: "page-title-right"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ol", {
@@ -23415,7 +23573,117 @@ function Update() {
     className: "card-title mb-0"
   }, "C\u1EADp nh\u1EADt th\u1EE7 t\u1EE5c khai m\u1EA1c")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
     className: "card-body"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "col-lg-6"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "card"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "card-body"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    onChange: handleUploadImage,
+    htmlFor: "formId",
+    className: "btn btn-default mb-3 w-100"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "mb-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
+    className: "display-4 text-muted ri-upload-cloud-2-fill"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    name: "fileTv",
+    type: "file",
+    id: "formId",
+    hidden: true,
+    accept: "application/pdf"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h6", null, "Upload File N\u1ED9i dung"))), listFile != '' && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", {
+    className: "list-unstyled mb-0",
+    id: "dropzone-preview"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", {
+    className: "mt-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "border rounded"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "d-flex p-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "flex-shrink-0 me-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "avatar-sm bg-light rounded"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
+    className: "img-fluid rounded d-block",
+    src: "assets/images/pdf.png",
+    alt: "Dropzone-Image"
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "flex-grow-1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "pt-1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h5", {
+    className: "fs-14 mb-1"
+  }, listFile), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+    className: "fs-13 text-muted mb-0"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", {
+    className: "error text-danger"
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "flex-shrink-0 ms-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    onClick: function onClick() {
+      return removeFile();
+    },
+    className: "btn btn-sm btn-danger"
+  }, "X\xF3a"))))))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "col-lg-6"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "card"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "card-body"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    onChange: handleUploadImageEng,
+    htmlFor: "formIdEng",
+    className: "btn btn-default mb-3 w-100"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "mb-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
+    className: "display-4 text-muted ri-upload-cloud-2-fill"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    name: "fileEng",
+    type: "file",
+    id: "formIdEng",
+    hidden: true,
+    accept: "application/pdf"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h6", null, "Upload File N\u1ED9i dung (Ti\u1EBFng anh)"))), listFileEng != '' && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", {
+    className: "list-unstyled mb-0",
+    id: "dropzone-preview"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", {
+    className: "mt-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "border rounded"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "d-flex p-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "flex-shrink-0 me-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "avatar-sm bg-light rounded"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
+    className: "img-fluid rounded d-block",
+    src: "assets/images/pdf.png",
+    alt: "Dropzone-Image"
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "flex-grow-1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "pt-1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h5", {
+    className: "fs-14 mb-1"
+  }, listFileEng), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+    className: "fs-13 text-muted mb-0"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", {
+    className: "error text-danger"
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "flex-shrink-0 ms-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    onClick: function onClick() {
+      return removeFileEng();
+    },
+    className: "btn btn-sm btn-danger"
+  }, "X\xF3a")))))))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
     className: "row"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
     className: "col-xl-6"
@@ -23476,36 +23744,22 @@ function Update() {
     variant: "outlined",
     value: congress.name_en
   }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "row"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "col-xl-6"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "col-xl-6"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "row"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "col-xl-6"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "row"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "col-xl-6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "mb-3 mb-xl-0"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "juscontent-right"
+    className: "text-center"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_lab_LoadingButton__WEBPACK_IMPORTED_MODULE_9__["default"], {
     onClick: UpdateCongress,
-    className: "ad-btn ad-login-member",
+    className: "ad-btn ad-login-member bg-success mt-3",
     variant: "outlined",
+    startIcon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
+      className: "mdi mdi-plus"
+    }),
     loading: loading,
     disabled: loading,
     sx: {
-      backgroundColor: '#11a1fd',
       color: 'white',
       fontSize: 13,
       fontWeight: 400
     }
-  }, !loading ? 'Cập nhật' : ''))))))))))))));
+  }, !loading ? 'Cập nhật' : ''))))))))));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Update);
 
@@ -23524,8 +23778,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/node_modules/react-router/esm/react-router.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/node_modules/react-router/esm/react-router.js");
 /* harmony import */ var _auth_Login__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./auth/Login */ "./resources/js/components/auth/Login.js");
 /* harmony import */ var _dashboard_Home__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dashboard/Home */ "./resources/js/components/dashboard/Home.js");
 /* harmony import */ var _pages_Header__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pages/Header */ "./resources/js/components/pages/Header.js");
@@ -23538,12 +23792,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _users_ListUser__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./users/ListUser */ "./resources/js/components/users/ListUser.js");
 /* harmony import */ var _users_CreateUser__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./users/CreateUser */ "./resources/js/components/users/CreateUser.js");
 /* harmony import */ var _users_UpdateUser__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./users/UpdateUser */ "./resources/js/components/users/UpdateUser.js");
-/* harmony import */ var _bot_Index__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./bot/Index */ "./resources/js/components/bot/Index.js");
-/* harmony import */ var _bot_Create__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./bot/Create */ "./resources/js/components/bot/Create.js");
-/* harmony import */ var _bot_Update__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./bot/Update */ "./resources/js/components/bot/Update.js");
-/* harmony import */ var _Congress_Index__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./Congress/Index */ "./resources/js/components/Congress/Index.js");
-/* harmony import */ var _Congress_Create__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./Congress/Create */ "./resources/js/components/Congress/Create.js");
-/* harmony import */ var _Congress_Update__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./Congress/Update */ "./resources/js/components/Congress/Update.js");
+/* harmony import */ var _Congress_Index__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./Congress/Index */ "./resources/js/components/Congress/Index.js");
+/* harmony import */ var _Congress_Create__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./Congress/Create */ "./resources/js/components/Congress/Create.js");
+/* harmony import */ var _Congress_Update__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./Congress/Update */ "./resources/js/components/Congress/Update.js");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 var _excluded = ["children"];
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
@@ -23568,31 +23819,22 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 
 
 
-
-
-
 //thủ tục đại hội
 
 
 
 function Layout() {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_19__.BrowserRouter, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_20__.Switch, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_20__.Route, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_16__.BrowserRouter, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_17__.Switch, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_17__.Route, {
     path: "/login"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_auth_Login__WEBPACK_IMPORTED_MODULE_1__["default"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_20__.Route, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_auth_Login__WEBPACK_IMPORTED_MODULE_1__["default"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_17__.Route, {
     path: "/errorscope"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_ErrorScope__WEBPACK_IMPORTED_MODULE_5__["default"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(PrivateRoute, {
     path: "/khai-bao-thu-tuc-khai-mac"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Sidebar__WEBPACK_IMPORTED_MODULE_4__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Congress_Index__WEBPACK_IMPORTED_MODULE_16__["default"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(PrivateRoute, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Sidebar__WEBPACK_IMPORTED_MODULE_4__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Congress_Index__WEBPACK_IMPORTED_MODULE_13__["default"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(PrivateRoute, {
     path: "/tao-moi-thu-tuc-khai-mac"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Sidebar__WEBPACK_IMPORTED_MODULE_4__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Congress_Create__WEBPACK_IMPORTED_MODULE_17__["default"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(PrivateRoute, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Sidebar__WEBPACK_IMPORTED_MODULE_4__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Congress_Create__WEBPACK_IMPORTED_MODULE_14__["default"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(PrivateRoute, {
     path: "/cap-nhat-thu-tuc-khai-mac"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Sidebar__WEBPACK_IMPORTED_MODULE_4__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Congress_Update__WEBPACK_IMPORTED_MODULE_18__["default"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(PrivateRoute, {
-    path: "/index-bot"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Sidebar__WEBPACK_IMPORTED_MODULE_4__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_bot_Index__WEBPACK_IMPORTED_MODULE_13__["default"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(PrivateRoute, {
-    path: "/created-bot"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Sidebar__WEBPACK_IMPORTED_MODULE_4__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_bot_Create__WEBPACK_IMPORTED_MODULE_14__["default"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(PrivateRoute, {
-    path: "/updated-bot"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Sidebar__WEBPACK_IMPORTED_MODULE_4__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_bot_Update__WEBPACK_IMPORTED_MODULE_15__["default"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(PrivateRoute, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Sidebar__WEBPACK_IMPORTED_MODULE_4__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Congress_Update__WEBPACK_IMPORTED_MODULE_15__["default"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(PrivateRoute, {
     path: "/listuser"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Sidebar__WEBPACK_IMPORTED_MODULE_4__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_users_ListUser__WEBPACK_IMPORTED_MODULE_10__["default"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(PrivateRoute, {
     path: "/createuser"
@@ -23613,10 +23855,10 @@ function PrivateRoute(_ref) {
     rest = _objectWithoutProperties(_ref, _excluded);
   var auth = localStorage.getItem('user');
   getUserInfoAndCheckScopes(rest.path);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_20__.Route, _extends({}, rest, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_17__.Route, _extends({}, rest, {
     render: function render(_ref2) {
       var location = _ref2.location;
-      return auth && auth != null && auth !== 'undefined' ? children : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_20__.Redirect, {
+      return auth && auth != null && auth !== 'undefined' ? children : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_17__.Redirect, {
         to: {
           pathname: "/login",
           state: {
@@ -23630,7 +23872,7 @@ function PrivateRoute(_ref) {
 var getUserInfoAndCheckScopes = function getUserInfoAndCheckScopes(path) {
   if (path === '/' || path === undefined) path = '/index';
   var route = path.replace('/', '');
-  var history = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_20__.useHistory)();
+  var history = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_17__.useHistory)();
   var auth = localStorage.getItem('user');
   if (auth && auth != null && auth !== 'undefined') {
     _model_authService__WEBPACK_IMPORTED_MODULE_6__.authService.getInfoReloadPage().then(function (data) {
@@ -23909,1288 +24151,6 @@ var Login = function Login() {
 
 /***/ }),
 
-/***/ "./resources/js/components/bot/Create.js":
-/*!***********************************************!*\
-  !*** ./resources/js/components/bot/Create.js ***!
-  \***********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Box/Box.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Typography/Typography.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/TextField/TextField.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-/* harmony import */ var _mui_lab_LoadingButton__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @mui/lab/LoadingButton */ "./node_modules/@mui/lab/LoadingButton/LoadingButton.js");
-/* harmony import */ var _model_botService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../model/botService */ "./resources/js/model/botService.js");
-/* harmony import */ var _pages_Loading__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../pages/Loading */ "./resources/js/components/pages/Loading.js");
-/* harmony import */ var _pages_ToastNotifi__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../pages/ToastNotifi */ "./resources/js/components/pages/ToastNotifi.js");
-/* harmony import */ var _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../pages/Helpers */ "./resources/js/components/pages/Helpers.js");
-/* harmony import */ var _mui_material_TextareaAutosize__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @mui/material/TextareaAutosize */ "./node_modules/@mui/base/TextareaAutosize/TextareaAutosize.js");
-/* harmony import */ var _mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @mui/material/MenuItem */ "./node_modules/@mui/material/MenuItem/MenuItem.js");
-/* harmony import */ var _model_userService__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../model/userService */ "./resources/js/model/userService.js");
-/* harmony import */ var _pages_GlobalSetting__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../pages/GlobalSetting */ "./resources/js/components/pages/GlobalSetting.js");
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, defineProperty = Object.defineProperty || function (obj, key, desc) { obj[key] = desc.value; }, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return defineProperty(generator, "_invoke", { value: makeInvokeMethod(innerFn, self, context) }), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; defineProperty(this, "_invoke", { value: function value(method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; } function maybeInvokeDelegate(delegate, context) { var methodName = context.method, method = delegate.iterator[methodName]; if (undefined === method) return context.delegate = null, "throw" === methodName && delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method) || "return" !== methodName && (context.method = "throw", context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method")), ContinueSentinel; var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), defineProperty(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (val) { var object = Object(val), keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
-
-
-
-
-
-
-
-var listGender = [{
-  value: 'Female',
-  label: 'Nữ'
-}, {
-  value: 'Male',
-  label: 'Nam'
-}];
-var listStatus = [{
-  value: 1,
-  label: 'Hoạt động'
-}, {
-  value: 0,
-  label: 'Không hoạt động'
-}];
-function Create() {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-    _useState2 = _slicedToArray(_useState, 2),
-    loading = _useState2[0],
-    setLoading = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
-    _useState4 = _slicedToArray(_useState3, 2),
-    status = _useState4[0],
-    setStatus = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('Female'),
-    _useState6 = _slicedToArray(_useState5, 2),
-    gender = _useState6[0],
-    setGender = _useState6[1];
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
-    _useState8 = _slicedToArray(_useState7, 2),
-    description = _useState8[0],
-    setDescription = _useState8[1];
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
-      name: "",
-      age: "",
-      national: "",
-      height: "",
-      weight: "",
-      gender: "",
-      status: "",
-      description: ""
-    }),
-    _useState10 = _slicedToArray(_useState9, 2),
-    user = _useState10[0],
-    setUser = _useState10[1];
-  var name = user.name,
-    age = user.age,
-    national = user.national,
-    height = user.height,
-    weight = user.weight;
-  var onInputChange = function onInputChange(e) {
-    setUser(_objectSpread(_objectSpread({}, user), {}, _defineProperty({}, e.target.name, e.target.value)));
-  };
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
-    _useState12 = _slicedToArray(_useState11, 2),
-    listFile = _useState12[0],
-    setListFile = _useState12[1];
-  var handleUploadImage = function handleUploadImage(e) {
-    var file = e.target.files[0];
-    _model_userService__WEBPACK_IMPORTED_MODULE_5__.userService.uploadFileAction(file).then(function (data) {
-      setListFile([].concat(_toConsumableArray(listFile), [data]));
-    });
-  };
-  var removeFile = function removeFile(index) {
-    var b = listFile.filter(function (item, idx) {
-      return idx !== index;
-    });
-    setListFile(b);
-  };
-  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
-    _useState14 = _slicedToArray(_useState13, 2),
-    fileAvatar = _useState14[0],
-    setFileAvatar = _useState14[1];
-  var handleUploadImageAvatar = function handleUploadImageAvatar(e) {
-    var file = e.target.files[0];
-    _model_userService__WEBPACK_IMPORTED_MODULE_5__.userService.uploadFileAction(file).then(function (data) {
-      setFileAvatar(data);
-    });
-  };
-  var removeFileAVatar = function removeFileAVatar() {
-    setFileAvatar('');
-  };
-  function RegisterCustomer() {
-    return _RegisterCustomer.apply(this, arguments);
-  }
-  function _RegisterCustomer() {
-    _RegisterCustomer = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-      return _regeneratorRuntime().wrap(function _callee$(_context) {
-        while (1) switch (_context.prev = _context.next) {
-          case 0:
-            if (user.name.length < 6) {
-              _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', 'Họ tên không được nhỏ hơn 6 ký tự!');
-            } else {
-              setLoading(true);
-              user.gender = gender;
-              user.status = status;
-              user.description = description;
-              user.image = JSON.stringify(listFile);
-              user.avatar = fileAvatar;
-              _model_botService__WEBPACK_IMPORTED_MODULE_1__.botService.register(user).then(function (data) {
-                setLoading(false);
-                if ((data === null || data === void 0 ? void 0 : data.status) == 1) {
-                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.messager);
-                  setGender('Female');
-                  setStatus(1);
-                  setDescription("");
-                  setUser({
-                    name: "",
-                    age: "",
-                    national: "",
-                    height: "",
-                    weight: "",
-                    gender: "",
-                    status: "",
-                    description: "",
-                    image: "",
-                    avatar: ""
-                  });
-                  setListFile([]);
-                  setFileAvatar('');
-                } else _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.messager);
-              });
-            }
-          case 1:
-          case "end":
-            return _context.stop();
-        }
-      }, _callee);
-    }));
-    return _RegisterCustomer.apply(this, arguments);
-  }
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "page-wrapper"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "main-content"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_ToastNotifi__WEBPACK_IMPORTED_MODULE_3__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Loading__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    load: loading
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "row"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "colxl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "page-title-wrapper mb-0"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "page-title-box"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Link, {
-    to: "/index-bot",
-    className: "btn btn-info squer-btn mt-2 mr-2 sm-btn"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
-    className: "fas fa-arrow-left"
-  }), " Quay l\u1EA1i"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    color: "#1F2738",
-    variant: "h5",
-    sx: {
-      lineHeight: 2.0,
-      fontWeight: 700,
-      pr: 2
-    },
-    className: "page-title bold"
-  }, " T\u1EA1o m\u1EDBi Bot")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "col-xl-12"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "card"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "card-content"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "card-body p-1"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "ad-auth-form"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "row"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "ad-auth-feilds  col-md-6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    htmlFor: "member-email",
-    className: "col-form-label"
-  }, "H\u1ECD t\xEAn ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    variant: "span",
-    color: "red"
-  }, "*")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-    fullWidth: true,
-    name: "name",
-    type: "text",
-    required: true,
-    onChange: function onChange(e) {
-      return onInputChange(e);
-    },
-    sx: {
-      'input': {
-        '&::placeholder': {
-          fontSize: 16
-        }
-      }
-    },
-    label: "H\u1ECD t\xEAn",
-    variant: "outlined",
-    value: user.name
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "ad-auth-feilds  col-md-6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    htmlFor: "member-email",
-    className: "col-form-label"
-  }, "tu\u1ED5i"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-    fullWidth: true,
-    name: "age",
-    type: "text",
-    required: true,
-    onChange: function onChange(e) {
-      return onInputChange(e);
-    },
-    sx: {
-      'input': {
-        '&::placeholder': {
-          fontSize: 16
-        }
-      }
-    },
-    label: "Tu\u1ED5i",
-    variant: "outlined",
-    value: user.age
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "ad-auth-feilds  col-md-6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    htmlFor: "member-email",
-    className: "col-form-label"
-  }, "qu\u1ED1c gia"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-    fullWidth: true,
-    name: "national",
-    type: "text",
-    required: true,
-    onChange: function onChange(e) {
-      return onInputChange(e);
-    },
-    sx: {
-      'input': {
-        '&::placeholder': {
-          fontSize: 16
-        }
-      }
-    },
-    label: "Qu\u1ED1c gia",
-    variant: "outlined",
-    value: user.national
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "ad-auth-feilds col-md-6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    htmlFor: "member-email",
-    className: "col-form-label"
-  }, "Gi\u1EDBi t\xEDnh"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-    fullWidth: true,
-    id: "outlined-select-currency",
-    select: true,
-    required: true,
-    label: "L\u1EF1a ch\u1ECDn",
-    onChange: function onChange(e) {
-      return setGender(e.target.value);
-    },
-    value: gender
-  }, listGender.map(function (option) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_11__["default"], {
-      key: option.value,
-      value: option.value
-    }, option.label);
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "ad-auth-feilds col-md-6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    htmlFor: "member-email",
-    className: "col-form-label"
-  }, "c\xE2n n\u1EB7ng"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-    fullWidth: true,
-    name: "weight",
-    type: "text",
-    required: true,
-    onChange: function onChange(e) {
-      return onInputChange(e);
-    },
-    sx: {
-      'input': {
-        '&::placeholder': {
-          fontSize: 16
-        }
-      }
-    },
-    label: "C\xE2n n\u1EB7ng",
-    variant: "outlined",
-    value: user.weight
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "ad-auth-feilds col-md-6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    htmlFor: "member-email",
-    className: "col-form-label"
-  }, "Tr\u1EA1ng th\xE1i"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-    fullWidth: true,
-    id: "outlined-select-currency",
-    select: true,
-    required: true,
-    label: "L\u1EF1a ch\u1ECDn",
-    onChange: function onChange(e) {
-      return setStatus(e.target.value);
-    },
-    value: status
-  }, listStatus.map(function (option) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_11__["default"], {
-      key: option.value,
-      value: option.value
-    }, option.label);
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "ad-auth-feilds col-md-6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    htmlFor: "member-email",
-    className: "col-form-label"
-  }, "chi\u1EC1u cao"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-    fullWidth: true,
-    name: "height",
-    type: "text",
-    required: true,
-    onChange: function onChange(e) {
-      return onInputChange(e);
-    },
-    sx: {
-      'input': {
-        '&::placeholder': {
-          fontSize: 16
-        }
-      }
-    },
-    label: "Chi\u1EC1u cao",
-    variant: "outlined",
-    value: user.height
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "ad-auth-feilds col-md-6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    htmlFor: "member-email",
-    className: "col-form-label"
-  }, "m\xF4 t\u1EA3"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material_TextareaAutosize__WEBPACK_IMPORTED_MODULE_12__["default"], {
-    "aria-label": "empty textarea",
-    style: {
-      width: '100%'
-    },
-    minRows: 2,
-    onChange: function onChange(e) {
-      return setDescription(e.target.value);
-    },
-    value: description
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "ad-auth-feilds col-md-6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    htmlFor: "member-email",
-    className: "col-form-label"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    onChange: handleUploadImage,
-    htmlFor: "formId",
-    className: "btn btn-primary mb-3"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
-    name: "",
-    type: "file",
-    id: "formId",
-    hidden: true
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
-    className: "fas fa-plus"
-  }), " Th\xEAm \u1EA3nh")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "d-flex"
-  }, listFile.length > 0 ? listFile.map(function (i, index) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-      key: index,
-      className: "block-image d-flex"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
-      src: _pages_GlobalSetting__WEBPACK_IMPORTED_MODULE_6__["default"].url + i,
-      alt: "",
-      style: {
-        width: 100,
-        height: 100
-      }
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
-      variant: "subtitle1",
-      onClick: function onClick() {
-        return removeFile(index);
-      },
-      sx: {
-        cursor: 'pointer'
-      }
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
-      className: "fa fa-trash text-danger"
-    })));
-  }) : '')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "ad-auth-feilds col-md-6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    htmlFor: "member-email",
-    className: "col-form-label"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    onChange: handleUploadImageAvatar,
-    htmlFor: "formIdavatar",
-    className: "btn btn-primary mb-3"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
-    name: "",
-    type: "file",
-    id: "formIdavatar",
-    hidden: true
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
-    className: "fas fa-plus"
-  }), " Th\xEAm \u1EA3nh avatar")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "d-flex"
-  }, fileAvatar !== '' && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "block-image d-flex"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
-    src: _pages_GlobalSetting__WEBPACK_IMPORTED_MODULE_6__["default"].url + fileAvatar,
-    alt: "",
-    style: {
-      width: 100,
-      height: 100
-    }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    variant: "subtitle1",
-    onClick: function onClick() {
-      return removeFileAVatar();
-    },
-    sx: {
-      cursor: 'pointer'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
-    className: "fa fa-trash text-danger"
-  }))))))))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "juscontent-right"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_lab_LoadingButton__WEBPACK_IMPORTED_MODULE_13__["default"], {
-    onClick: RegisterCustomer,
-    className: "ad-btn ad-login-member",
-    variant: "outlined",
-    loading: loading,
-    disabled: loading,
-    sx: {
-      backgroundColor: '#11a1fd',
-      color: 'white',
-      fontSize: 13,
-      fontWeight: 400
-    }
-  }, !loading ? 'Khởi tạo' : ''))))));
-}
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Create);
-
-/***/ }),
-
-/***/ "./resources/js/components/bot/Index.js":
-/*!**********************************************!*\
-  !*** ./resources/js/components/bot/Index.js ***!
-  \**********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Box/Box.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Typography/Typography.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/TextField/TextField.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-/* harmony import */ var _model_botService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../model/botService */ "./resources/js/model/botService.js");
-/* harmony import */ var _pages_Status__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../pages/Status */ "./resources/js/components/pages/Status.js");
-/* harmony import */ var _pages_Loading__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../pages/Loading */ "./resources/js/components/pages/Loading.js");
-/* harmony import */ var _pages_ToastNotifi__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../pages/ToastNotifi */ "./resources/js/components/pages/ToastNotifi.js");
-/* harmony import */ var _pages_Paginate__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../pages/Paginate */ "./resources/js/components/pages/Paginate.js");
-/* harmony import */ var _model_userService__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../model/userService */ "./resources/js/model/userService.js");
-/* harmony import */ var _pages_Helpers__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../pages/Helpers */ "./resources/js/components/pages/Helpers.js");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
-
-
-
-
-
-function Index() {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
-    _useState2 = _slicedToArray(_useState, 2),
-    dataList = _useState2[0],
-    setDataList = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-    _useState4 = _slicedToArray(_useState3, 2),
-    loading = _useState4[0],
-    setLoading = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
-    _useState6 = _slicedToArray(_useState5, 2),
-    ho_ten = _useState6[0],
-    setHo_ten = _useState6[1];
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
-    _useState8 = _slicedToArray(_useState7, 2),
-    email = _useState8[0],
-    setEmail = _useState8[1];
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
-    _useState10 = _slicedToArray(_useState9, 2),
-    linkPage = _useState10[0],
-    setLinkPage = _useState10[1];
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
-    _useState12 = _slicedToArray(_useState11, 2),
-    pageCurrent = _useState12[0],
-    setPageCurrent = _useState12[1];
-  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
-    _useState14 = _slicedToArray(_useState13, 2),
-    pageLast = _useState14[0],
-    setPageLast = _useState14[1];
-  var deleteCt = function deleteCt(id) {
-    setLoading(true);
-    _model_botService__WEBPACK_IMPORTED_MODULE_1__.botService.deleted(id).then(function (data) {
-      setLoading(false);
-      if (data.status == 1) {
-        getListBot();
-        _pages_Helpers__WEBPACK_IMPORTED_MODULE_7__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.messager);
-      } else _pages_Helpers__WEBPACK_IMPORTED_MODULE_7__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.messager);
-    });
-  };
-  var getListBot = function getListBot(page) {
-    setPageCurrent(page);
-    setLoading(true);
-    _model_botService__WEBPACK_IMPORTED_MODULE_1__.botService.getList({
-      name: ho_ten
-    }, page).then(function (data) {
-      setLoading(false);
-      if (data.status == 1) {
-        var _data$data, _data$data2, _data$data3;
-        setDataList(data === null || data === void 0 ? void 0 : (_data$data = data.data) === null || _data$data === void 0 ? void 0 : _data$data.data);
-        setLinkPage(data === null || data === void 0 ? void 0 : (_data$data2 = data.data) === null || _data$data2 === void 0 ? void 0 : _data$data2.links);
-        setPageLast(parseInt(data === null || data === void 0 ? void 0 : (_data$data3 = data.data) === null || _data$data3 === void 0 ? void 0 : _data$data3.last_page));
-      }
-    });
-  };
-  var onEnterKey = function onEnterKey(e) {
-    if (e.key === "Enter") {
-      getListBot(pageCurrent);
-    }
-  };
-  //useEffect
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    getListBot(pageCurrent);
-  }, []);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "page-wrapper"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "main-content"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "row"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "card chart-card"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_ToastNotifi__WEBPACK_IMPORTED_MODULE_4__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Loading__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    load: loading
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "card-header p-3"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    variant: "h5"
-  }, "Danh s\xE1ch Bot"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_10__.Link, {
-    to: "/created-bot",
-    className: "btn btn-info squer-btn mt-2 mr-2"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
-    className: "fas fa-plus"
-  }), " T\u1EA1o m\u1EDBi"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "row pt-3"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "col-md-3"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "ad-auth-feilds"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_11__["default"], {
-    fullWidth: true,
-    name: "keyword",
-    type: "text",
-    onChange: function onChange(e) {
-      setHo_ten(e.target.value);
-    },
-    sx: {
-      'input': {
-        '&::placeholder': {
-          fontSize: 16
-        }
-      }
-    },
-    label: "H\u1ECD t\xEAn",
-    variant: "outlined",
-    value: ho_ten,
-    onKeyPress: function onKeyPress(e) {
-      return onEnterKey(e);
-    }
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "col-md-2"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "ad-auth-feilds"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_10__.Link, {
-    onClick: function onClick() {
-      getListBot(pageCurrent);
-    },
-    to: "#/",
-    className: "btn btn-primary squer-btn  pd14"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
-    className: "fas fa-search"
-  }), " T\xECm ki\u1EBFm"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "card-body pb-4"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "chart-holder"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "table-responsive pt-1",
-    sx: {
-      overflowX: 'initial'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("table", {
-    className: "table table-styled mb-0"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
-    className: "text-center"
-  }, "STT"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", null, "M\xE3 Bot"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", null, "Th\xF4ng tin"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", null, "M\xF4 t\u1EA3"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", null, "Ng\u01B0\u1EDDi t\u1EA1o"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", null, "Ng\xE0y t\u1EA1o"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", null, "Tr\u1EA1ng th\xE1i"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", null))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tbody", null, dataList.length > 0 ? dataList.map(function (i, index) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", {
-      key: index
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
-      className: "text-center"
-    }, index + 1), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.code), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
-      variant: "inherit",
-      fontSize: 13
-    }, "H\u1ECD t\xEAn : ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("b", null, i.name)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
-      variant: "inherit",
-      fontSize: 13
-    }, "Tu\u1ED5i : ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("b", null, i.age)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
-      variant: "inherit",
-      fontSize: 13
-    }, "Gi\u1EDBi t\xEDnh : ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("b", null, i.gender)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
-      variant: "inherit",
-      fontSize: 13
-    }, "Chi\u1EC1u cao : ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("b", null, i.height)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
-      variant: "inherit",
-      fontSize: 13
-    }, "C\xE2n n\u1EB7ng : ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("b", null, i.weight)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
-      variant: "inherit",
-      fontSize: 13
-    }, "Qu\u1ED1c gia : ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("b", null, i.national))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-      className: "mb-0 badge badge-primary"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
-      variant: "inherit",
-      color: "white"
-    }, i.description))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
-      variant: "inherit",
-      fontSize: 13
-    }, i.full_name)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
-      variant: "subtitle1",
-      fontSize: 13
-    }, i.created_at)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Status__WEBPACK_IMPORTED_MODULE_2__["default"], {
-      status: i.status
-    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
-      className: "relative"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
-      variant: "body1",
-      className: "action-btn "
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("svg", {
-      className: "default-size ",
-      viewBox: "0 0 341.333 341.333 "
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("g", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("g", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("g", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("path", {
-      d: "M170.667,85.333c23.573,0,42.667-19.093,42.667-42.667C213.333,19.093,194.24,0,170.667,0S128,19.093,128,42.667 C128,66.24,147.093,85.333,170.667,85.333z "
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("path", {
-      d: "M170.667,128C147.093,128,128,147.093,128,170.667s19.093,42.667,42.667,42.667s42.667-19.093,42.667-42.667 S194.24,128,170.667,128z "
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("path", {
-      d: "M170.667,256C147.093,256,128,275.093,128,298.667c0,23.573,19.093,42.667,42.667,42.667s42.667-19.093,42.667-42.667 C213.333,275.093,194.24,256,170.667,256z "
-    })))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-      className: "action-option "
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_10__.Link, {
-      to: "/updated-bot?id=" + i.id
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
-      className: "far fa-edit mr-2 "
-    }), "Chi ti\u1EBFt")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_10__.Link, {
-      onClick: function onClick() {
-        deleteCt(i.id);
-      },
-      to: "#/"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
-      className: "far fa-trash-alt mr-2"
-    }), "X\xF3a"))))));
-  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
-    colSpan: "8",
-    className: "text-center"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    variant: "subtitle1"
-  }, "Kh\xF4ng c\xF3 d\u1EEF li\u1EC7u!"))))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Paginate__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    linkPage: linkPage,
-    pageCurrent: pageCurrent,
-    pageLast: pageLast,
-    pageCurentRollBack: function pageCurentRollBack(e) {
-      return getListBot(e);
-    }
-  })))))));
-}
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Index);
-
-/***/ }),
-
-/***/ "./resources/js/components/bot/Update.js":
-/*!***********************************************!*\
-  !*** ./resources/js/components/bot/Update.js ***!
-  \***********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Box/Box.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Typography/Typography.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/TextField/TextField.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-/* harmony import */ var _mui_lab_LoadingButton__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @mui/lab/LoadingButton */ "./node_modules/@mui/lab/LoadingButton/LoadingButton.js");
-/* harmony import */ var _model_botService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../model/botService */ "./resources/js/model/botService.js");
-/* harmony import */ var _pages_Loading__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../pages/Loading */ "./resources/js/components/pages/Loading.js");
-/* harmony import */ var _pages_ToastNotifi__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../pages/ToastNotifi */ "./resources/js/components/pages/ToastNotifi.js");
-/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/dist/react-toastify.esm.mjs");
-/* harmony import */ var _mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @mui/material/MenuItem */ "./node_modules/@mui/material/MenuItem/MenuItem.js");
-/* harmony import */ var _mui_material_TextareaAutosize__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @mui/material/TextareaAutosize */ "./node_modules/@mui/base/TextareaAutosize/TextareaAutosize.js");
-/* harmony import */ var _pages_Helpers__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../pages/Helpers */ "./resources/js/components/pages/Helpers.js");
-/* harmony import */ var _pages_GlobalSetting__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../pages/GlobalSetting */ "./resources/js/components/pages/GlobalSetting.js");
-/* harmony import */ var _model_userService__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../model/userService */ "./resources/js/model/userService.js");
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, defineProperty = Object.defineProperty || function (obj, key, desc) { obj[key] = desc.value; }, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return defineProperty(generator, "_invoke", { value: makeInvokeMethod(innerFn, self, context) }), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; defineProperty(this, "_invoke", { value: function value(method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; } function maybeInvokeDelegate(delegate, context) { var methodName = context.method, method = delegate.iterator[methodName]; if (undefined === method) return context.delegate = null, "throw" === methodName && delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method) || "return" !== methodName && (context.method = "throw", context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method")), ContinueSentinel; var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), defineProperty(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (val) { var object = Object(val), keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
-
-
-
-
-
-
-
-
-var listGender = [{
-  value: 'Female',
-  label: 'Nữ'
-}, {
-  value: 'Male',
-  label: 'Nam'
-}];
-var listStatus = [{
-  value: 1,
-  label: 'Hoạt động'
-}, {
-  value: 0,
-  label: 'Không hoạt động'
-}];
-function Update() {
-  var params = new URLSearchParams(window.location.search);
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
-      id: params.get('id') || ""
-    }),
-    _useState2 = _slicedToArray(_useState, 2),
-    idObject = _useState2[0],
-    setIdObject = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-    _useState4 = _slicedToArray(_useState3, 2),
-    loading = _useState4[0],
-    setLoading = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
-    _useState6 = _slicedToArray(_useState5, 2),
-    status = _useState6[0],
-    setStatus = _useState6[1];
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('Female'),
-    _useState8 = _slicedToArray(_useState7, 2),
-    gender = _useState8[0],
-    setGender = _useState8[1];
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
-    _useState10 = _slicedToArray(_useState9, 2),
-    description = _useState10[0],
-    setDescription = _useState10[1];
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
-      id: "",
-      name: "",
-      age: "",
-      national: "",
-      height: "",
-      weight: "",
-      gender: "",
-      status: "",
-      description: ""
-    }),
-    _useState12 = _slicedToArray(_useState11, 2),
-    user = _useState12[0],
-    setUser = _useState12[1];
-  var id = user.id,
-    name = user.name,
-    age = user.age,
-    national = user.national,
-    height = user.height,
-    weight = user.weight;
-  var onInputChange = function onInputChange(e) {
-    setUser(_objectSpread(_objectSpread({}, user), {}, _defineProperty({}, e.target.name, e.target.value)));
-  };
-  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
-    _useState14 = _slicedToArray(_useState13, 2),
-    listFile = _useState14[0],
-    setListFile = _useState14[1];
-  var handleUploadImage = function handleUploadImage(e) {
-    var file = e.target.files[0];
-    _model_userService__WEBPACK_IMPORTED_MODULE_7__.userService.uploadFileAction(file).then(function (data) {
-      setListFile([].concat(_toConsumableArray(listFile), [data]));
-    });
-  };
-  var removeFile = function removeFile(index) {
-    var b = listFile.filter(function (item, idx) {
-      return idx !== index;
-    });
-    setListFile(b);
-  };
-  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
-    _useState16 = _slicedToArray(_useState15, 2),
-    fileAvatar = _useState16[0],
-    setFileAvatar = _useState16[1];
-  var handleUploadImageAvatar = function handleUploadImageAvatar(e) {
-    var file = e.target.files[0];
-    _model_userService__WEBPACK_IMPORTED_MODULE_7__.userService.uploadFileAction(file).then(function (data) {
-      setFileAvatar(data);
-    });
-  };
-  var removeFileAVatar = function removeFileAVatar() {
-    setFileAvatar('');
-  };
-  function UpdateCustomer() {
-    return _UpdateCustomer.apply(this, arguments);
-  }
-  function _UpdateCustomer() {
-    _UpdateCustomer = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-      return _regeneratorRuntime().wrap(function _callee$(_context) {
-        while (1) switch (_context.prev = _context.next) {
-          case 0:
-            if (user.name.length < 6) {
-              _pages_Helpers__WEBPACK_IMPORTED_MODULE_5__["default"].showToast('error', 'Họ tên không được nhỏ hơn 6 ký tự!');
-            } else {
-              setLoading(true);
-              user.gender = gender;
-              user.status = status;
-              user.description = description;
-              user.image = JSON.stringify(listFile);
-              user.avatar = fileAvatar;
-              _model_botService__WEBPACK_IMPORTED_MODULE_1__.botService.update(user).then(function (data) {
-                setLoading(false);
-                if ((data === null || data === void 0 ? void 0 : data.status) == 1) {
-                  react_toastify__WEBPACK_IMPORTED_MODULE_4__.toast.success(data === null || data === void 0 ? void 0 : data.messager, {
-                    theme: "colored",
-                    position: "bottom-right",
-                    autoClose: 5000
-                  });
-                } else {
-                  react_toastify__WEBPACK_IMPORTED_MODULE_4__.toast.error(data === null || data === void 0 ? void 0 : data.messager, {
-                    theme: "colored",
-                    position: "bottom-right",
-                    autoClose: 5000
-                  });
-                }
-              });
-            }
-          case 1:
-          case "end":
-            return _context.stop();
-        }
-      }, _callee);
-    }));
-    return _UpdateCustomer.apply(this, arguments);
-  }
-  var getInfoBot = function getInfoBot(id) {
-    _model_botService__WEBPACK_IMPORTED_MODULE_1__.botService.getById(id).then(function (data) {
-      if (data.status == 1) {
-        var _data$data, _data$data2, _data$data3, _data$data4, _data$data5, _data$data6, _data$data7, _data$data8, _data$data9, _data$data10, _data$data11;
-        setListFile(data !== null && data !== void 0 && (_data$data = data.data) !== null && _data$data !== void 0 && _data$data.image ? JSON.parse(data === null || data === void 0 ? void 0 : (_data$data2 = data.data) === null || _data$data2 === void 0 ? void 0 : _data$data2.image) : []);
-        setFileAvatar((data === null || data === void 0 ? void 0 : (_data$data3 = data.data) === null || _data$data3 === void 0 ? void 0 : _data$data3.avatar) || '');
-        setUser({
-          id: idObject === null || idObject === void 0 ? void 0 : idObject.id,
-          name: data === null || data === void 0 ? void 0 : (_data$data4 = data.data) === null || _data$data4 === void 0 ? void 0 : _data$data4.name,
-          age: data === null || data === void 0 ? void 0 : (_data$data5 = data.data) === null || _data$data5 === void 0 ? void 0 : _data$data5.age,
-          national: data === null || data === void 0 ? void 0 : (_data$data6 = data.data) === null || _data$data6 === void 0 ? void 0 : _data$data6.national,
-          height: data === null || data === void 0 ? void 0 : (_data$data7 = data.data) === null || _data$data7 === void 0 ? void 0 : _data$data7.height,
-          weight: data === null || data === void 0 ? void 0 : (_data$data8 = data.data) === null || _data$data8 === void 0 ? void 0 : _data$data8.weight
-        });
-        setStatus(data === null || data === void 0 ? void 0 : (_data$data9 = data.data) === null || _data$data9 === void 0 ? void 0 : _data$data9.status);
-        setGender(data === null || data === void 0 ? void 0 : (_data$data10 = data.data) === null || _data$data10 === void 0 ? void 0 : _data$data10.gender);
-        setDescription(data === null || data === void 0 ? void 0 : (_data$data11 = data.data) === null || _data$data11 === void 0 ? void 0 : _data$data11.description);
-      }
-    });
-  };
-  //useEffect
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    setIdObject({
-      id: params.get('id')
-    });
-    getInfoBot(idObject);
-  }, []);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "page-wrapper"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "main-content"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_ToastNotifi__WEBPACK_IMPORTED_MODULE_3__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Loading__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    load: loading
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "row"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "colxl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "page-title-wrapper mb-0"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "page-title-box"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Link, {
-    to: "/index-bot",
-    className: "btn btn-info squer-btn mt-2 mr-2 sm-btn"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
-    className: "fas fa-arrow-left"
-  }), " Quay l\u1EA1i"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-    color: "#1F2738",
-    variant: "h5",
-    sx: {
-      lineHeight: 2.0,
-      fontWeight: 700,
-      pr: 2
-    },
-    className: "page-title bold"
-  }, " C\u1EADp nh\u1EADt Bot")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "col-xl-12"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "card"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "card-content"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "card-body p-1"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "ad-auth-form"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "row"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "ad-auth-feilds  col-md-6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    htmlFor: "member-email",
-    className: "col-form-label"
-  }, "H\u1ECD t\xEAn ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-    variant: "span",
-    color: "red"
-  }, "*")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_11__["default"], {
-    fullWidth: true,
-    name: "name",
-    type: "text",
-    required: true,
-    onChange: function onChange(e) {
-      return onInputChange(e);
-    },
-    sx: {
-      'input': {
-        '&::placeholder': {
-          fontSize: 16
-        }
-      }
-    },
-    label: "H\u1ECD t\xEAn",
-    variant: "outlined",
-    value: user.name
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "ad-auth-feilds  col-md-6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    htmlFor: "member-email",
-    className: "col-form-label"
-  }, "tu\u1ED5i"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_11__["default"], {
-    fullWidth: true,
-    name: "age",
-    type: "text",
-    required: true,
-    onChange: function onChange(e) {
-      return onInputChange(e);
-    },
-    sx: {
-      'input': {
-        '&::placeholder': {
-          fontSize: 16
-        }
-      }
-    },
-    label: "Tu\u1ED5i",
-    variant: "outlined",
-    value: user.age
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "ad-auth-feilds  col-md-6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    htmlFor: "member-email",
-    className: "col-form-label"
-  }, "qu\u1ED1c gia"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_11__["default"], {
-    fullWidth: true,
-    name: "national",
-    type: "text",
-    required: true,
-    onChange: function onChange(e) {
-      return onInputChange(e);
-    },
-    sx: {
-      'input': {
-        '&::placeholder': {
-          fontSize: 16
-        }
-      }
-    },
-    label: "Qu\u1ED1c gia",
-    variant: "outlined",
-    value: user.national
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "ad-auth-feilds col-md-6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    htmlFor: "member-email",
-    className: "col-form-label"
-  }, "Gi\u1EDBi t\xEDnh"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_11__["default"], {
-    fullWidth: true,
-    id: "outlined-select-currency",
-    select: true,
-    required: true,
-    label: "L\u1EF1a ch\u1ECDn",
-    onChange: function onChange(e) {
-      return setGender(e.target.value);
-    },
-    value: gender
-  }, listGender.map(function (option) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_12__["default"], {
-      key: option.value,
-      value: option.value
-    }, option.label);
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "ad-auth-feilds col-md-6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    htmlFor: "member-email",
-    className: "col-form-label"
-  }, "c\xE2n n\u1EB7ng"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_11__["default"], {
-    fullWidth: true,
-    name: "weight",
-    type: "text",
-    required: true,
-    onChange: function onChange(e) {
-      return onInputChange(e);
-    },
-    sx: {
-      'input': {
-        '&::placeholder': {
-          fontSize: 16
-        }
-      }
-    },
-    label: "C\xE2n n\u1EB7ng",
-    variant: "outlined",
-    value: user.weight
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "ad-auth-feilds col-md-6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    htmlFor: "member-email",
-    className: "col-form-label"
-  }, "Tr\u1EA1ng th\xE1i"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_11__["default"], {
-    fullWidth: true,
-    id: "outlined-select-currency",
-    select: true,
-    required: true,
-    label: "L\u1EF1a ch\u1ECDn",
-    onChange: function onChange(e) {
-      return setStatus(e.target.value);
-    },
-    value: status
-  }, listStatus.map(function (option) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_12__["default"], {
-      key: option.value,
-      value: option.value
-    }, option.label);
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "ad-auth-feilds col-md-6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    htmlFor: "member-email",
-    className: "col-form-label"
-  }, "chi\u1EC1u cao"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_11__["default"], {
-    fullWidth: true,
-    name: "height",
-    type: "text",
-    required: true,
-    onChange: function onChange(e) {
-      return onInputChange(e);
-    },
-    sx: {
-      'input': {
-        '&::placeholder': {
-          fontSize: 16
-        }
-      }
-    },
-    label: "Chi\u1EC1u cao",
-    variant: "outlined",
-    value: user.height
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "ad-auth-feilds col-md-6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    htmlFor: "member-email",
-    className: "col-form-label"
-  }, "m\xF4 t\u1EA3"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material_TextareaAutosize__WEBPACK_IMPORTED_MODULE_13__["default"], {
-    "aria-label": "empty textarea",
-    style: {
-      width: '100%'
-    },
-    minRows: 2,
-    onChange: function onChange(e) {
-      return setDescription(e.target.value);
-    },
-    value: description
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "ad-auth-feilds col-md-6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    htmlFor: "member-email",
-    className: "col-form-label"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    onChange: handleUploadImage,
-    htmlFor: "formId",
-    className: "btn btn-primary mb-3"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
-    name: "",
-    type: "file",
-    id: "formId",
-    hidden: true
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
-    className: "fas fa-plus"
-  }), " Th\xEAm \u1EA3nh")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "d-flex"
-  }, listFile.length > 0 ? listFile.map(function (i, index) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-      key: index,
-      className: "block-image d-flex"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
-      src: _pages_GlobalSetting__WEBPACK_IMPORTED_MODULE_6__["default"].url + i,
-      alt: "",
-      style: {
-        width: 100,
-        height: 100
-      }
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-      variant: "subtitle1",
-      onClick: function onClick() {
-        return removeFile(index);
-      },
-      sx: {
-        cursor: 'pointer'
-      }
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
-      className: "fa fa-trash text-danger"
-    })));
-  }) : '')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "ad-auth-feilds col-md-6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    htmlFor: "member-email",
-    className: "col-form-label"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    onChange: handleUploadImageAvatar,
-    htmlFor: "formIdavatar",
-    className: "btn btn-primary mb-3"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
-    name: "",
-    type: "file",
-    id: "formIdavatar",
-    hidden: true
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
-    className: "fas fa-plus"
-  }), " Th\xEAm \u1EA3nh avatar")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "d-flex"
-  }, fileAvatar !== '' && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "block-image d-flex"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
-    src: _pages_GlobalSetting__WEBPACK_IMPORTED_MODULE_6__["default"].url + fileAvatar,
-    alt: "",
-    style: {
-      width: 100,
-      height: 100
-    }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-    variant: "subtitle1",
-    onClick: function onClick() {
-      return removeFileAVatar();
-    },
-    sx: {
-      cursor: 'pointer'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
-    className: "fa fa-trash text-danger"
-  }))))))))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "juscontent-right"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_lab_LoadingButton__WEBPACK_IMPORTED_MODULE_14__["default"], {
-    onClick: UpdateCustomer,
-    className: "ad-btn ad-login-member",
-    variant: "outlined",
-    loading: loading,
-    disabled: loading,
-    sx: {
-      backgroundColor: '#11a1fd',
-      color: 'white',
-      fontSize: 13,
-      fontWeight: 400
-    }
-  }, !loading ? 'Cập nhật' : ''))))));
-}
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Update);
-
-/***/ }),
-
 /***/ "./resources/js/components/dashboard/Home.js":
 /*!***************************************************!*\
   !*** ./resources/js/components/dashboard/Home.js ***!
@@ -25465,24 +24425,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Box/Box.js");
-/* harmony import */ var _model_userService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../model/userService */ "./resources/js/model/userService.js");
-
-
-
-
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Box/Box.js");
 
 
 function Footer() {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("footer", {
     className: "footer"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_1__["default"], {
     className: "container"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_1__["default"], {
     className: "row"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_1__["default"], {
     className: "col-lg-12"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_1__["default"], {
     className: "text-center"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     className: "mb-0"
@@ -25622,13 +24577,6 @@ function Header() {
     "data-toggle": "fullscreen"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
     className: "bx bx-fullscreen fs-22"
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    className: "ms-1 header-item d-none d-sm-flex"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-    type: "button",
-    className: "btn btn-icon btn-topbar btn-ghost-secondary rounded-circle light-dark-mode"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
-    className: "bx bx-moon fs-22"
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_2__["default"], {
     className: "dropdown topbar-head-dropdown ms-1 header-item",
     id: "notificationDropdown"
@@ -28340,121 +27288,6 @@ function authHeader() {
 
 /***/ }),
 
-/***/ "./resources/js/model/botService.js":
-/*!******************************************!*\
-  !*** ./resources/js/model/botService.js ***!
-  \******************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "botService": () => (/* binding */ botService)
-/* harmony export */ });
-/* harmony import */ var _components_pages_GlobalSetting__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/pages/GlobalSetting */ "./resources/js/components/pages/GlobalSetting.js");
-/* harmony import */ var _userService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./userService */ "./resources/js/model/userService.js");
-
-
-var botService = {
-  register: register,
-  getList: getList,
-  getDetailChat: getDetailChat,
-  getListChat: getListChat,
-  getById: getById,
-  update: update,
-  deleted: deleted
-};
-var user = JSON.parse(localStorage.getItem('user'));
-function deleted(id) {
-  var requestOptions = {
-    method: 'GET',
-    'Content-Type': 'application/json',
-    headers: authHeader()
-  };
-  return fetch("".concat(_components_pages_GlobalSetting__WEBPACK_IMPORTED_MODULE_0__["default"].url, "api/deleteBot?id=") + id, requestOptions).then(handleResponse);
-}
-function register(object) {
-  object.id_user_created = user.id;
-  var requestOptions = {
-    method: 'POST',
-    headers: authHeader(),
-    body: JSON.stringify(object)
-  };
-  return fetch("".concat(_components_pages_GlobalSetting__WEBPACK_IMPORTED_MODULE_0__["default"].url, "api/registerBot"), requestOptions).then(handleResponse);
-}
-function update(user) {
-  var requestOptions = {
-    method: 'POST',
-    headers: authHeader(),
-    body: JSON.stringify(user)
-  };
-  return fetch("".concat(_components_pages_GlobalSetting__WEBPACK_IMPORTED_MODULE_0__["default"].url, "api/updateBot"), requestOptions).then(handleResponse);
-}
-function getList(object, page) {
-  object.id = user.id;
-  var requestOptions = {
-    method: 'POST',
-    headers: authHeader(),
-    body: JSON.stringify(object)
-  };
-  return fetch("".concat(_components_pages_GlobalSetting__WEBPACK_IMPORTED_MODULE_0__["default"].url, "api/getListBot?page=") + page, requestOptions).then(handleResponse);
-}
-function getDetailChat(object) {
-  var requestOptions = {
-    method: 'POST',
-    headers: authHeader(),
-    body: JSON.stringify(object)
-  };
-  return fetch("".concat(_components_pages_GlobalSetting__WEBPACK_IMPORTED_MODULE_0__["default"].url, "api/getDetailChat"), requestOptions).then(handleResponse);
-}
-function getListChat(object) {
-  object.id = user.id;
-  var requestOptions = {
-    method: 'POST',
-    headers: authHeader(),
-    body: JSON.stringify(object)
-  };
-  return fetch("".concat(_components_pages_GlobalSetting__WEBPACK_IMPORTED_MODULE_0__["default"].url, "api/getListChat"), requestOptions).then(handleResponse);
-}
-function getById(id) {
-  var requestOptions = {
-    method: 'POST',
-    headers: authHeader(),
-    body: JSON.stringify(id)
-  };
-  return fetch("".concat(_components_pages_GlobalSetting__WEBPACK_IMPORTED_MODULE_0__["default"].url, "api/getByIdBot"), requestOptions).then(handleResponse);
-}
-function handleResponse(response) {
-  return response.text().then(function (text) {
-    var data = response.ok ? JSON.parse(text) : text;
-    if (!response.ok) {
-      if (response.status === 401) {
-        // auto logout if 401 response returned from api
-        _userService__WEBPACK_IMPORTED_MODULE_1__.userService.logout();
-        localStorage.removeItem('user');
-        localStorage.removeItem('scopes');
-        localStorage.removeItem('region');
-        location.reload();
-      }
-      var error = data && data.message || response.statusText;
-      return Promise.reject(error);
-    }
-    return data;
-  });
-}
-function authHeader() {
-  if (user && user.remember_token) {
-    return {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + user.remember_token
-    };
-  } else {
-    return {};
-  }
-}
-
-/***/ }),
-
 /***/ "./resources/js/model/congressService.js":
 /*!***********************************************!*\
   !*** ./resources/js/model/congressService.js ***!
@@ -28475,7 +27308,8 @@ var congressService = {
   getList: getList,
   getByIdCongress: getByIdCongress,
   update: update,
-  deleted: deleted
+  deleted: deleted,
+  uploadFileAction: uploadFileAction
 };
 var user = JSON.parse(localStorage.getItem('user'));
 function deleted(id) {
@@ -28484,9 +27318,10 @@ function deleted(id) {
     'Content-Type': 'application/json',
     headers: authHeader()
   };
-  return fetch("".concat(_components_pages_GlobalSetting__WEBPACK_IMPORTED_MODULE_0__["default"].url, "api/congress/deleteCongress?id=") + id, requestOptions).then(handleResponse);
+  return fetch("".concat(_components_pages_GlobalSetting__WEBPACK_IMPORTED_MODULE_0__["default"].url, "api/congress/delete?id=") + id, requestOptions).then(handleResponse);
 }
 function register(object) {
+  object.user_id = user.id;
   var requestOptions = {
     method: 'POST',
     headers: authHeader(),
@@ -28516,7 +27351,7 @@ function getByIdCongress(id) {
     headers: authHeader(),
     body: JSON.stringify(id)
   };
-  return fetch("".concat(_components_pages_GlobalSetting__WEBPACK_IMPORTED_MODULE_0__["default"].url, "api/congress/getByIdCongress"), requestOptions).then(handleResponse);
+  return fetch("".concat(_components_pages_GlobalSetting__WEBPACK_IMPORTED_MODULE_0__["default"].url, "api/congress/getById"), requestOptions).then(handleResponse);
 }
 function handleResponse(response) {
   return response.text().then(function (text) {
@@ -28527,7 +27362,6 @@ function handleResponse(response) {
         _userService__WEBPACK_IMPORTED_MODULE_1__.userService.logout();
         localStorage.removeItem('user');
         localStorage.removeItem('scopes');
-        localStorage.removeItem('region');
         location.reload();
       }
       var error = data && data.message || response.statusText;
@@ -28535,6 +27369,18 @@ function handleResponse(response) {
     }
     return data;
   });
+}
+function uploadFileAction(file) {
+  var formData = new FormData();
+  formData.append('file', file);
+  var requestOptions = {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer ' + user.remember_token
+    },
+    body: formData
+  };
+  return fetch("".concat(_components_pages_GlobalSetting__WEBPACK_IMPORTED_MODULE_0__["default"].url, "api/congress/uploadFile"), requestOptions).then(handleResponse);
 }
 function authHeader() {
   if (user && user.remember_token) {

@@ -1,9 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {Box, Typography, TextField} from "@mui/material";
-import {Link} from 'react-router-dom';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import {userService} from "../../model/userService";
 
 export default function Footer() {
     return (

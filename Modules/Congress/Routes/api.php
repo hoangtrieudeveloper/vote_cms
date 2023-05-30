@@ -9,7 +9,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::any('/getList', [CongressController::class, 'getList'])->name('getList'); //
         Route::any('/created', [CongressController::class, 'created'])->name('created'); //
         Route::any('/update', [CongressController::class, 'update'])->name('update'); //
-        Route::any('/deleteCongress', [CongressController::class, 'deleteCongress'])->name('deleteCongress'); //
-        Route::any('/getByIdCongress', [CongressController::class, 'getByIdCongress'])->name('getByIdCongress'); //
+        Route::any('/delete', [CongressController::class, 'delete'])->name('delete'); //
+        Route::any('/getById', [CongressController::class, 'getById'])->name('getById'); //
+        Route::any('/uploadFile', [CongressController::class, 'uploadFile'])->name('uploadFile'); //
     });
 });

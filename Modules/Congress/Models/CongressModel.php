@@ -3,6 +3,7 @@
 namespace Modules\Congress\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class CongressModel extends Model
 {
@@ -24,13 +25,22 @@ class CongressModel extends Model
         'created_at',
         'updated_at',
     ];
-    public static function created($data){
-//        self::created($data);
+
+    public function getList(){
+        return DB::table('vote_congress_content')
+            ->orderBy('vote_congress_content.id', 'desc')
+            ->paginate(20);
     }
-    public static function updated($data){
-//        self::update($data);
+    public function getById($id){
+        return CongressModel::where('id', $id)->first();
     }
-    public static function deleted($id){
-        //        self::update($data);
+    public function add(array $data){
+        return CongressModel::Create($data);
+    }
+    public function edit(array $data){
+        return CongressModel::where('id', $data['id'])->update($data);
+    }
+    public function del($id){
+        return CongressModel::where(['id' => $id])->delete();
     }
 }

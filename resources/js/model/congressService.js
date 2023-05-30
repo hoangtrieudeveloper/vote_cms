@@ -6,7 +6,8 @@ export const congressService = {
     getList,
     getByIdCongress,
     update,
-    deleted
+    deleted,
+    uploadFileAction,
 };
 let user = JSON.parse(localStorage.getItem('user'));
 function deleted(id) {
@@ -16,9 +17,10 @@ function deleted(id) {
         headers: authHeader()
     };
 
-    return fetch(`${GlobalSetting.url}api/congress/deleteCongress?id=` + id, requestOptions).then(handleResponse);
+    return fetch(`${GlobalSetting.url}api/congress/delete?id=` + id, requestOptions).then(handleResponse);
 }
 function register(object) {
+    object.user_id = user.id;
     const requestOptions = {
         method: 'POST',
         headers: authHeader(),
@@ -51,7 +53,7 @@ function getByIdCongress(id) {
         body: JSON.stringify(id)
     };
 
-    return fetch(`${GlobalSetting.url}api/congress/getByIdCongress`, requestOptions).then(handleResponse);
+    return fetch(`${GlobalSetting.url}api/congress/getById`, requestOptions).then(handleResponse);
 }
 function handleResponse(response) {
     return response.text().then(text => {
@@ -62,7 +64,6 @@ function handleResponse(response) {
                 userService.logout();
                 localStorage.removeItem('user');
                 localStorage.removeItem('scopes');
-                localStorage.removeItem('region');
                 location.reload();
             }
 
@@ -72,6 +73,17 @@ function handleResponse(response) {
 
         return data;
     });
+}
+
+function uploadFileAction(file) {
+    let formData = new FormData();
+    formData.append('file', file);
+    const requestOptions = {
+        method: 'POST',
+        headers: {'Authorization': 'Bearer ' + user.remember_token},
+        body: formData
+    };
+    return fetch(`${GlobalSetting.url}api/congress/uploadFile`, requestOptions).then(handleResponse);
 }
 
 function authHeader() {
