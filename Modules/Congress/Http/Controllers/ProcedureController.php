@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Modules\Congress\Config\constants;
 use Modules\Congress\Models\SettingCompanyModel;
 
-class CongressController extends Controller
+class ProcedureController extends Controller
 {
     protected $congressModel;
 
@@ -21,7 +21,7 @@ class CongressController extends Controller
     public function getList()
     {
         try {
-            $query = $this->congressModel->getList(constants::KHAI_MAC);
+            $query = $this->congressModel->getList(constants::BE_MAC);
             $result = Utils::messegerAlert(1, "alert-success", 'Thành công!', $query);
         } catch (\Exception $exception) {
             $result = Utils::messegerAlert(2, "alert-danger", 'Thất bại!');
@@ -41,21 +41,21 @@ class CongressController extends Controller
             if ($validate->fails()) {
                 return response()->json(Utils::messegerAlert(2, "alert-danger", $validate->errors()));
             }
-            $lastData = $this->congressModel->getLastData(constants::TO_TRINH);
+            $lastData = $this->congressModel->getLastData(constants::BE_MAC);
             $data = [
                 'name_vn' => $request->name_vn,
                 'name_en' => $request->name_en,
                 'file_content_vn' => $request->file_content_vn,
                 'file_content_en' => $request->file_content_en,
                 'user_id' => $request->user_id,
-                'type' => constants::KHAI_MAC,
+                'type' => constants::BE_MAC,
                 'sort' => $lastData == null || $lastData['sort'] == 0 ? 1 : (int)$lastData['sort'] + 1
             ];
 
             $insert = $this->congressModel->add($data);
-            $result = Utils::messegerAlert(1, "alert-success", 'Tạo thủ tục khai mạc thành công!', $insert);
+            $result = Utils::messegerAlert(1, "alert-success", 'Tạo thủ tục bế mạc thành công!', $insert);
         } catch (\Exception $exception) {
-            $result = Utils::messegerAlert(2, "alert-danger", 'Tạo thủ tục khai mạc thất bại!',);
+            $result = Utils::messegerAlert(2, "alert-danger", 'Tạo thủ tục bế mạc thất bại!',);
         }
         return response()->json($result);
     }
@@ -99,9 +99,9 @@ class CongressController extends Controller
                 'file_content_en' => $request->file_content_en,
             ];
             $edit = $this->congressModel->edit($data);
-            $result = Utils::messegerAlert(1, "alert-success", 'Cập nhật thủ tục khai mạc thành công!', $edit);
+            $result = Utils::messegerAlert(1, "alert-success", 'Cập nhật thủ tục bế mạc thành công!', $edit);
         } catch (\Exception $exception) {
-            $result = Utils::messegerAlert(2, "alert-danger", 'Cập nhật thủ tục khai mạc thất bại!',);
+            $result = Utils::messegerAlert(2, "alert-danger", 'Cập nhật thủ tục bế mạc thất bại!',);
         }
         return response()->json($result);
     }
@@ -117,9 +117,9 @@ class CongressController extends Controller
             }
             $data = $request->all();
             $del = $this->congressModel->del($data['id']);
-            $result = Utils::messegerAlert(1, "alert-success", 'Xóa thủ tục khai mạc thành công!', $del);
+            $result = Utils::messegerAlert(1, "alert-success", 'Xóa thủ tục bế mạc thành công!', $del);
         } catch (\Exception $exception) {
-            $result = Utils::messegerAlert(2, "alert-danger", 'Cập nhật thủ tục khai mạc thất bại!',);
+            $result = Utils::messegerAlert(2, "alert-danger", 'Cập nhật thủ tục bế mạc thất bại!',);
         }
         return response()->json($result);
     }

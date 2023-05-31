@@ -1,0 +1,13 @@
+{
+    "name": "InFoBasic",
+    "alias": "infobasic",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\InFoBasic\\Providers\\InFoBasicServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

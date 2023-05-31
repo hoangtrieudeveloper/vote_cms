@@ -46,6 +46,12 @@ export default function Sidebar({...props}) {
                                 <i className="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Trang chủ</span>
                             </a>
                         </li>
+                        {JSON.parse(localStorage.getItem('scopes')).includes('thong-tin-co-ban') &&
+                            <li className="nav-item">
+                                <a className="nav-link menu-link" href="/thong-tin-co-ban">
+                                    <i className="ri-layout-3-line"></i> <span data-key="t-layouts">Khai báo thông tin cơ bản</span>
+                                </a>
+                            </li>}
                         {localStorage.getItem('scopes').includes('listuser') && <li className="nav-item">
                             <a className="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse"
                                role="button" aria-expanded="false" aria-controls="sidebarApps">
@@ -64,7 +70,7 @@ export default function Sidebar({...props}) {
                         {localStorage.getItem('scopes').includes('khai-bao-thu-tuc-khai-mac') && <li className="nav-item">
                             <a className="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse"
                                role="button" aria-expanded="false" aria-controls="sidebarApps">
-                                <i className="ri-apps-2-line"></i> <span data-key="t-apps"> Khai báo nội dung Đại Hội</span>
+                                <i className="ri-pencil-ruler-2-line"></i> <span data-key="t-apps"> Khai báo nội dung Đại Hội</span>
                             </a>
                             <Box className="collapse menu-dropdown" id="sidebarApps">
                                 <ul className="nav nav-sm flex-column">
@@ -72,6 +78,27 @@ export default function Sidebar({...props}) {
                                         <li className="nav-item">
                                             <a href="/khai-bao-thu-tuc-khai-mac" className="nav-link"
                                                data-key="t-calendar"> Khai báo thủ tục khai mạc </a>
+                                        </li>}
+                                </ul>
+                                <ul className="nav nav-sm flex-column">
+                                    {JSON.parse(localStorage.getItem('scopes')).includes('khai-bao-bc-to-trinh') &&
+                                        <li className="nav-item">
+                                            <a href="/khai-bao-bc-to-trinh" className="nav-link"
+                                               data-key="t-calendar"> Khai báo BC - Tờ trình </a>
+                                        </li>}
+                                </ul>
+                                <ul className="nav nav-sm flex-column">
+                                    {JSON.parse(localStorage.getItem('scopes')).includes('khai-bao-thu-tuc-be-mac') &&
+                                        <li className="nav-item">
+                                            <a href="/khai-bao-thu-tuc-be-mac" className="nav-link"
+                                               data-key="t-calendar"> Khai báo thủ tục bế mạc </a>
+                                        </li>}
+                                </ul>
+                                <ul className="nav nav-sm flex-column">
+                                    {JSON.parse(localStorage.getItem('scopes')).includes('khai-bao-tai-lieu-dai-hoi') &&
+                                        <li className="nav-item">
+                                            <a href="/khai-bao-tai-lieu-dai-hoi" className="nav-link"
+                                               data-key="t-calendar"> Khai báo tài liệu đại hội </a>
                                         </li>}
                                 </ul>
                             </Box>

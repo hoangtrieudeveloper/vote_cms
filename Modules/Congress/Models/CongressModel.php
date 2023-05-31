@@ -4,6 +4,7 @@ namespace Modules\Congress\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Modules\Congress\Config\constants;
 
 class CongressModel extends Model
 {
@@ -26,21 +27,26 @@ class CongressModel extends Model
         'updated_at',
     ];
 
-    public function getList(){
-        return DB::table('vote_congress_content')
+    public function getList($type){
+        return SettingCompanyModel::where('type',$type)
             ->orderBy('vote_congress_content.id', 'desc')
             ->paginate(20);
     }
     public function getById($id){
-        return CongressModel::where('id', $id)->first();
+        return SettingCompanyModel::where('id', $id)->first();
     }
     public function add(array $data){
-        return CongressModel::Create($data);
+        return SettingCompanyModel::Create($data);
     }
     public function edit(array $data){
-        return CongressModel::where('id', $data['id'])->update($data);
+        return SettingCompanyModel::where('id', $data['id'])->update($data);
     }
     public function del($id){
-        return CongressModel::where(['id' => $id])->delete();
+        return SettingCompanyModel::where(['id' => $id])->delete();
+    }
+    public  function getLastData($type){
+        return SettingCompanyModel::where('type',$type)
+            ->orderBy('vote_congress_content.sort', 'desc')
+            ->first();
     }
 }

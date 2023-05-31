@@ -50,26 +50,12 @@ class Utils
         $target_dir = base_path('public');
         $folder = "/";
         $listallow = [
-            "jpg",
-            "jpeg",
-            "png",
-            "gif",
             "pdf",
-            "csv",
-            "docs",
-            "xls",
         ];
         $fileParts = strtolower(pathinfo($_FILES[$key]['name'], PATHINFO_EXTENSION));
         $folder_name = '/general/';
         if (in_array($fileParts, [
-            'jpg',
-            'jpeg',
-            'gif',
-            'png',
             'pdf',
-            'csv',
-            'docs',
-            'xls',
         ])) {
             $folder_name = 'file_congress/';
         }

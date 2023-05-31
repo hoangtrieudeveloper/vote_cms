@@ -17,6 +17,7 @@ import {authService} from "../model/authService";
 import UpdateGroupRole from "./users/group/UpdateGroupRole";
 import CreateGroupRole from "./users/group/CreateGroupRole";
 import ListGroupRole from "./users/group/ListGroupRole";
+//user
 import ListUser from "./users/ListUser";
 import CreateUser from "./users/CreateUser";
 import UpdateUser from "./users/UpdateUser";
@@ -24,6 +25,24 @@ import UpdateUser from "./users/UpdateUser";
 import ListCongress from "./Congress/Index";
 import CreateCongress from "./Congress/Create";
 import UpdateCongress from "./Congress/Update";
+//báo cáo tờ trình
+import ListBcReport from "./BcReport/Index";
+import CreateBcReport from "./BcReport/Create";
+import UpdateBcReport from "./BcReport/Update";
+
+//thủ tục bế mạc
+import ListProcedure from "./Procedure/Index";
+import CreateProcedure from "./Procedure/Create";
+import UpdateProcedure from "./Procedure/Update";
+
+//tài liệu đại hội
+import ListCongressDocuments from "./CongressDocuments/Index";
+import CreateCongressDocuments from "./CongressDocuments/Create";
+import UpdateCongressDocuments from "./CongressDocuments/Update";
+
+//khai báo thông tin cơ bản
+import UpdateInfoBasic from "./InfoBasic/Update";
+
 export default function Layout() {
     return (
         <Router>
@@ -51,6 +70,59 @@ export default function Layout() {
                         <UpdateCongress/>
                     </PrivateRoute>
 
+                    <PrivateRoute path="/khai-bao-bc-to-trinh">
+                        <Header/>
+                        <Sidebar/>
+                        <ListBcReport/>
+                    </PrivateRoute>
+                    <PrivateRoute path="/tao-moi-bc-to-trinh">
+                        <Header/>
+                        <Sidebar/>
+                        <CreateBcReport/>
+                    </PrivateRoute>
+                    <PrivateRoute path="/cap-nhat-bc-to-trinh">
+                        <Header/>
+                        <Sidebar/>
+                        <UpdateBcReport/>
+                    </PrivateRoute>
+
+                    <PrivateRoute path="/khai-bao-thu-tuc-be-mac">
+                        <Header/>
+                        <Sidebar/>
+                        <ListProcedure/>
+                    </PrivateRoute>
+                    <PrivateRoute path="/tao-moi-thu-tuc-be-mac">
+                        <Header/>
+                        <Sidebar/>
+                        <CreateProcedure/>
+                    </PrivateRoute>
+                    <PrivateRoute path="/cap-nhat-thu-tuc-be-mac">
+                        <Header/>
+                        <Sidebar/>
+                        <UpdateProcedure/>
+                    </PrivateRoute>
+
+                    <PrivateRoute path="/khai-bao-tai-lieu-dai-hoi">
+                        <Header/>
+                        <Sidebar/>
+                        <ListCongressDocuments/>
+                    </PrivateRoute>
+                    <PrivateRoute path="/tao-moi-tai-lieu-dai-hoi">
+                        <Header/>
+                        <Sidebar/>
+                        <CreateCongressDocuments/>
+                    </PrivateRoute>
+                    <PrivateRoute path="/cap-nhat-tai-lieu-dai-hoi">
+                        <Header/>
+                        <Sidebar/>
+                        <UpdateCongressDocuments/>
+                    </PrivateRoute>
+
+                    <PrivateRoute path="/thong-tin-co-ban">
+                        <Header/>
+                        <Sidebar/>
+                        <UpdateInfoBasic/>
+                    </PrivateRoute>
 
                     <PrivateRoute path="/listuser">
                         <Header/>
