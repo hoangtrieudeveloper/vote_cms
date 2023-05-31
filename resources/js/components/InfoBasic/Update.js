@@ -17,8 +17,8 @@ function Update() {
     const [loading, setLoading] = useState(false);
     const [idObject, setIdObject] = useState();
     const [report, setReport] = useState({
-        logo: "",
-        banner: "",
+        logo: "https://phutungnhapkhauchinhhang.com/wp-content/uploads/2020/06/default-thumbnail.jpg",
+        banner: "https://phutungnhapkhauchinhhang.com/wp-content/uploads/2020/06/default-thumbnail.jpg",
         name_vn: "",
         name_en: "",
         phone_number: "",

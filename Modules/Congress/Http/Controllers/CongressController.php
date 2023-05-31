@@ -7,13 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Validator;
 use Modules\Congress\Config\constants;
-use Modules\Congress\Models\SettingCompanyModel;
+use Modules\Congress\Models\CongressModel;
 
 class CongressController extends Controller
 {
     protected $congressModel;
 
-    public function __construct(SettingCompanyModel $congressModel)
+    public function __construct(CongressModel $congressModel)
     {
         $this->congressModel = $congressModel;
     }

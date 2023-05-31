@@ -49,8 +49,9 @@ class SettingCompanyModel extends Model
 
     public function getById($id){
         $data =  SettingCompanyModel::where('user_id', $id)->first();
-        $data['total_shareholder'] = DB::table('user_shareholder')->where('user_id',$id)->count();
-        $data['total_share'] = DB::table('user_shares')->where('user_id',$id)->first()->total;
+        $data['total_shareholder'] = UserShareholderModel::where('user_id',$id)->count();
+        $total_share = UserShareModel::where('user_id',$id)->first();
+        $data['total_share'] = $total_share['total'] ?? 0;
         return $data;
     }
 

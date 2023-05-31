@@ -25812,8 +25812,8 @@ function Update() {
     idObject = _useState4[0],
     setIdObject = _useState4[1];
   var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
-      logo: "",
-      banner: "",
+      logo: "https://phutungnhapkhauchinhhang.com/wp-content/uploads/2020/06/default-thumbnail.jpg",
+      banner: "https://phutungnhapkhauchinhhang.com/wp-content/uploads/2020/06/default-thumbnail.jpg",
       name_vn: "",
       name_en: "",
       phone_number: "",

@@ -28,24 +28,24 @@ class CongressModel extends Model
     ];
 
     public function getList($type){
-        return SettingCompanyModel::where('type',$type)
+        return CongressModel::where('type',$type)
             ->orderBy('vote_congress_content.id', 'desc')
             ->paginate(20);
     }
     public function getById($id){
-        return SettingCompanyModel::where('id', $id)->first();
+        return CongressModel::where('id', $id)->first();
     }
     public function add(array $data){
-        return SettingCompanyModel::Create($data);
+        return CongressModel::Create($data);
     }
     public function edit(array $data){
-        return SettingCompanyModel::where('id', $data['id'])->update($data);
+        return CongressModel::where('id', $data['id'])->update($data);
     }
     public function del($id){
-        return SettingCompanyModel::where(['id' => $id])->delete();
+        return CongressModel::where(['id' => $id])->delete();
     }
     public  function getLastData($type){
-        return SettingCompanyModel::where('type',$type)
+        return CongressModel::where('type',$type)
             ->orderBy('vote_congress_content.sort', 'desc')
             ->first();
     }
