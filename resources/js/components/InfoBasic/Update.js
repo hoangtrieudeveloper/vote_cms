@@ -192,10 +192,12 @@ function Update() {
     const [listFile, setListFile] = useState('');
     const handleUploadImage = (e) => {
         const file = e.target.files[0];
-        infoBasicService.uploadFileAction(file)
-            .then(data => {
-                setListFile(data);
-            });
+        if (file != null || file != undefined) {
+            infoBasicService.uploadFileAction(file)
+                .then(data => {
+                    setListFile(data);
+                });
+        }
     }
     const removeFile = () => {
         setListFile('');
@@ -205,10 +207,12 @@ function Update() {
     const [listFileEng, setListFileEng] = useState('');
     const handleUploadImageEng = (e) => {
         const file = e.target.files[0];
-        infoBasicService.uploadFileAction(file)
-            .then(dataEng => {
-                setListFileEng(dataEng);
-            });
+        if (file != null || file != undefined) {
+            infoBasicService.uploadFileAction(file)
+                .then(dataEng => {
+                    setListFileEng(dataEng);
+                });
+        }
     }
     const removeFileEng = () => {
         setListFileEng('');
@@ -251,44 +255,22 @@ function Update() {
                                                 <Box className="card-body">
                                                     <Box>
                                                         <label onChange={handleUploadImage} htmlFor="formId"
-                                                               className={"btn btn-default mb-3 w-100"}>
-                                                            <Box className="mb-3">
-                                                                {listFile !== '' &&
+                                                               className={"btn btn-default w-100"}>
+                                                            {listFile !== '' &&
+                                                                <Box className="mb-3">
                                                                     <img
                                                                         src={listFile}
-                                                                        alt="Dropzone-Image" style={{width: 150, height: 150}}/>
-                                                                }
-                                                                {listFile === '' &&
-                                                                    <i className="display-4 text-muted ri-upload-cloud-2-fill"></i>
-                                                                }
-                                                            </Box>
+                                                                        alt="Dropzone-Image"
+                                                                        style={{width: 150}}/>
+                                                                </Box>
+                                                            }
                                                             <input name="fileTv" type="file" id="formId" hidden
                                                                    accept="image/png, image/gif, image/jpeg"/>
                                                             <h6>Logo Công Ty</h6>
+                                                            <i className="display-4 text-muted ri-upload-cloud-2-fill"
+                                                               style={{fontSize: 45}}></i>
                                                         </label>
                                                     </Box>
-                                                    {listFile != '' &&
-                                                        <ul className="list-unstyled mb-0" id="dropzone-preview">
-                                                            <li className="mt-2">
-                                                                <Box className="border rounded">
-                                                                    <Box className="d-flex p-2">
-                                                                        <Box className="flex-grow-1">
-                                                                            <Box className="pt-1">
-                                                                                <h5 className="fs-14 mb-1">{listFile}</h5>
-                                                                                <p className="fs-13 text-muted mb-0"></p>
-                                                                                <strong
-                                                                                    className="error text-danger"></strong>
-                                                                            </Box>
-                                                                        </Box>
-                                                                        <Box className="flex-shrink-0 ms-3">
-                                                                            <button onClick={() => removeFile()}
-                                                                                    className="btn btn-sm btn-danger">Xóa
-                                                                            </button>
-                                                                        </Box>
-                                                                    </Box>
-                                                                </Box>
-                                                            </li>
-                                                        </ul>}
                                                 </Box>
                                             </Box>
                                         </Box>
@@ -296,53 +278,23 @@ function Update() {
                                             <Box className="card">
                                                 <Box className="card-body">
                                                     <Box>
-                                                        <label onChange={handleUploadImageEng} htmlFor="formIdEng"
-                                                               className={"btn btn-default mb-3 w-100"}>
-                                                            <Box className="mb-3">
-                                                                {listFileEng !== '' &&
+                                                        <label onChange={handleUploadImageEng} htmlFor="form"
+                                                               className={"btn btn-default w-100"}>
+                                                            {listFileEng !== '' &&
+                                                                <Box className="mb-3">
                                                                     <img
                                                                         src={listFileEng}
-                                                                        alt="Dropzone-Image" style={{width: 150, height: 150}}/>
-                                                                }
-                                                                {listFileEng === '' &&
-                                                                    <i className="display-4 text-muted ri-upload-cloud-2-fill"></i>
-                                                                }
-                                                            </Box>
-                                                            <input name="fileEng" type="file" id="formIdEng" hidden
+                                                                        alt="Dropzone-Image"
+                                                                        style={{width: 150}}/>
+                                                                </Box>
+                                                            }
+                                                            <input name="file" type="file" id="form" hidden
                                                                    accept="image/png, image/gif, image/jpeg"/>
                                                             <h6>Banner Công Ty</h6>
+                                                            <i className="display-4 text-muted ri-upload-cloud-2-fill"
+                                                               style={{fontSize: 45}}></i>
                                                         </label>
                                                     </Box>
-                                                    {listFileEng != '' &&
-                                                        <ul className="list-unstyled mb-0" id="dropzone-preview">
-                                                            <li className="mt-2">
-                                                                <Box className="border rounded">
-                                                                    <Box className="d-flex p-2">
-                                                                        <Box className="flex-shrink-0 me-3">
-                                                                            <Box className="avatar-sm bg-light rounded">
-                                                                                <img
-                                                                                    className="img-fluid rounded d-block"
-                                                                                    src={listFileEng}
-                                                                                    alt="Dropzone-Image"/>
-                                                                            </Box>
-                                                                        </Box>
-                                                                        <Box className="flex-grow-1">
-                                                                            <Box className="pt-1">
-                                                                                <h5 className="fs-14 mb-1">{listFileEng}</h5>
-                                                                                <p className="fs-13 text-muted mb-0"></p>
-                                                                                <strong
-                                                                                    className="error text-danger"></strong>
-                                                                            </Box>
-                                                                        </Box>
-                                                                        <Box className="flex-shrink-0 ms-3">
-                                                                            <button onClick={() => removeFileEng()}
-                                                                                    className="btn btn-sm btn-danger">Xóa
-                                                                            </button>
-                                                                        </Box>
-                                                                    </Box>
-                                                                </Box>
-                                                            </li>
-                                                        </ul>}
                                                 </Box>
                                             </Box>
                                         </Box>

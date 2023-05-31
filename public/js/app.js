@@ -26009,9 +26009,11 @@ function Update() {
     setListFile = _useState8[1];
   var handleUploadImage = function handleUploadImage(e) {
     var file = e.target.files[0];
-    _model_infoBasicService__WEBPACK_IMPORTED_MODULE_1__.infoBasicService.uploadFileAction(file).then(function (data) {
-      setListFile(data);
-    });
+    if (file != null || file != undefined) {
+      _model_infoBasicService__WEBPACK_IMPORTED_MODULE_1__.infoBasicService.uploadFileAction(file).then(function (data) {
+        setListFile(data);
+      });
+    }
   };
   var removeFile = function removeFile() {
     setListFile('');
@@ -26024,9 +26026,11 @@ function Update() {
     setListFileEng = _useState10[1];
   var handleUploadImageEng = function handleUploadImageEng(e) {
     var file = e.target.files[0];
-    _model_infoBasicService__WEBPACK_IMPORTED_MODULE_1__.infoBasicService.uploadFileAction(file).then(function (dataEng) {
-      setListFileEng(dataEng);
-    });
+    if (file != null || file != undefined) {
+      _model_infoBasicService__WEBPACK_IMPORTED_MODULE_1__.infoBasicService.uploadFileAction(file).then(function (dataEng) {
+        setListFileEng(dataEng);
+      });
+    }
   };
   var removeFileEng = function removeFileEng() {
     setListFileEng('');
@@ -26082,51 +26086,27 @@ function Update() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     onChange: handleUploadImage,
     htmlFor: "formId",
-    className: "btn btn-default mb-3 w-100"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    className: "btn btn-default w-100"
+  }, listFile !== '' && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
     className: "mb-3"
-  }, listFile !== '' && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
     src: listFile,
     alt: "Dropzone-Image",
     style: {
-      width: 150,
-      height: 150
+      width: 150
     }
-  }), listFile === '' && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
-    className: "display-4 text-muted ri-upload-cloud-2-fill"
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
     name: "fileTv",
     type: "file",
     id: "formId",
     hidden: true,
     accept: "image/png, image/gif, image/jpeg"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h6", null, "Logo C\xF4ng Ty"))), listFile != '' && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", {
-    className: "list-unstyled mb-0",
-    id: "dropzone-preview"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", {
-    className: "mt-2"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    className: "border rounded"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    className: "d-flex p-2"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    className: "flex-grow-1"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    className: "pt-1"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h5", {
-    className: "fs-14 mb-1"
-  }, listFile), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    className: "fs-13 text-muted mb-0"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", {
-    className: "error text-danger"
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    className: "flex-shrink-0 ms-3"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-    onClick: function onClick() {
-      return removeFile();
-    },
-    className: "btn btn-sm btn-danger"
-  }, "X\xF3a"))))))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h6", null, "Logo C\xF4ng Ty"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
+    className: "display-4 text-muted ri-upload-cloud-2-fill",
+    style: {
+      fontSize: 45
+    }
+  })))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
     className: "col-lg-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
     className: "card"
@@ -26134,60 +26114,28 @@ function Update() {
     className: "card-body"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     onChange: handleUploadImageEng,
-    htmlFor: "formIdEng",
-    className: "btn btn-default mb-3 w-100"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    htmlFor: "form",
+    className: "btn btn-default w-100"
+  }, listFileEng !== '' && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
     className: "mb-3"
-  }, listFileEng !== '' && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
     src: listFileEng,
     alt: "Dropzone-Image",
     style: {
-      width: 150,
-      height: 150
+      width: 150
     }
-  }), listFileEng === '' && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
-    className: "display-4 text-muted ri-upload-cloud-2-fill"
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
-    name: "fileEng",
+    name: "file",
     type: "file",
-    id: "formIdEng",
+    id: "form",
     hidden: true,
     accept: "image/png, image/gif, image/jpeg"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h6", null, "Banner C\xF4ng Ty"))), listFileEng != '' && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", {
-    className: "list-unstyled mb-0",
-    id: "dropzone-preview"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", {
-    className: "mt-2"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    className: "border rounded"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    className: "d-flex p-2"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    className: "flex-shrink-0 me-3"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    className: "avatar-sm bg-light rounded"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
-    className: "img-fluid rounded d-block",
-    src: listFileEng,
-    alt: "Dropzone-Image"
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    className: "flex-grow-1"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    className: "pt-1"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h5", {
-    className: "fs-14 mb-1"
-  }, listFileEng), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    className: "fs-13 text-muted mb-0"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", {
-    className: "error text-danger"
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    className: "flex-shrink-0 ms-3"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-    onClick: function onClick() {
-      return removeFileEng();
-    },
-    className: "btn btn-sm btn-danger"
-  }, "X\xF3a")))))))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h6", null, "Banner C\xF4ng Ty"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
+    className: "display-4 text-muted ri-upload-cloud-2-fill",
+    style: {
+      fontSize: 45
+    }
+  }))))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
     className: "row"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
     className: "col-xl-6"
