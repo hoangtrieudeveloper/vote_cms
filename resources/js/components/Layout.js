@@ -26,22 +26,20 @@ import ListCongress from "./Congress/Index";
 import CreateCongress from "./Congress/Create";
 import UpdateCongress from "./Congress/Update";
 //báo cáo tờ trình
-import ListBcReport from "./BcReport/Index";
-import CreateBcReport from "./BcReport/Create";
-import UpdateBcReport from "./BcReport/Update";
-
+import ListBcReport from "./Congress/BcReport/Index";
+import CreateBcReport from "./Congress/BcReport/Create";
+import UpdateBcReport from "./Congress/BcReport/Update";
 //thủ tục bế mạc
-import ListProcedure from "./Procedure/Index";
-import CreateProcedure from "./Procedure/Create";
-import UpdateProcedure from "./Procedure/Update";
-
+import ListProcedure from "./Congress/Procedure/Index";
+import CreateProcedure from "./Congress/Procedure/Create";
+import UpdateProcedure from "./Congress/Procedure/Update";
 //tài liệu đại hội
-import ListCongressDocuments from "./CongressDocuments/Index";
-import CreateCongressDocuments from "./CongressDocuments/Create";
-import UpdateCongressDocuments from "./CongressDocuments/Update";
+import ListDocuments from "./Congress/Documents/Index";
+import CreateDocuments from "./Congress/Documents/Create";
+import UpdateDocuments from "./Congress/Documents/Update";
 
 //khai báo thông tin cơ bản
-import UpdateInfoBasic from "./InfoBasic/Update";
+import UpdateInfoBasic from "./Company/InfoBasic/Update";
 
 export default function Layout() {
     return (
@@ -105,17 +103,17 @@ export default function Layout() {
                     <PrivateRoute path="/khai-bao-tai-lieu-dai-hoi">
                         <Header/>
                         <Sidebar/>
-                        <ListCongressDocuments/>
+                        <ListDocuments/>
                     </PrivateRoute>
                     <PrivateRoute path="/tao-moi-tai-lieu-dai-hoi">
                         <Header/>
                         <Sidebar/>
-                        <CreateCongressDocuments/>
+                        <CreateDocuments/>
                     </PrivateRoute>
                     <PrivateRoute path="/cap-nhat-tai-lieu-dai-hoi">
                         <Header/>
                         <Sidebar/>
-                        <UpdateCongressDocuments/>
+                        <UpdateDocuments/>
                     </PrivateRoute>
 
                     <PrivateRoute path="/thong-tin-co-ban">

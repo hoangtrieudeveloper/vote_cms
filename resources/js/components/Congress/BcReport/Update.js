@@ -6,27 +6,32 @@ import {
 } from "@mui/material";
 import {Link} from 'react-router-dom';
 import LoadingButton from "@mui/lab/LoadingButton";
-import {bcReportService} from "../../model/bcReportService";
-import Loading from "../pages/Loading";
-import ToastNotifi from "../pages/ToastNotifi";
-import Helpers from "../pages/Helpers";
-import helpers from "../pages/Helpers";
+import {bcReportService} from "../../../model/bcReportService";
+import Loading from "../../pages/Loading";
+import ToastNotifi from "../../pages/ToastNotifi";
+import Helpers from "../../pages/Helpers";
+import helpers from "../../pages/Helpers";
 
-function Create() {
+function Update() {
     const params = new URLSearchParams(window.location.search);
     const [loading, setLoading] = useState(false);
+    const [idObject, setIdObject] = useState({
+        id: params.get('id') || "",
+    });
     const [report, setReport] = useState({
+        id: idObject?.id,
         name_vn: "",
         name_en: "",
         file_content_vn: "",
         file_content_en: "",
     });
 
-    const {name_vn, name_en, file_content_vn, file_content_en, type, sort} = report;
+    const {id, name_vn, name_en, file_content_vn, file_content_en, type, sort} = report;
     const onInputChange = e => {
         setReport({...report, [e.target.name]: e.target.value});
     };
-    async function CreateCongressDocument() {
+
+    async function UpdateReport() {
         if (report.name_vn === '') {
             Helpers.showToast('error', 'Vui lòng nhập tên nội dung!');
         } else if (report.name_en === '') {
@@ -35,19 +40,42 @@ function Create() {
             setLoading(true);
             report.file_content_vn = JSON.stringify(listFile);
             report.file_content_en = JSON.stringify(listFileEng);
-            bcReportService.register(report)
+            bcReportService.update(report)
                 .then(
                     data => {
                         setLoading(false);
                         if (data?.status == 1) {
                             Helpers.showToast('success', data?.messager);
                             setReport({name_vn: "", name_en: "", file_content_vn: "", file_content_en: ""});
+                            getReportById(idObject);
                         } else {
                             Helpers.showToast('error', data?.messager);
                         }
                     }
                 );
         }
+    }
+
+    async function getReportById(id) {
+        bcReportService.getById(id)
+            .then(
+                data => {
+                    if (data.status == 1) {
+                        setReport({
+                            id: idObject?.id,
+                            name_vn: data?.data?.name_vn,
+                            name_en: data?.data?.name_en,
+                            file_content_vn: data?.data?.file_content_vn,
+                            file_content_en: data?.data?.file_content_en,
+                            sort: data?.data?.sort,
+                        });
+                        setListFile(data?.data?.file_content_vn || '');
+                        setListFileEng(data?.data?.file_content_en || '');
+                    } else {
+                        helpers.showToast('error', data?.mess)
+                    }
+                }
+            );
     }
 
     //upload file TV
@@ -80,6 +108,8 @@ function Create() {
 
     //useEffect
     useEffect(() => {
+        setIdObject({id: params.get('id')})
+        getReportById(idObject);
     }, []);
 
     return (<Box>
@@ -98,7 +128,7 @@ function Create() {
                                 <Box className="page-title-right">
                                     <ol className="breadcrumb m-0">
                                         <li className="breadcrumb-item"><a href="#">KHAI BÁO BÁO CÁO - TỜ TRÌNH</a></li>
-                                        <li className="breadcrumb-item active">Thêm Mới</li>
+                                        <li className="breadcrumb-item active">Cập nhật</li>
                                     </ol>
                                 </Box>
                             </Box>
@@ -108,7 +138,7 @@ function Create() {
                         <Box className="col-lg-12">
                             <Box className="card">
                                 <Box className="card-header">
-                                    <h4 className="card-title mb-0">Thêm mới báo cáo tờ trình</h4>
+                                    <h4 className="card-title mb-0">Cập nhật báo cáo tờ trình</h4>
                                 </Box>
                                 <Box className="card-body">
                                     <Box className="row">
@@ -263,7 +293,7 @@ function Create() {
                                     </Box>
                                     <Box className="text-center">
                                         <LoadingButton
-                                            onClick={CreateCongressDocument}
+                                            onClick={UpdateReport}
                                             className="ad-btn ad-login-member bg-success mt-3"
                                             variant="outlined"
                                             startIcon={<i className="mdi mdi-plus"></i>}
@@ -275,7 +305,7 @@ function Create() {
                                                 fontWeight: 400,
                                             }}
                                         >
-                                            {!loading ? 'Thêm Mới' : ''}
+                                            {!loading ? 'Cập nhật' : ''}
                                         </LoadingButton>
                                     </Box>
                                 </Box>
@@ -288,4 +318,4 @@ function Create() {
     </Box>)
 }
 
-export default Create;
+export default Update;

@@ -3,10 +3,10 @@ import {
     Box, Modal, Typography,
 } from "@mui/material";
 import {Link, useHistory} from "react-router-dom";
-import {bcReportService} from "../../model/bcReportService";
-import Paginate from "../pages/Paginate";
-import Helpers from "../pages/Helpers";
-import Footer from "../pages/Footer";
+import {bcReportService} from "../../../model/bcReportService";
+import Paginate from "../../pages/Paginate";
+import Helpers from "../../pages/Helpers";
+import Footer from "../../pages/Footer";
 
 function Index() {
     const [dataList, setDataList] = useState([]);

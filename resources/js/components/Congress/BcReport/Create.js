@@ -6,11 +6,11 @@ import {
 } from "@mui/material";
 import {Link} from 'react-router-dom';
 import LoadingButton from "@mui/lab/LoadingButton";
-import {procedureService} from "../../model/procedureService";
-import Loading from "../pages/Loading";
-import ToastNotifi from "../pages/ToastNotifi";
-import Helpers from "../pages/Helpers";
-import helpers from "../pages/Helpers";
+import {bcReportService} from "../../../model/bcReportService";
+import Loading from "../../pages/Loading";
+import ToastNotifi from "../../pages/ToastNotifi";
+import Helpers from "../../pages/Helpers";
+import helpers from "../../pages/Helpers";
 
 function Create() {
     const params = new URLSearchParams(window.location.search);
@@ -26,7 +26,7 @@ function Create() {
     const onInputChange = e => {
         setReport({...report, [e.target.name]: e.target.value});
     };
-    async function CreateProcedure() {
+    async function CreateCongressDocument() {
         if (report.name_vn === '') {
             Helpers.showToast('error', 'Vui lòng nhập tên nội dung!');
         } else if (report.name_en === '') {
@@ -35,7 +35,7 @@ function Create() {
             setLoading(true);
             report.file_content_vn = JSON.stringify(listFile);
             report.file_content_en = JSON.stringify(listFileEng);
-            procedureService.register(report)
+            bcReportService.register(report)
                 .then(
                     data => {
                         setLoading(false);
@@ -54,7 +54,7 @@ function Create() {
     const [listFile, setListFile] = useState('');
     const handleUploadImage = (e) => {
         const file = e.target.files[0];
-        procedureService.uploadFileAction(file)
+        bcReportService.uploadFileAction(file)
             .then(data => {
                 setListFile(data);
             });
@@ -67,7 +67,7 @@ function Create() {
     const [listFileEng, setListFileEng] = useState('');
     const handleUploadImageEng = (e) => {
         const file = e.target.files[0];
-        procedureService.uploadFileAction(file)
+        bcReportService.uploadFileAction(file)
             .then(dataEng => {
                 setListFileEng(dataEng);
             });
@@ -91,13 +91,13 @@ function Create() {
                     <Box className="row">
                         <Box className="col-12">
                             <Box className="page-title-box d-sm-flex align-items-center justify-content-between">
-                                <Link to="/khai-bao-thu-tuc-be-mac"
+                                <Link to="/khai-bao-bc-to-trinh"
                                       className="btn btn-info squer-btn mt-2 mr-2 sm-btn"><i
                                     className="mdi mdi-arrow-left"></i> Quay lại
                                 </Link>
                                 <Box className="page-title-right">
                                     <ol className="breadcrumb m-0">
-                                        <li className="breadcrumb-item"><a href="#">KHAI BÁO BIÊN BẢN - NGHỊ QUYẾT ĐẠI HỘI</a></li>
+                                        <li className="breadcrumb-item"><a href="#">KHAI BÁO BÁO CÁO - TỜ TRÌNH</a></li>
                                         <li className="breadcrumb-item active">Thêm Mới</li>
                                     </ol>
                                 </Box>
@@ -108,7 +108,7 @@ function Create() {
                         <Box className="col-lg-12">
                             <Box className="card">
                                 <Box className="card-header">
-                                    <h4 className="card-title mb-0">Thêm mới biên bản - nghị quyệt đai hội</h4>
+                                    <h4 className="card-title mb-0">Thêm mới báo cáo tờ trình</h4>
                                 </Box>
                                 <Box className="card-body">
                                     <Box className="row">
@@ -263,7 +263,7 @@ function Create() {
                                     </Box>
                                     <Box className="text-center">
                                         <LoadingButton
-                                            onClick={CreateProcedure}
+                                            onClick={CreateCongressDocument}
                                             className="ad-btn ad-login-member bg-success mt-3"
                                             variant="outlined"
                                             startIcon={<i className="mdi mdi-plus"></i>}

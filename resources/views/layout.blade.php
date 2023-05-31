@@ -1,12 +1,11 @@
 <!doctype html>
-<html lang="{{ app()->getLocale() }}">
-<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-layout-mode="light" data-body-image="img-1" data-preloader="disable">
+<html lang="{{ app()->getLocale() }}" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-layout-mode="light" data-body-image="img-1" data-preloader="disable">
 <head>
     <meta charset="utf-8" />
     <title>Vote</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
-    <meta content="Themesbrand" name="author" />
+    <meta content="Vote" name="description" />
+    <meta content="Vote" name="author" />
     <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">
     <link rel="shortcut icon" href="{{asset('assets/images/favicon.ico')}}">
     <link href="{{asset('assets/libs/jsvectormap/css/jsvectormap.min.css')}}" rel="stylesheet" type="text/css" />

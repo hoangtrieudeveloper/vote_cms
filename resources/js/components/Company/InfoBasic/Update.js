@@ -6,12 +6,12 @@ import {
 } from "@mui/material";
 import {Link} from 'react-router-dom';
 import LoadingButton from "@mui/lab/LoadingButton";
-import {infoBasicService} from "../../model/infoBasicService";
-import Loading from "../pages/Loading";
-import ToastNotifi from "../pages/ToastNotifi";
-import Helpers from "../pages/Helpers";
-import helpers from "../pages/Helpers";
-import GlobalSetting from "../pages/GlobalSetting";
+import {infoBasicService} from "../../../model/infoBasicService";
+import Loading from "../../pages/Loading";
+import ToastNotifi from "../../pages/ToastNotifi";
+import Helpers from "../../pages/Helpers";
+import helpers from "../../pages/Helpers";
+import GlobalSetting from "../../pages/GlobalSetting";
 
 function Update() {
     const [loading, setLoading] = useState(false);

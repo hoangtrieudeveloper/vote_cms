@@ -6,42 +6,48 @@ import {
 } from "@mui/material";
 import {Link} from 'react-router-dom';
 import LoadingButton from "@mui/lab/LoadingButton";
-import {congressDocumentsService} from "../../model/congressDocumentsService";
-import Loading from "../pages/Loading";
-import ToastNotifi from "../pages/ToastNotifi";
-import Helpers from "../pages/Helpers";
-import helpers from "../pages/Helpers";
+import {procedureService} from "../../../model/procedureService";
+import Loading from "../../pages/Loading";
+import ToastNotifi from "../../pages/ToastNotifi";
+import Helpers from "../../pages/Helpers";
+import helpers from "../../pages/Helpers";
 
-function Create() {
+function Update() {
     const params = new URLSearchParams(window.location.search);
     const [loading, setLoading] = useState(false);
-    const [congress, setCongress] = useState({
+    const [idObject, setIdObject] = useState({
+        id: params.get('id') || "",
+    });
+    const [report, setReport] = useState({
+        id: idObject?.id,
         name_vn: "",
         name_en: "",
         file_content_vn: "",
         file_content_en: "",
     });
 
-    const {name_vn, name_en, file_content_vn, file_content_en, type, sort} = congress;
+    const {id, name_vn, name_en, file_content_vn, file_content_en, type, sort} = report;
     const onInputChange = e => {
-        setCongress({...congress, [e.target.name]: e.target.value});
+        setReport({...report, [e.target.name]: e.target.value});
     };
-    async function CreateCongress() {
-        if (congress.name_vn === '') {
+
+    async function UpdateProcedure() {
+        if (report.name_vn === '') {
             Helpers.showToast('error', 'Vui lòng nhập tên nội dung!');
-        } else if (congress.name_en === '') {
+        } else if (report.name_en === '') {
             Helpers.showToast('error', 'Vui lòng nhập tên nội dung (Tiếng Anh)!');
         } else {
             setLoading(true);
-            congress.file_content_vn = JSON.stringify(listFile);
-            congress.file_content_en = JSON.stringify(listFileEng);
-            congressDocumentsService.register(congress)
+            report.file_content_vn = JSON.stringify(listFile);
+            report.file_content_en = JSON.stringify(listFileEng);
+            procedureService.update(report)
                 .then(
                     data => {
                         setLoading(false);
                         if (data?.status == 1) {
                             Helpers.showToast('success', data?.messager);
-                            setCongress({name_vn: "", name_en: "", file_content_vn: "", file_content_en: ""});
+                            setReport({name_vn: "", name_en: "", file_content_vn: "", file_content_en: ""});
+                            getProcedureById(idObject);
                         } else {
                             Helpers.showToast('error', data?.messager);
                         }
@@ -50,11 +56,33 @@ function Create() {
         }
     }
 
+    async function getProcedureById(id) {
+        procedureService.getById(id)
+            .then(
+                data => {
+                    if (data.status == 1) {
+                        setReport({
+                            id: idObject?.id,
+                            name_vn: data?.data?.name_vn,
+                            name_en: data?.data?.name_en,
+                            file_content_vn: data?.data?.file_content_vn,
+                            file_content_en: data?.data?.file_content_en,
+                            sort: data?.data?.sort,
+                        });
+                        setListFile(data?.data?.file_content_vn || '');
+                        setListFileEng(data?.data?.file_content_en || '');
+                    } else {
+                        helpers.showToast('error', data?.mess)
+                    }
+                }
+            );
+    }
+
     //upload file TV
     const [listFile, setListFile] = useState('');
     const handleUploadImage = (e) => {
         const file = e.target.files[0];
-        congressDocumentsService.uploadFileAction(file)
+        procedureService.uploadFileAction(file)
             .then(data => {
                 setListFile(data);
             });
@@ -67,7 +95,7 @@ function Create() {
     const [listFileEng, setListFileEng] = useState('');
     const handleUploadImageEng = (e) => {
         const file = e.target.files[0];
-        congressDocumentsService.uploadFileAction(file)
+        procedureService.uploadFileAction(file)
             .then(dataEng => {
                 setListFileEng(dataEng);
             });
@@ -80,6 +108,8 @@ function Create() {
 
     //useEffect
     useEffect(() => {
+        setIdObject({id: params.get('id')})
+        getProcedureById(idObject);
     }, []);
 
     return (<Box>
@@ -91,14 +121,15 @@ function Create() {
                     <Box className="row">
                         <Box className="col-12">
                             <Box className="page-title-box d-sm-flex align-items-center justify-content-between">
-                                <Link to="/khai-bao-tai-lieu-dai-hoi"
+                                <Link to="/khai-bao-thu-tuc-be-mac"
                                       className="btn btn-info squer-btn mt-2 mr-2 sm-btn"><i
                                     className="mdi mdi-arrow-left"></i> Quay lại
                                 </Link>
                                 <Box className="page-title-right">
                                     <ol className="breadcrumb m-0">
-                                        <li className="breadcrumb-item"><a href="#">KHAI BÁO TÀI LIỆU ĐẠI HỘI</a></li>
-                                        <li className="breadcrumb-item active">Thêm Mới</li>
+                                        <li className="breadcrumb-item"><a href="#">KHAI BÁO BIÊN BẢN - NGHỊ QUYẾT ĐẠI
+                                            HỘI</a></li>
+                                        <li className="breadcrumb-item active">Cập nhật</li>
                                     </ol>
                                 </Box>
                             </Box>
@@ -108,7 +139,7 @@ function Create() {
                         <Box className="col-lg-12">
                             <Box className="card">
                                 <Box className="card-header">
-                                    <h4 className="card-title mb-0">Thêm mới tài liệu đại hội</h4>
+                                    <h4 className="card-title mb-0">Cập nhật biên bản - nghị quyết đại hội</h4>
                                 </Box>
                                 <Box className="card-body">
                                     <Box className="row">
@@ -230,7 +261,7 @@ function Create() {
                                                         }}
                                                         label="Tên nội dung"
                                                         variant="outlined"
-                                                        value={congress.name_vn}
+                                                        value={report.name_vn}
                                                     />
                                                 </Box>
                                             </Box>
@@ -255,7 +286,7 @@ function Create() {
                                                         }}
                                                         label="Nhập nội dung (Tiếng Anh)"
                                                         variant="outlined"
-                                                        value={congress.name_en}
+                                                        value={report.name_en}
                                                     />
                                                 </Box>
                                             </Box>
@@ -263,7 +294,7 @@ function Create() {
                                     </Box>
                                     <Box className="text-center">
                                         <LoadingButton
-                                            onClick={CreateCongress}
+                                            onClick={UpdateProcedure}
                                             className="ad-btn ad-login-member bg-success mt-3"
                                             variant="outlined"
                                             startIcon={<i className="mdi mdi-plus"></i>}
@@ -275,7 +306,7 @@ function Create() {
                                                 fontWeight: 400,
                                             }}
                                         >
-                                            {!loading ? 'Thêm Mới' : ''}
+                                            {!loading ? 'Cập nhật' : ''}
                                         </LoadingButton>
                                     </Box>
                                 </Box>
@@ -288,4 +319,4 @@ function Create() {
     </Box>)
 }
 
-export default Create;
+export default Update;

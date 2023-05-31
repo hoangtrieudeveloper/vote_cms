@@ -6,11 +6,11 @@ import {
 } from "@mui/material";
 import {Link} from 'react-router-dom';
 import LoadingButton from "@mui/lab/LoadingButton";
-import {procedureService} from "../../model/procedureService";
-import Loading from "../pages/Loading";
-import ToastNotifi from "../pages/ToastNotifi";
-import Helpers from "../pages/Helpers";
-import helpers from "../pages/Helpers";
+import {congressDocumentsService} from "../../../model/congressDocumentsService";
+import Loading from "../../pages/Loading";
+import ToastNotifi from "../../pages/ToastNotifi";
+import Helpers from "../../pages/Helpers";
+import helpers from "../../pages/Helpers";
 
 function Update() {
     const params = new URLSearchParams(window.location.search);
@@ -18,7 +18,7 @@ function Update() {
     const [idObject, setIdObject] = useState({
         id: params.get('id') || "",
     });
-    const [report, setReport] = useState({
+    const [congress, setCongress] = useState({
         id: idObject?.id,
         name_vn: "",
         name_en: "",
@@ -26,28 +26,27 @@ function Update() {
         file_content_en: "",
     });
 
-    const {id, name_vn, name_en, file_content_vn, file_content_en, type, sort} = report;
+    const {id, name_vn, name_en, file_content_vn, file_content_en, type, sort} = congress;
     const onInputChange = e => {
-        setReport({...report, [e.target.name]: e.target.value});
+        setCongress({...congress, [e.target.name]: e.target.value});
     };
-
-    async function UpdateProcedure() {
-        if (report.name_vn === '') {
+    async function UpdateCongressDocument() {
+        if (congress.name_vn === '') {
             Helpers.showToast('error', 'Vui lòng nhập tên nội dung!');
-        } else if (report.name_en === '') {
+        } else if (congress.name_en === '') {
             Helpers.showToast('error', 'Vui lòng nhập tên nội dung (Tiếng Anh)!');
         } else {
             setLoading(true);
-            report.file_content_vn = JSON.stringify(listFile);
-            report.file_content_en = JSON.stringify(listFileEng);
-            procedureService.update(report)
+            congress.file_content_vn = JSON.stringify(listFile);
+            congress.file_content_en = JSON.stringify(listFileEng);
+            congressDocumentsService.update(congress)
                 .then(
                     data => {
                         setLoading(false);
                         if (data?.status == 1) {
                             Helpers.showToast('success', data?.messager);
-                            setReport({name_vn: "", name_en: "", file_content_vn: "", file_content_en: ""});
-                            getProcedureById(idObject);
+                            setCongress({name_vn: "", name_en: "", file_content_vn: "", file_content_en: ""});
+                            getCongressDocumentById(idObject);
                         } else {
                             Helpers.showToast('error', data?.messager);
                         }
@@ -56,12 +55,12 @@ function Update() {
         }
     }
 
-    async function getProcedureById(id) {
-        procedureService.getById(id)
+    async function getCongressDocumentById(id) {
+        congressDocumentsService.getById(id)
             .then(
                 data => {
                     if (data.status == 1) {
-                        setReport({
+                        setCongress({
                             id: idObject?.id,
                             name_vn: data?.data?.name_vn,
                             name_en: data?.data?.name_en,
@@ -82,7 +81,7 @@ function Update() {
     const [listFile, setListFile] = useState('');
     const handleUploadImage = (e) => {
         const file = e.target.files[0];
-        procedureService.uploadFileAction(file)
+        congressDocumentsService.uploadFileAction(file)
             .then(data => {
                 setListFile(data);
             });
@@ -95,7 +94,7 @@ function Update() {
     const [listFileEng, setListFileEng] = useState('');
     const handleUploadImageEng = (e) => {
         const file = e.target.files[0];
-        procedureService.uploadFileAction(file)
+        congressDocumentsService.uploadFileAction(file)
             .then(dataEng => {
                 setListFileEng(dataEng);
             });
@@ -109,7 +108,7 @@ function Update() {
     //useEffect
     useEffect(() => {
         setIdObject({id: params.get('id')})
-        getProcedureById(idObject);
+        getCongressDocumentById(idObject);
     }, []);
 
     return (<Box>
@@ -121,14 +120,13 @@ function Update() {
                     <Box className="row">
                         <Box className="col-12">
                             <Box className="page-title-box d-sm-flex align-items-center justify-content-between">
-                                <Link to="/khai-bao-thu-tuc-be-mac"
+                                <Link to="/khai-bao-tai-lieu-dai-hoi"
                                       className="btn btn-info squer-btn mt-2 mr-2 sm-btn"><i
                                     className="mdi mdi-arrow-left"></i> Quay lại
                                 </Link>
                                 <Box className="page-title-right">
                                     <ol className="breadcrumb m-0">
-                                        <li className="breadcrumb-item"><a href="#">KHAI BÁO BIÊN BẢN - NGHỊ QUYẾT ĐẠI
-                                            HỘI</a></li>
+                                        <li className="breadcrumb-item"><a href="#">KHAI BÁO TÀI LIỆU ĐẠI HỘI</a></li>
                                         <li className="breadcrumb-item active">Cập nhật</li>
                                     </ol>
                                 </Box>
@@ -139,7 +137,7 @@ function Update() {
                         <Box className="col-lg-12">
                             <Box className="card">
                                 <Box className="card-header">
-                                    <h4 className="card-title mb-0">Cập nhật biên bản - nghị quyết đại hội</h4>
+                                    <h4 className="card-title mb-0">Cập nhật tài liệu đại hội</h4>
                                 </Box>
                                 <Box className="card-body">
                                     <Box className="row">
@@ -261,7 +259,7 @@ function Update() {
                                                         }}
                                                         label="Tên nội dung"
                                                         variant="outlined"
-                                                        value={report.name_vn}
+                                                        value={congress.name_vn}
                                                     />
                                                 </Box>
                                             </Box>
@@ -286,7 +284,7 @@ function Update() {
                                                         }}
                                                         label="Nhập nội dung (Tiếng Anh)"
                                                         variant="outlined"
-                                                        value={report.name_en}
+                                                        value={congress.name_en}
                                                     />
                                                 </Box>
                                             </Box>
@@ -294,7 +292,7 @@ function Update() {
                                     </Box>
                                     <Box className="text-center">
                                         <LoadingButton
-                                            onClick={UpdateProcedure}
+                                            onClick={UpdateCongressDocument}
                                             className="ad-btn ad-login-member bg-success mt-3"
                                             variant="outlined"
                                             startIcon={<i className="mdi mdi-plus"></i>}
