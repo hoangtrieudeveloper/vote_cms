@@ -22909,7 +22909,7 @@ function Update() {
               _model_infoBasicService__WEBPACK_IMPORTED_MODULE_1__.infoBasicService.update(report).then(function (data) {
                 setLoading(false);
                 if ((data === null || data === void 0 ? void 0 : data.status) == 1) {
-                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.messager);
+                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.mess);
                   setReport({
                     id: idObject,
                     logo: "",
@@ -22944,7 +22944,7 @@ function Update() {
                   });
                   getInfoById(idObject);
                 } else {
-                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.messager);
+                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.mess);
                 }
               });
             }
@@ -23903,12 +23903,12 @@ function Create() {
               _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', 'Vui lòng nhập tên nội dung (Tiếng Anh)!');
             } else {
               setLoading(true);
-              report.file_content_vn = JSON.stringify(listFile);
-              report.file_content_en = JSON.stringify(listFileEng);
+              report.file_content_vn = listFile;
+              report.file_content_en = listFileEng;
               _model_bcReportService__WEBPACK_IMPORTED_MODULE_1__.bcReportService.register(report).then(function (data) {
                 setLoading(false);
                 if ((data === null || data === void 0 ? void 0 : data.status) == 1) {
-                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.messager);
+                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.mess);
                   setReport({
                     name_vn: "",
                     name_en: "",
@@ -23916,7 +23916,7 @@ function Create() {
                     file_content_en: ""
                   });
                 } else {
-                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.messager);
+                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.mess);
                 }
               });
             }
@@ -24235,44 +24235,26 @@ function Index() {
     _useState4 = _slicedToArray(_useState3, 2),
     loading = _useState4[0],
     setLoading = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState6 = _slicedToArray(_useState5, 2),
-    ho_ten = _useState6[0],
-    setHo_ten = _useState6[1];
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    linkPage = _useState6[0],
+    setLinkPage = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
     _useState8 = _slicedToArray(_useState7, 2),
-    email = _useState8[0],
-    setEmail = _useState8[1];
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    pageCurrent = _useState8[0],
+    setPageCurrent = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
     _useState10 = _slicedToArray(_useState9, 2),
-    linkPage = _useState10[0],
-    setLinkPage = _useState10[1];
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
-    _useState12 = _slicedToArray(_useState11, 2),
-    pageCurrent = _useState12[0],
-    setPageCurrent = _useState12[1];
-  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
-    _useState14 = _slicedToArray(_useState13, 2),
-    pageLast = _useState14[0],
-    setPageLast = _useState14[1];
-  var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default().useState(false),
-    _React$useState2 = _slicedToArray(_React$useState, 2),
-    open = _React$useState2[0],
-    setOpen = _React$useState2[1];
-  var handleOpen = function handleOpen(item) {
-    setOpen(true);
-  };
-  var handleClose = function handleClose() {
-    setOpen(false);
-  };
+    pageLast = _useState10[0],
+    setPageLast = _useState10[1];
   var deleteReport = function deleteReport(id) {
     setLoading(true);
     _model_bcReportService__WEBPACK_IMPORTED_MODULE_1__.bcReportService.deleted(id).then(function (data) {
       setLoading(false);
       if (data.status == 1) {
         getListDocument();
-        _pages_Helpers__WEBPACK_IMPORTED_MODULE_3__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.messager);
-      } else _pages_Helpers__WEBPACK_IMPORTED_MODULE_3__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.messager);
+        _pages_Helpers__WEBPACK_IMPORTED_MODULE_3__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.mess);
+      } else _pages_Helpers__WEBPACK_IMPORTED_MODULE_3__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.mess);
     });
   };
   var getListDocument = function getListDocument(page) {
@@ -24483,21 +24465,14 @@ function Update() {
               _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', 'Vui lòng nhập tên nội dung (Tiếng Anh)!');
             } else {
               setLoading(true);
-              report.file_content_vn = JSON.stringify(listFile);
-              report.file_content_en = JSON.stringify(listFileEng);
+              report.file_content_vn = listFile;
+              report.file_content_en = listFileEng;
               _model_bcReportService__WEBPACK_IMPORTED_MODULE_1__.bcReportService.update(report).then(function (data) {
                 setLoading(false);
                 if ((data === null || data === void 0 ? void 0 : data.status) == 1) {
-                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.messager);
-                  setReport({
-                    name_vn: "",
-                    name_en: "",
-                    file_content_vn: "",
-                    file_content_en: ""
-                  });
-                  getReportById(idObject);
+                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.mess);
                 } else {
-                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.messager);
+                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.mess);
                 }
               });
             }
@@ -24896,12 +24871,12 @@ function Create() {
               _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', 'Vui lòng nhập tên nội dung (Tiếng Anh)!');
             } else {
               setLoading(true);
-              congress.file_content_vn = JSON.stringify(listFile);
-              congress.file_content_en = JSON.stringify(listFileEng);
+              congress.file_content_vn = listFile;
+              congress.file_content_en = JlistFileEng;
               _model_congressService__WEBPACK_IMPORTED_MODULE_1__.congressService.register(congress).then(function (data) {
                 setLoading(false);
                 if ((data === null || data === void 0 ? void 0 : data.status) == 1) {
-                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.messager);
+                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.mess);
                   setCongress({
                     name_vn: "",
                     name_en: "",
@@ -24909,7 +24884,7 @@ function Create() {
                     file_content_en: ""
                   });
                 } else {
-                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.messager);
+                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.mess);
                 }
               });
             }
@@ -25270,12 +25245,12 @@ function Create() {
               _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', 'Vui lòng nhập tên nội dung (Tiếng Anh)!');
             } else {
               setLoading(true);
-              congress.file_content_vn = JSON.stringify(listFile);
-              congress.file_content_en = JSON.stringify(listFileEng);
+              congress.file_content_vn = listFile;
+              congress.file_content_en = listFileEng;
               _model_congressDocumentsService__WEBPACK_IMPORTED_MODULE_1__.congressDocumentsService.register(congress).then(function (data) {
                 setLoading(false);
                 if ((data === null || data === void 0 ? void 0 : data.status) == 1) {
-                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.messager);
+                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.mess);
                   setCongress({
                     name_vn: "",
                     name_en: "",
@@ -25283,7 +25258,7 @@ function Create() {
                     file_content_en: ""
                   });
                 } else {
-                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.messager);
+                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.mess);
                 }
               });
             }
@@ -25602,44 +25577,26 @@ function Index() {
     _useState4 = _slicedToArray(_useState3, 2),
     loading = _useState4[0],
     setLoading = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState6 = _slicedToArray(_useState5, 2),
-    ho_ten = _useState6[0],
-    setHo_ten = _useState6[1];
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    linkPage = _useState6[0],
+    setLinkPage = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
     _useState8 = _slicedToArray(_useState7, 2),
-    email = _useState8[0],
-    setEmail = _useState8[1];
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    pageCurrent = _useState8[0],
+    setPageCurrent = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
     _useState10 = _slicedToArray(_useState9, 2),
-    linkPage = _useState10[0],
-    setLinkPage = _useState10[1];
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
-    _useState12 = _slicedToArray(_useState11, 2),
-    pageCurrent = _useState12[0],
-    setPageCurrent = _useState12[1];
-  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
-    _useState14 = _slicedToArray(_useState13, 2),
-    pageLast = _useState14[0],
-    setPageLast = _useState14[1];
-  var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default().useState(false),
-    _React$useState2 = _slicedToArray(_React$useState, 2),
-    open = _React$useState2[0],
-    setOpen = _React$useState2[1];
-  var handleOpen = function handleOpen(item) {
-    setOpen(true);
-  };
-  var handleClose = function handleClose() {
-    setOpen(false);
-  };
+    pageLast = _useState10[0],
+    setPageLast = _useState10[1];
   var deleteCongress = function deleteCongress(id) {
     setLoading(true);
     _model_congressDocumentsService__WEBPACK_IMPORTED_MODULE_1__.congressDocumentsService.deleted(id).then(function (data) {
       setLoading(false);
       if (data.status == 1) {
         getListCongressDocument();
-        _pages_Helpers__WEBPACK_IMPORTED_MODULE_3__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.messager);
-      } else _pages_Helpers__WEBPACK_IMPORTED_MODULE_3__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.messager);
+        _pages_Helpers__WEBPACK_IMPORTED_MODULE_3__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.mess);
+      } else _pages_Helpers__WEBPACK_IMPORTED_MODULE_3__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.mess);
     });
   };
   var getListCongressDocument = function getListCongressDocument(page) {
@@ -25655,11 +25612,6 @@ function Index() {
       }
     });
   };
-  /*    const onEnterKey = (e) => {
-          if (e.key === "Enter") {
-              getListBot(pageCurrent);
-          }
-      }*/
   //useEffect
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     getListCongressDocument(pageCurrent);
@@ -25855,21 +25807,14 @@ function Update() {
               _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', 'Vui lòng nhập tên nội dung (Tiếng Anh)!');
             } else {
               setLoading(true);
-              congress.file_content_vn = JSON.stringify(listFile);
-              congress.file_content_en = JSON.stringify(listFileEng);
+              congress.file_content_vn = listFile;
+              congress.file_content_en = listFileEng;
               _model_congressDocumentsService__WEBPACK_IMPORTED_MODULE_1__.congressDocumentsService.update(congress).then(function (data) {
                 setLoading(false);
                 if ((data === null || data === void 0 ? void 0 : data.status) == 1) {
-                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.messager);
-                  setCongress({
-                    name_vn: "",
-                    name_en: "",
-                    file_content_vn: "",
-                    file_content_en: ""
-                  });
-                  getCongressDocumentById(idObject);
+                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.mess);
                 } else {
-                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.messager);
+                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.mess);
                 }
               });
             }
@@ -26226,44 +26171,26 @@ function Index() {
     _useState4 = _slicedToArray(_useState3, 2),
     loading = _useState4[0],
     setLoading = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState6 = _slicedToArray(_useState5, 2),
-    ho_ten = _useState6[0],
-    setHo_ten = _useState6[1];
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    linkPage = _useState6[0],
+    setLinkPage = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
     _useState8 = _slicedToArray(_useState7, 2),
-    email = _useState8[0],
-    setEmail = _useState8[1];
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    pageCurrent = _useState8[0],
+    setPageCurrent = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
     _useState10 = _slicedToArray(_useState9, 2),
-    linkPage = _useState10[0],
-    setLinkPage = _useState10[1];
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
-    _useState12 = _slicedToArray(_useState11, 2),
-    pageCurrent = _useState12[0],
-    setPageCurrent = _useState12[1];
-  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
-    _useState14 = _slicedToArray(_useState13, 2),
-    pageLast = _useState14[0],
-    setPageLast = _useState14[1];
-  var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default().useState(false),
-    _React$useState2 = _slicedToArray(_React$useState, 2),
-    open = _React$useState2[0],
-    setOpen = _React$useState2[1];
-  var handleOpen = function handleOpen(item) {
-    setOpen(true);
-  };
-  var handleClose = function handleClose() {
-    setOpen(false);
-  };
+    pageLast = _useState10[0],
+    setPageLast = _useState10[1];
   var deleteCongress = function deleteCongress(id) {
     setLoading(true);
     _model_congressService__WEBPACK_IMPORTED_MODULE_1__.congressService.deleted(id).then(function (data) {
       setLoading(false);
       if (data.status == 1) {
         getListCongress();
-        _pages_Helpers__WEBPACK_IMPORTED_MODULE_3__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.messager);
-      } else _pages_Helpers__WEBPACK_IMPORTED_MODULE_3__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.messager);
+        _pages_Helpers__WEBPACK_IMPORTED_MODULE_3__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.mess);
+      } else _pages_Helpers__WEBPACK_IMPORTED_MODULE_3__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.mess);
     });
   };
   var getListCongress = function getListCongress(page) {
@@ -26279,11 +26206,6 @@ function Index() {
       }
     });
   };
-  /*    const onEnterKey = (e) => {
-          if (e.key === "Enter") {
-              getListBot(pageCurrent);
-          }
-      }*/
   //useEffect
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     getListCongress(pageCurrent);
@@ -26471,12 +26393,12 @@ function Create() {
               _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', 'Vui lòng nhập tên nội dung (Tiếng Anh)!');
             } else {
               setLoading(true);
-              report.file_content_vn = JSON.stringify(listFile);
-              report.file_content_en = JSON.stringify(listFileEng);
+              report.file_content_vn = listFile;
+              report.file_content_en = listFileEng;
               _model_procedureService__WEBPACK_IMPORTED_MODULE_1__.procedureService.register(report).then(function (data) {
                 setLoading(false);
                 if ((data === null || data === void 0 ? void 0 : data.status) == 1) {
-                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.messager);
+                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.mess);
                   setReport({
                     name_vn: "",
                     name_en: "",
@@ -26484,7 +26406,7 @@ function Create() {
                     file_content_en: ""
                   });
                 } else {
-                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.messager);
+                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.mess);
                 }
               });
             }
@@ -26803,44 +26725,26 @@ function Index() {
     _useState4 = _slicedToArray(_useState3, 2),
     loading = _useState4[0],
     setLoading = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState6 = _slicedToArray(_useState5, 2),
-    ho_ten = _useState6[0],
-    setHo_ten = _useState6[1];
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    linkPage = _useState6[0],
+    setLinkPage = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
     _useState8 = _slicedToArray(_useState7, 2),
-    email = _useState8[0],
-    setEmail = _useState8[1];
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    pageCurrent = _useState8[0],
+    setPageCurrent = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
     _useState10 = _slicedToArray(_useState9, 2),
-    linkPage = _useState10[0],
-    setLinkPage = _useState10[1];
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
-    _useState12 = _slicedToArray(_useState11, 2),
-    pageCurrent = _useState12[0],
-    setPageCurrent = _useState12[1];
-  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
-    _useState14 = _slicedToArray(_useState13, 2),
-    pageLast = _useState14[0],
-    setPageLast = _useState14[1];
-  var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default().useState(false),
-    _React$useState2 = _slicedToArray(_React$useState, 2),
-    open = _React$useState2[0],
-    setOpen = _React$useState2[1];
-  var handleOpen = function handleOpen(item) {
-    setOpen(true);
-  };
-  var handleClose = function handleClose() {
-    setOpen(false);
-  };
+    pageLast = _useState10[0],
+    setPageLast = _useState10[1];
   var deleteProcedure = function deleteProcedure(id) {
     setLoading(true);
     _model_procedureService__WEBPACK_IMPORTED_MODULE_1__.procedureService.deleted(id).then(function (data) {
       setLoading(false);
       if (data.status == 1) {
         getListProcedure();
-        _pages_Helpers__WEBPACK_IMPORTED_MODULE_3__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.messager);
-      } else _pages_Helpers__WEBPACK_IMPORTED_MODULE_3__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.messager);
+        _pages_Helpers__WEBPACK_IMPORTED_MODULE_3__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.mess);
+      } else _pages_Helpers__WEBPACK_IMPORTED_MODULE_3__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.mess);
     });
   };
   var getListProcedure = function getListProcedure(page) {
@@ -27051,21 +26955,14 @@ function Update() {
               _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', 'Vui lòng nhập tên nội dung (Tiếng Anh)!');
             } else {
               setLoading(true);
-              report.file_content_vn = JSON.stringify(listFile);
-              report.file_content_en = JSON.stringify(listFileEng);
+              report.file_content_vn = listFile;
+              report.file_content_en = listFileEng;
               _model_procedureService__WEBPACK_IMPORTED_MODULE_1__.procedureService.update(report).then(function (data) {
                 setLoading(false);
                 if ((data === null || data === void 0 ? void 0 : data.status) == 1) {
-                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.messager);
-                  setReport({
-                    name_vn: "",
-                    name_en: "",
-                    file_content_vn: "",
-                    file_content_en: ""
-                  });
-                  getProcedureById(idObject);
+                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.mess);
                 } else {
-                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.messager);
+                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.mess);
                 }
               });
             }
@@ -27472,21 +27369,20 @@ function Update() {
               _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', 'Vui lòng nhập tên nội dung (Tiếng Anh)!');
             } else {
               setLoading(true);
-              congress.file_content_vn = JSON.stringify(listFile);
-              congress.file_content_en = JSON.stringify(listFileEng);
+              congress.file_content_vn = listFile;
+              congress.file_content_en = listFileEng;
               _model_congressService__WEBPACK_IMPORTED_MODULE_1__.congressService.update(congress).then(function (data) {
                 setLoading(false);
                 if ((data === null || data === void 0 ? void 0 : data.status) == 1) {
-                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.messager);
+                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.mess);
                   setCongress({
                     name_vn: "",
                     name_en: "",
                     file_content_vn: "",
                     file_content_en: ""
                   });
-                  getCongressById(idObject);
                 } else {
-                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.messager);
+                  _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.mess);
                 }
               });
             }

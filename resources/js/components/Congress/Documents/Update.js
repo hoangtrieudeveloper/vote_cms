@@ -37,18 +37,16 @@ function Update() {
             Helpers.showToast('error', 'Vui lòng nhập tên nội dung (Tiếng Anh)!');
         } else {
             setLoading(true);
-            congress.file_content_vn = JSON.stringify(listFile);
-            congress.file_content_en = JSON.stringify(listFileEng);
+            congress.file_content_vn = listFile;
+            congress.file_content_en = listFileEng;
             congressDocumentsService.update(congress)
                 .then(
                     data => {
                         setLoading(false);
                         if (data?.status == 1) {
-                            Helpers.showToast('success', data?.messager);
-                            setCongress({name_vn: "", name_en: "", file_content_vn: "", file_content_en: ""});
-                            getCongressDocumentById(idObject);
+                            Helpers.showToast('success', data?.mess);
                         } else {
-                            Helpers.showToast('error', data?.messager);
+                            Helpers.showToast('error', data?.mess);
                         }
                     }
                 );

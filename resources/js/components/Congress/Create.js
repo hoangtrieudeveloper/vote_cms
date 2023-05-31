@@ -33,17 +33,17 @@ function Create() {
             Helpers.showToast('error', 'Vui lòng nhập tên nội dung (Tiếng Anh)!');
         } else {
             setLoading(true);
-            congress.file_content_vn = JSON.stringify(listFile);
-            congress.file_content_en = JSON.stringify(listFileEng);
+            congress.file_content_vn = listFile;
+            congress.file_content_en = JlistFileEng;
             congressService.register(congress)
                 .then(
                     data => {
                         setLoading(false);
                         if (data?.status == 1) {
-                            Helpers.showToast('success', data?.messager);
+                            Helpers.showToast('success', data?.mess);
                             setCongress({name_vn: "", name_en: "", file_content_vn: "", file_content_en: ""});
                         } else {
-                            Helpers.showToast('error', data?.messager);
+                            Helpers.showToast('error', data?.mess);
                         }
                     }
                 );

@@ -99,7 +99,7 @@ function Update() {
                     data => {
                         setLoading(false);
                         if (data?.status == 1) {
-                            Helpers.showToast('success', data?.messager);
+                            Helpers.showToast('success', data?.mess);
                             setReport({
                                 id: idObject,
                                 logo: "",
@@ -134,7 +134,7 @@ function Update() {
                             });
                             getInfoById(idObject);
                         } else {
-                            Helpers.showToast('error', data?.messager);
+                            Helpers.showToast('error', data?.mess);
                         }
                     }
                 );

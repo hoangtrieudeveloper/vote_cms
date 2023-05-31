@@ -11,18 +11,10 @@ import Footer from "../../pages/Footer";
 function Index() {
     const [dataList, setDataList] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [ho_ten, setHo_ten] = useState('');
-    const [email, setEmail] = useState('');
     const [linkPage, setLinkPage] = useState([]);
     const [pageCurrent, setPageCurrent] = useState(1);
     const [pageLast, setPageLast] = useState(1);
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = (item) => {
-        setOpen(true);
-    };
-    const handleClose = () => {
-        setOpen(false);
-    };
+
 
     const deleteCongress = (id) => {
         setLoading(true);
@@ -33,8 +25,8 @@ function Index() {
                     setLoading(false);
                     if (data.status == 1) {
                         getListCongressDocument();
-                        Helpers.showToast('success', data?.messager);
-                    } else Helpers.showToast('error', data?.messager);
+                        Helpers.showToast('success', data?.mess);
+                    } else Helpers.showToast('error', data?.mess);
                 }
             );
     }
@@ -53,11 +45,6 @@ function Index() {
                 }
             );
     }
-    /*    const onEnterKey = (e) => {
-            if (e.key === "Enter") {
-                getListBot(pageCurrent);
-            }
-        }*/
     //useEffect
     useEffect(() => {
         getListCongressDocument(pageCurrent);
