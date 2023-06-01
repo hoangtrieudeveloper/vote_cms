@@ -1,5 +1,6 @@
 {
     "Admin": true,
     "Congress": true,
-    "InFoBasic": true
+    "InFoBasic": true,
+    "VoteResult": true
 }

@@ -136,4 +136,14 @@ class CongressController extends Controller
         }
         return response()->json($url);
     }
+
+    public function getListDocs(){
+        try {
+            $query = $this->congressModel->getListResolution();
+            $result = Utils::messegerAlert(1, "alert-success", 'Thành công!', $query);
+        } catch (\Exception $exception) {
+            $result = Utils::messegerAlert(2, "alert-danger", 'Thất bại!');
+        }
+        return response()->json($result);
+    }
 }

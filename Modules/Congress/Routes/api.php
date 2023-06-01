@@ -43,4 +43,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::any('/getById', [CongressDocumentController::class, 'getById'])->name('getById'); //
         Route::any('/uploadFile', [CongressDocumentController::class, 'uploadFile'])->name('uploadFile'); //
     });
+
+    Route::group(['prefix' => 'vote-result-docx'], function (){
+        Route::any('/downloadDocs', [CongressController::class, 'getListDocs'])->name('downloadDocs'); //
+    });
 });

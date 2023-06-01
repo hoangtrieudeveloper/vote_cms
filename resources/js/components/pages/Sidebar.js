@@ -116,6 +116,26 @@ export default function Sidebar({...props}) {
                                     </ul>
                                 </Box>
                             </li>}
+
+                        {localStorage.getItem('scopes').includes('ket-qua-bieu-quyet') && <li className="nav-item">
+                            <a className={route.includes('ket-qua-bieu-quyet') ? "nav-link menu-link active" : "nav-link menu-link"}
+                               href="#manager_report" data-bs-toggle="collapse"
+                               role="button" aria-expanded="false" aria-controls="sidebarApps">
+                                <i className="ri-apps-2-line"></i> <span data-key="t-apps"> Quản lý kết quả biểu quyết</span>
+                            </a>
+                            <Box
+                                className={route.includes('bien-ban-nghi-quyet') ? "collapse menu-dropdown show" : "collapse menu-dropdown"}
+                                id="manager_report">
+                                <ul className="nav nav-sm flex-column">
+                                    {JSON.parse(localStorage.getItem('scopes')).includes('bien-ban-nghi-quyet') &&
+                                        <li className="nav-item">
+                                            <a href="/bien-ban-nghi-quyet"
+                                               className={route.includes('bien-ban-nghi-quyet') ? "nav-link active" : "nav-link"}
+                                               data-key="t-calendar"> Biên bản - Nghị quyết ĐH </a>
+                                        </li>}
+                                </ul>
+                            </Box>
+                        </li>}
                         {JSON.parse(localStorage.getItem('scopes')).includes('list-group-role') &&
                             <li className="nav-item">
                                 <a className={route.includes('list-group-role') ? "nav-link menu-link active" : "nav-link menu-link"} href="/list-group-role">

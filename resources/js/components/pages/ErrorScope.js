@@ -14,15 +14,31 @@ function ErrorScope() {
                         <img src="template/assets/images/imagelogo.png" alt=""/>
                     </Box>
                 </Box>
-                <Box className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                    <Box className="ad-auth-content">
-                            <Typography className="ad-register-text" variant='caption' sx={{
-                                fontSize: 16,
-                                lineHeight: 2.0,
-                            }}>Bạn không có quyền truy cập vào đường dẫn này!<Link
-                                to='/'>
-                                Nhấn vào đây để quay lại!
-                            </Link></Typography>
+
+                <Box className="auth-page-content">
+                    <Box className="container">
+                        <Box className="row justify-content-center">
+                            <Box className="col-md-8 col-lg-6 col-xl-5">
+                                <Box className="card mt-4 card-bg-fill">
+                                    <Box className="card-body p-4 text-center">
+                                        <Box className="avatar-lg mx-auto mt-2">
+                                            <Box
+                                                className="avatar-title bg-light text-primary display-3 rounded-circle">
+                                                <i className="ri-checkbox-circle-fill"></i>
+                                            </Box>
+                                        </Box>
+                                        <Box className="mt-4 pt-2">
+                                            <h4>Error!</h4>
+                                            <p className="text-muted mx-4">Đã có lỗi xảy ra !</p>
+                                            <Box className="mt-4">
+                                                <a href="/login" className="btn btn-primary w-100">Quay lại</a>
+                                            </Box>
+                                        </Box>
+                                    </Box>
+                                </Box>
+
+                            </Box>
+                        </Box>
                     </Box>
                 </Box>
             </Box>

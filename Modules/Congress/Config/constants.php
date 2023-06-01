@@ -6,5 +6,6 @@ class constants {
     const TO_TRINH = 2;
     const BE_MAC = 3;
     const TAI_LIEU = 4;
+    const NGHI_QUYET = 5;
 
 }

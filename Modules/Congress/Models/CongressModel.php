@@ -20,6 +20,7 @@ class CongressModel extends Model
         'name_en',
         'file_content_vn',
         'file_content_en',
+        'user_id',
         'type',
         'sort',
         'created_by',
@@ -47,6 +48,11 @@ class CongressModel extends Model
     public  function getLastData($type){
         return CongressModel::where('type',$type)
             ->orderBy('vote_congress_content.sort', 'desc')
+            ->first();
+    }
+    public function getListResolution(){
+        return CongressModel::where('type',constants::NGHI_QUYET)
+            ->orderBy('vote_congress_content.id', 'desc')
             ->first();
     }
 }

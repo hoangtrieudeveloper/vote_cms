@@ -43,6 +43,7 @@ import UpdateInfoBasic from "./Company/InfoBasic/Update";
 
 //profile
 import EditProfile from "./users/profile/EditProfile";
+import VoteResult from "./VoteResults/Report/Index";
 
 
 
@@ -57,6 +58,13 @@ export default function Layout() {
                     <Route path="/errorscope">
                         <ErrorScope/>
                     </Route>
+
+                    <PrivateRoute path="/bien-ban-nghi-quyet">
+                        <Header/>
+                        <Sidebar/>
+                        <VoteResult/>
+                    </PrivateRoute>
+
                     <PrivateRoute path="/khai-bao-thu-tuc-khai-mac">
                         <Header/>
                         <Sidebar/>
