@@ -47,7 +47,6 @@ function Index() {
                                         <Box className="timeline">
                                             <Box className="timeline-item left">
                                                 <i className="icon ri-stack-line"></i>
-                                                <Box className="date">15 Dec 2021</Box>
                                                 <Box className="content">
                                                     <Box className="d-flex">
                                                         <Box className="flex-shrink-0">
@@ -83,7 +82,6 @@ function Index() {
                                             </Box>
                                             <Box className="timeline-item right">
                                                 <i className="icon ri-vip-diamond-line"></i>
-                                                <Box className="date">22 Oct 2021</Box>
                                                 <Box className="content">
                                                     <h6>Xuất Nghị Quyết Đại Hội</h6>
                                                     <p className="text-muted">Tải về</p>
