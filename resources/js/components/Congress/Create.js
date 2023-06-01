@@ -34,7 +34,7 @@ function Create() {
         } else {
             setLoading(true);
             congress.file_content_vn = listFile;
-            congress.file_content_en = JlistFileEng;
+            congress.file_content_en = listFileEng;
             congressService.register(congress)
                 .then(
                     data => {

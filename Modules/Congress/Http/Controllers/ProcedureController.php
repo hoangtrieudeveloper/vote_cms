@@ -51,7 +51,7 @@ class ProcedureController extends Controller
                 'user_id' => Auth::user()->id,
                 'created_by' => Auth::user()->id,
                 'type' => constants::BE_MAC,
-                'sort' => $lastData == null || $lastData['sort'] == 0 ? 1 : (int)$lastData['sort'] + 1
+                'sort' => $lastData == null ? 1 : (int)$lastData['sort'] + 1
             ];
 
             $insert = $this->congressModel->add($data);

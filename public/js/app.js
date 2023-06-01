@@ -24872,7 +24872,7 @@ function Create() {
             } else {
               setLoading(true);
               congress.file_content_vn = listFile;
-              congress.file_content_en = JlistFileEng;
+              congress.file_content_en = listFileEng;
               _model_congressService__WEBPACK_IMPORTED_MODULE_1__.congressService.register(congress).then(function (data) {
                 setLoading(false);
                 if ((data === null || data === void 0 ? void 0 : data.status) == 1) {
