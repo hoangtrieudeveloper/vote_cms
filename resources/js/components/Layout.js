@@ -41,6 +41,11 @@ import UpdateDocuments from "./Congress/Documents/Update";
 //khai báo thông tin cơ bản
 import UpdateInfoBasic from "./Company/InfoBasic/Update";
 
+//profile
+import EditProfile from "./users/profile/EditProfile";
+
+
+
 export default function Layout() {
     return (
         <Router>
@@ -122,6 +127,13 @@ export default function Layout() {
                         <UpdateInfoBasic/>
                     </PrivateRoute>
 
+
+
+                    <PrivateRoute path="/edit-profile">
+                        <Header/>
+                        <Sidebar/>
+                        <EditProfile/>
+                    </PrivateRoute>
                     <PrivateRoute path="/listuser">
                         <Header/>
                         <Sidebar/>
@@ -203,6 +215,10 @@ const getUserInfoAndCheckScopes = (path) => {
                             name: data.data.name,
                             email: data.data.email,
                             phone_number: data.data.phone_number,
+                            company_name: data.data.company.name_vn,
+                            company_phone: data.data.company.phone_number,
+                            company_header: data.data.company.header_company,
+                            company_fax: data.data.company.number_fax,
                         }));
                     } else {
                         localStorage.removeItem('user');

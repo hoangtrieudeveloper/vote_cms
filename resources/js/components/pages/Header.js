@@ -401,12 +401,9 @@ export default function Header() {
                         </span>
                             </button>
                             <Box className="dropdown-menu dropdown-menu-end">
-                                <Link className="dropdown-item" href="/profile"><i
+                                <a className="dropdown-item" href="/edit-profile"><i
                                     className="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span
-                                    className="align-middle">Cập nhật thông tin</span></Link>
-                                <Link className="dropdown-item" href="/profile"><i
-                                    className="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i>
-                                    <span className="align-middle">Đổi mật khẩu</span></Link>
+                                    className="align-middle">Cập nhật thông tin</span></a>
                                 <Link className="dropdown-item" to={"#"} onClick={logout}><i
                                     className="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span
                                     className="align-middle" data-key="t-logout">logout</span></Link>

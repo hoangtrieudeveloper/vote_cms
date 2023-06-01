@@ -6,7 +6,7 @@ import {
 } from "@mui/material";
 import {Link} from 'react-router-dom';
 import LoadingButton from "@mui/lab/LoadingButton";
-import {congressDocumentsService} from "../../../model/congressDocumentsService";
+import {congressService} from "../../../model/congressService";
 import Loading from "../../pages/Loading";
 import ToastNotifi from "../../pages/ToastNotifi";
 import Helpers from "../../pages/Helpers";
@@ -39,7 +39,7 @@ function Update() {
             setLoading(true);
             congress.file_content_vn = listFile;
             congress.file_content_en = listFileEng;
-            congressDocumentsService.update(congress)
+            congressService.updateDocuments(congress)
                 .then(
                     data => {
                         setLoading(false);
@@ -54,7 +54,7 @@ function Update() {
     }
 
     async function getCongressDocumentById(id) {
-        congressDocumentsService.getById(id)
+        congressService.getByIdDocuments(id)
             .then(
                 data => {
                     if (data.status == 1) {
@@ -79,7 +79,7 @@ function Update() {
     const [listFile, setListFile] = useState('');
     const handleUploadImage = (e) => {
         const file = e.target.files[0];
-        congressDocumentsService.uploadFileAction(file)
+        congressService.uploadFileAction(file)
             .then(data => {
                 setListFile(data);
             });
@@ -92,7 +92,7 @@ function Update() {
     const [listFileEng, setListFileEng] = useState('');
     const handleUploadImageEng = (e) => {
         const file = e.target.files[0];
-        congressDocumentsService.uploadFileAction(file)
+        congressService.uploadFileAction(file)
             .then(dataEng => {
                 setListFileEng(dataEng);
             });

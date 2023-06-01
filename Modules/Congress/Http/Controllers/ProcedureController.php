@@ -5,6 +5,7 @@ namespace Modules\Congress\Http\Controllers;
 use App\Utils;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Modules\Congress\Config\constants;
 use Modules\Congress\Models\CongressModel;
@@ -47,7 +48,8 @@ class ProcedureController extends Controller
                 'name_en' => $request->name_en,
                 'file_content_vn' => $request->file_content_vn,
                 'file_content_en' => $request->file_content_en,
-                'user_id' => $request->user_id,
+                'user_id' => Auth::user()->id,
+                'created_by' => Auth::user()->id,
                 'type' => constants::BE_MAC,
                 'sort' => $lastData == null || $lastData['sort'] == 0 ? 1 : (int)$lastData['sort'] + 1
             ];

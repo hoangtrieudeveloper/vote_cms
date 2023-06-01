@@ -3,7 +3,7 @@ import {
     Box, Modal, Typography,
 } from "@mui/material";
 import {Link, useHistory} from "react-router-dom";
-import {procedureService} from "../../../model/procedureService";
+import {congressService} from "../../../model/congressService";
 import Paginate from "../../pages/Paginate";
 import Helpers from "../../pages/Helpers";
 import Footer from "../../pages/Footer";
@@ -17,7 +17,7 @@ function Index() {
     const deleteProcedure = (id) => {
         setLoading(true);
 
-        procedureService.deleted(id)
+        congressService.deletedProcedure(id)
             .then(
                 data => {
                     setLoading(false);
@@ -31,7 +31,7 @@ function Index() {
     const getListProcedure = (page) => {
         setPageCurrent(page);
         setLoading(true);
-        procedureService.getList(page)
+        congressService.getListProcedure(page)
             .then(
                 data => {
                     setLoading(false);

@@ -3,7 +3,7 @@ import {
     Box, Modal, Typography,
 } from "@mui/material";
 import {Link, useHistory} from "react-router-dom";
-import {bcReportService} from "../../../model/bcReportService";
+import {congressService} from "../../../model/congressService";
 import Paginate from "../../pages/Paginate";
 import Helpers from "../../pages/Helpers";
 import Footer from "../../pages/Footer";
@@ -17,7 +17,7 @@ function Index() {
     const deleteReport = (id) => {
         setLoading(true);
 
-        bcReportService.deleted(id)
+        congressService.deletedBcReport(id)
             .then(
                 data => {
                     setLoading(false);
@@ -31,7 +31,7 @@ function Index() {
     const getListDocument = (page) => {
         setPageCurrent(page);
         setLoading(true);
-        bcReportService.getList(page)
+        congressService.getListBcReport(page)
             .then(
                 data => {
                     setLoading(false);

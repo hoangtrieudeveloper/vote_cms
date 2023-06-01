@@ -3,7 +3,7 @@ import {
     Box, Modal, Typography,
 } from "@mui/material";
 import {Link, useHistory} from "react-router-dom";
-import {congressDocumentsService} from "../../../model/congressDocumentsService";
+import {congressService} from "../../../model/congressService";
 import Paginate from "../../pages/Paginate";
 import Helpers from "../../pages/Helpers";
 import Footer from "../../pages/Footer";
@@ -19,7 +19,7 @@ function Index() {
     const deleteCongress = (id) => {
         setLoading(true);
 
-        congressDocumentsService.deleted(id)
+        congressService.deletedDocuments(id)
             .then(
                 data => {
                     setLoading(false);
@@ -33,7 +33,7 @@ function Index() {
     const getListCongressDocument = (page) => {
         setPageCurrent(page);
         setLoading(true);
-        congressDocumentsService.getList(page)
+        congressService.getListDocuments(page)
             .then(
                 data => {
                     setLoading(false);

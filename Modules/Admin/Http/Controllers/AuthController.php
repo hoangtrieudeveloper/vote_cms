@@ -61,6 +61,8 @@ class AuthController extends Controller
             $scopes_query = DB::table('user_group')->where('id', $query->group_scope)->first()->group_roles;
             $scopes = explode('|', $scopes_query);
             $query->scopes = $scopes;
+            $company = DB::table('settings_company')->where('user_id',$query->id)->select('name_vn','phone_number','header_company','number_fax')->first();
+            $query->company = $company;
             if ($query) {
                 $result = [
                     "status" => 1,

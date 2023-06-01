@@ -6,7 +6,7 @@ import {
 } from "@mui/material";
 import {Link} from 'react-router-dom';
 import LoadingButton from "@mui/lab/LoadingButton";
-import {bcReportService} from "../../../model/bcReportService";
+import {congressService} from "../../../model/congressService";
 import Loading from "../../pages/Loading";
 import ToastNotifi from "../../pages/ToastNotifi";
 import Helpers from "../../pages/Helpers";
@@ -40,7 +40,7 @@ function Update() {
             setLoading(true);
             report.file_content_vn = listFile;
             report.file_content_en = listFileEng;
-            bcReportService.update(report)
+            congressService.updateBcReport(report)
                 .then(
                     data => {
                         setLoading(false);
@@ -55,7 +55,7 @@ function Update() {
     }
 
     async function getReportById(id) {
-        bcReportService.getById(id)
+        congressService.getByIdBcReport(id)
             .then(
                 data => {
                     if (data.status == 1) {
@@ -80,7 +80,7 @@ function Update() {
     const [listFile, setListFile] = useState('');
     const handleUploadImage = (e) => {
         const file = e.target.files[0];
-        bcReportService.uploadFileAction(file)
+        congressService.uploadFileAction(file)
             .then(data => {
                 setListFile(data);
             });
@@ -93,7 +93,7 @@ function Update() {
     const [listFileEng, setListFileEng] = useState('');
     const handleUploadImageEng = (e) => {
         const file = e.target.files[0];
-        bcReportService.uploadFileAction(file)
+        congressService.uploadFileAction(file)
             .then(dataEng => {
                 setListFileEng(dataEng);
             });

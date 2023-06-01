@@ -15,9 +15,30 @@ export const userService = {
     createGroupUser,
     getByidGroupRole,
     updateGroupRole,
-    uploadFileAction
+    uploadFileAction,
+    changePassword,
+    UpdateProfile
 };
 let user = JSON.parse(localStorage.getItem('user'));
+
+function UpdateProfile(object) {
+    const requestOptions = {
+        method: 'POST',
+        headers: authHeader(),
+        body: JSON.stringify(object)
+    };
+
+    return fetch(`${GlobalSetting.url}api/update-profile`, requestOptions).then(handleResponse);
+}
+function changePassword(object) {
+    const requestOptions = {
+        method: 'POST',
+        headers: authHeader(),
+        body: JSON.stringify(object)
+    };
+
+    return fetch(`${GlobalSetting.url}api/change-password`, requestOptions).then(handleResponse);
+}
 function uploadFileAction(file) {
     let formData = new FormData();
     formData.append('file', file);

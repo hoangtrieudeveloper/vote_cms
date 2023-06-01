@@ -5,6 +5,7 @@ namespace Modules\Admin\Http\Controllers;
 use App\Models\User;
 use App\Utils;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Routing\Controller;
@@ -29,7 +30,7 @@ class UserController extends Controller
         $check = false;
         if (array_key_exists("email", $data)) {
             $data['email'];
-            $item = User::where('email',$data['email'])->first();
+            $item = User::where('email', $data['email'])->first();
             if ($item) $check = true; else $check = false;
         } else $data['email'] = "";
         if (array_key_exists("password", $data)) $data['password']; else $data['password'] = "";
@@ -121,7 +122,7 @@ class UserController extends Controller
         }
         $data = $request->all();
         $groupd = DB::table('user_group')->get();
-        $query = User::where('id',$data['id'])->first();
+        $query = User::where('id', $data['id'])->first();
         if ($query) {
             $result = [
                 "status" => 1,
@@ -188,6 +189,7 @@ class UserController extends Controller
         }
         return response()->json($result);
     }
+
     public function isChangeStatus(Request $request)
     {
         $validate = Validator::make($request->all(), [
@@ -223,6 +225,58 @@ class UserController extends Controller
                 "success" => "alert-success",
                 "data" => ''
             ];
+        }
+        return response()->json($result);
+    }
+
+    public function ChangePass(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'old_pass' => 'required|string|max:32',
+            'new_pass' => 'required|string|max:32|required_with:new_pass_1|same:new_pass_1',
+            'new_pass_1' => 'required|string|max:32',
+        ]);
+        if ($validate->fails()) {
+            return response()->json(Utils::messegerAlert(2, "alert-danger", $validate->errors()));
+        }
+
+        try {
+            $data = $request->all();
+            if (!Hash::check($data['old_pass'], Auth::user()->password)) {
+                $result = Utils::messegerAlert(2, "alert-danger", 'Mật khẩu cũ không đúng!');
+                return response()->json($result);
+            }
+            if ($data['new_pass']) $update['password'] = Hash::make($data['new_pass']);
+            $result = DB::table('users')->where('id', Auth::user()->id)->update($update);
+
+            $result = Utils::messegerAlert(1, "alert-success", 'Đổi mật khẩu thành công!', $result);
+        } catch (\Exception $exception) {
+            $result = Utils::messegerAlert(2, "alert-danger", 'Đổi mật khẩu thất bại!',);
+        }
+        return response()->json($result);
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'phone' => 'required|numeric',
+            'address' => 'required|string|max:255',
+        ]);
+        if ($validate->fails()) {
+            return response()->json(Utils::messegerAlert(2, "alert-danger", $validate->errors()));
+        }
+        try {
+            $data = $request->all();
+            $update = [
+                'name' => $data['name'],
+                'phone_number' => $data['phone'],
+                'address' => $data['address'],
+            ];
+            $result = DB::table('users')->where('id', Auth::user()->id)->update($update);
+            $result = Utils::messegerAlert(1, "alert-success", 'Cập nhật thành công!', $result);
+        } catch (\Exception $exception) {
+            $result = Utils::messegerAlert(2, "alert-danger", 'Cập nhật thất bại!',);
         }
         return response()->json($result);
     }
