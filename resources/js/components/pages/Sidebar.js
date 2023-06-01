@@ -72,6 +72,25 @@ export default function Sidebar({...props}) {
                                 </ul>
                             </Box>
                         </li>}
+                        {localStorage.getItem('scopes').includes('quan-ly-co-dong') && <li className="nav-item">
+                            <a className={route.includes('quan-ly-co-dong') ? "nav-link menu-link active" : "nav-link menu-link"}
+                               href="#shareholder" data-bs-toggle="collapse"
+                               role="button" aria-expanded="false" aria-controls="sidebarApps">
+                                <i className="ri-apps-2-line"></i> <span data-key="t-apps">Quản lý cổ đông</span>
+                            </a>
+                            <Box
+                                className={route.includes('quan-ly-co-dong') ? "collapse menu-dropdown show" : "collapse menu-dropdown"}
+                                id="shareholder">
+                                <ul className="nav nav-sm flex-column">
+                                    {JSON.parse(localStorage.getItem('scopes')).includes('quan-ly-co-dong') &&
+                                        <li className="nav-item">
+                                            <a href="/quan-ly-co-dong"
+                                               className={route.includes('quan-ly-co-dong') ? "nav-link active" : "nav-link"}
+                                               data-key="t-calendar"> Danh sách </a>
+                                        </li>}
+                                </ul>
+                            </Box>
+                        </li>}
                         {localStorage.getItem('scopes').includes('khai-bao-thu-tuc-khai-mac') &&
                             <li className="nav-item">
                                 <a className={route.includes('khai-bao-thu-tuc-khai-mac') || route.includes('khai-bao-bc-to-trinh') || route.includes('khai-bao-thu-tuc-be-mac') || route.includes('khai-bao-tai-lieu-dai-hoi') ? "nav-link menu-link active" : "nav-link menu-link"} href="#manager_congress" data-bs-toggle="collapse"

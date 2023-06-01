@@ -40,6 +40,8 @@ import UpdateDocuments from "./Congress/Documents/Update";
 
 //khai báo thông tin cơ bản
 import UpdateInfoBasic from "./Company/InfoBasic/Update";
+//cổ đông
+import Shareholder from "./Shareholder";
 
 //profile
 import EditProfile from "./users/profile/EditProfile";
@@ -171,6 +173,12 @@ export default function Layout() {
                         <Header/>
                         <Sidebar/>
                         <UpdateGroupRole/>
+                    </PrivateRoute>
+                    {/*co dong */}
+                    <PrivateRoute path="/quan-ly-co-dong">
+                        <Header/>
+                        <Sidebar/>
+                        <Shareholder/>
                     </PrivateRoute>
                     <PrivateRoute path="/">
                         <Header/>
