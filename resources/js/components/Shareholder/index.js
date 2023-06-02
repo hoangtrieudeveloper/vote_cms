@@ -21,6 +21,7 @@ function Shareholder() {
     const [nameSearch, setNameSearch] = useState('');
     const [type, setType] = useState('');
     const [organization, setOrganization] = useState('');
+    const [file, setFile] = useState('');
 
     useEffect(() => {
         getListData(pageCurrent);
@@ -31,8 +32,6 @@ function Shareholder() {
     const getListType = () => {
         userShareholderService.getListType()
             .then(data => {
-                console.log('data', data);
-                setLoading(false);
                 if (data.status == 1) {
                     setListType(Object.values(data?.data));
                     // Helpers.showToast('success', data?.mess);
@@ -46,7 +45,6 @@ function Shareholder() {
     const getListOrganization = () => {
         userShareholderService.getListOrganization()
             .then(data => {
-                setLoading(false);
                 if (data.status == 1) {
                     setListOrganization(Object.values(data?.data));
                     // Helpers.showToast('success', data?.mess);
@@ -58,21 +56,26 @@ function Shareholder() {
     }
 
     const handleImport = (e) => {
-        console.log(e.target.files[0]);
-        const file = e.target.files[0];
-        userShareholderService.importShareHolder(file)
-            .then(data => {
-                console.log(data);
-            });
+        setFile( e.target.files[0]);
     }
 
     const uploadFileImport = () => {
-        // if (file !== null && file !== undefined) {
-        //     userShareholderService.importShareHolder(file)
-        //         .then(data => {
-        //             console.log(data);
-        //         });
-        // }
+        console.log('call api',file);
+        if (file !== null && file !== undefined) {
+            userShareholderService.importShareHolder(file)
+                .then(data => {
+                    console.log(data);
+                    setFile(null);
+                    if (data.status == 1) {
+                        // Helpers.showToast('success', data?.mess);
+                    } else {
+                        // Helpers.showToast('error', data?.mess);
+
+                    }
+                });
+        }else{
+            console.log('Không co file');
+        }
     }
 
     const resetData = () => {
@@ -129,36 +132,33 @@ function Shareholder() {
                             <Box className="card">
                                 <Box className="card-header align-items-center d-flex">
                                     <h3 className="card-title mb-0 flex-grow-1">Danh sách cổ đông</h3>
-                                    <form>
-
-                                        <Box className="row">
-                                            <Box className="col-4">
-                                                <button type="button"
-                                                        className="btn btn-primary waves-effect waves-ligh">
-                                                       Tải về file mẫu
-                                                </button>
-                                            </Box>
-                                            <Box className="col-4">
-                                                <label onChange={handleImport}
-                                                       className="btn btn-primary waves-effect waves-ligh"
-                                                       htmlFor="formId">
-                                                    Tải lên danh sách cổ đông
-                                                    <input name="file" type="file" id="formId" hidden
-                                                           accept="application/xlsx"/>
-                                                </label>
-                                            </Box>
-                                            <Box className="col-4">
-                                                <button type="button"
-                                                        onClick={uploadFileImport}
-                                                        className="btn btn-primary waves-effect waves-ligh">Tạo danh
-                                                    sách
-                                                </button>
-                                            </Box>
-                                        </Box>
-                                    </form>
                                 </Box>
                                 <Box className="card-body">
-                                    <Box className="row">
+                                    <Box className="row justify-content-sm-end">
+                                        <Box className="col-sm-auto">
+                                            <button type="button"
+                                                    className="btn btn-primary waves-effect waves-ligh">
+                                                Tải về file mẫu
+                                            </button>
+                                        </Box>
+                                        <Box className="col-sm-auto">
+                                            <label onChange={handleImport}
+                                                   className="btn btn-primary waves-effect waves-ligh"
+                                                   htmlFor="formId">
+                                                Tải lên danh sách cổ đông
+                                                <input name="file" type="file" id="formId" hidden
+                                                       accept="application/xlsx"/>
+                                            </label>
+                                        </Box>
+                                        <Box className="col-sm-auto">
+                                            <button type="button"
+                                                    onClick={() => uploadFileImport()}
+                                                    className="btn btn-primary waves-effect waves-ligh">Tạo danh
+                                                sách
+                                            </button>
+                                        </Box>
+                                    </Box>
+                                    <Box className="row row g-4 mb-3">
                                         <Box className="col-4">
                                             <input type="text" className="form-control"
                                                    placeholder={'Họ tên/CMND/CCCD...'}
@@ -194,21 +194,15 @@ function Shareholder() {
                                             </select>
                                         </Box>
                                         <Box className="col-2">
-                                            <button type="button"
-                                                    onClick={() => getListData()}
-                                                    className="btn btn-primary waves-effect waves-ligh">
-                                                Tìm kiếm
-                                            </button>
+                                            <Box className="d-grid gap-1">
+                                                <button type="button"
+                                                        onClick={() => getListData()}
+                                                        className="btn btn-primary waves-effect waves-ligh ">
+                                                    Tìm kiếm
+                                                </button>
+                                            </Box>
                                         </Box>
                                     </Box>
-                                </Box>
-                            </Box>
-                        </Box>
-                    </Box>
-                    <Box className="row">
-                        <Box className="col-xl-12">
-                            <Box className="card">
-                                <Box className="card-body">
                                     <Box className="table-responsive table-card mb-3">
                                         <table
                                             className="table table-borderless table-hover table-nowrap align-middle mb-0">

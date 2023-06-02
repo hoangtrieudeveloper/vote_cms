@@ -56,7 +56,7 @@ class ShareholderController extends Controller
             $result = [
                 "status" => 1,
                 "message" => "Thành công!",
-                "data" => ["data" => $query,"title" => $title]
+                "data" => ["data" => $query, "title" => $title]
             ];
         } else {
             $result = [
@@ -122,7 +122,7 @@ class ShareholderController extends Controller
     public function importCoDong(Request $request)
     {
         $request->validate([
-            'file' => 'required'
+            'file' => 'required|mimes:xlsx, xls'
         ]);
         try {
             if ($request->hasFile('file') && $request->file('file')->isValid()) {
@@ -141,73 +141,89 @@ class ShareholderController extends Controller
                 $highestRow = $sheet->getHighestRow();
                 $user_id = Auth::user()->id;
                 $tongSoCP = 0;
+                $errors = [];
 
                 for ($row = 2; $row <= $highestRow; $row++) {
-                    $time = date("Y-m-d H:i:s");
-                    $username = trim($sheet->getCell('B' . $row)->getValue());
-                    if ($username) {
-                        $shareHolderShareArray = [
-                            'total' => 0,
-                            'user_id' => $user_id
-                        ];
+                    try {
+                        $time = date("Y-m-d H:i:s");
+                        $username = trim($sheet->getCell('B' . $row)->getValue());
+                        if ($username) {
+                            $shareHolderShareArray = [
+                                'total' => 0,
+                                'user_id' => $user_id
+                            ];
 
-                        $userShareholder = UserShareholder::where('username', $username)->first();
-                        if ($userShareholder) {
-                            $shareHolderShare = ShareholderShare::where('user_id', $userShareholder->id)->first();
-                        }
-                        $shareHolderShareArray['total'] = trim($sheet->getCell('H' . $row)->getValue());
-                        $userShareholderArray = [
-                            'user_id' => $user_id,
-                        ];
-                        $coPhan = trim($sheet->getCell('H' . $row)->getValue());
-                        $userShareholderArray['name'] = trim($sheet->getCell('A' . $row)->getValue());
-                        $userShareholderArray['code_dksh'] = $username;
-                        $unixTime = strtotime(trim($sheet->getCell('C' . $row)->getFormattedValue()));
-                        $convertDate = date('Y-m-d H:i:s', $unixTime);
-                        $userShareholderArray['date_range'] = $convertDate;
-                        $userShareholderArray['issued_by'] = trim($sheet->getCell('D' . $row)->getValue());
-                        $userShareholderArray['phone_number'] = trim($sheet->getCell('E' . $row)->getValue());
-                        $userShareholderArray['address'] = trim($sheet->getCell('F' . $row)->getValue());
-                        $userShareholderArray['email'] = trim($sheet->getCell('G' . $row)->getValue());
-                        $userShareholderArray['type'] = trim($sheet->getCell('I' . $row)->getValue());
-                        $userShareholderArray['organization'] = trim($sheet->getCell('J' . $row)->getValue());
-                        $userShareholderArray['username'] = $username;
-                        $userShareholderArray['password'] = rand(100000, 999999);
-                        $shareHolderShareArray['total'] = $coPhan;
-                        $tongSoCP += $coPhan;
+                            $userShareholder = UserShareholder::where('username', $username)->first();
+                            if ($userShareholder) {
+                                $shareHolderShare = ShareholderShare::where('user_shares_id', $userShareholder->id)->first();
+                            }
+                            $shareHolderShareArray['total'] = trim($sheet->getCell('H' . $row)->getValue());
+                            $userShareholderArray = [
+                                'user_id' => $user_id,
+                            ];
+                            $coPhan = trim($sheet->getCell('H' . $row)->getValue());
+                            $userShareholderArray['name'] = trim($sheet->getCell('A' . $row)->getValue());
+                            $userShareholderArray['code_dksh'] = $username;
+                            $unixTime = strtotime(trim($sheet->getCell('C' . $row)->getFormattedValue()));
+                            $convertDate = date('Y-m-d H:i:s', $unixTime);
+                            $userShareholderArray['date_range'] = $convertDate;
+                            $userShareholderArray['issued_by'] = trim($sheet->getCell('D' . $row)->getValue());
+                            $userShareholderArray['phone_number'] = trim($sheet->getCell('E' . $row)->getValue());
+                            $userShareholderArray['address'] = trim($sheet->getCell('F' . $row)->getValue());
+                            $userShareholderArray['email'] = trim($sheet->getCell('G' . $row)->getValue());
+                            $userShareholderArray['type'] = trim($sheet->getCell('I' . $row)->getValue());
+                            $userShareholderArray['organization'] = trim($sheet->getCell('J' . $row)->getValue());
+                            $userShareholderArray['username'] = $username;
+                            $userShareholderArray['password'] = Utils::generateRandomCode(6);
+                            $shareHolderShareArray['total'] = $coPhan;
+                            $tongSoCP += $coPhan;
 
-                        if ($userShareholder) {
-                            $userShareholderArray['updated_at'] = $time;
-                            $shareHolderShareArray['updated_at'] = $time;
-                            $userShareholder->update($userShareholderArray);
-                            $shareHolderShare->update($shareHolderShareArray);
-                        } else {
-                            $userShareholderArray['created_at'] = $time;
-                            $shareHolderShareArray['created_at'] = $time;
-                            $userShareholderId = UserShareholder::insertGetId($userShareholderArray);
-                            if ($userShareholderId) {
-                                $shareHolderShareArray['user_shares_id'] = $userShareholderId;
-                                ShareholderShare::insert($shareHolderShareArray);
+                            if ($userShareholder) {
+                                $userShareholderArray['updated_at'] = $time;
+                                $userShareholder->update($userShareholderArray);
+                                if (isset($shareHolderShare)) {
+                                    $shareHolderShareArray['updated_at'] = $time;
+                                    $shareHolderShare->update($shareHolderShareArray);
+                                } else {
+                                    $shareHolderShareArray['user_shares_id'] = $userShareholder->id;
+                                    $shareHolderShareArray['created_at'] = $time;
+                                    ShareholderShare::insert($shareHolderShareArray);
+                                }
+                            } else {
+                                $userShareholderArray['created_at'] = $time;
+                                $shareHolderShareArray['created_at'] = $time;
+                                $userShareholderId = UserShareholder::insertGetId($userShareholderArray);
+                                if (isset($userShareholderId)) {
+                                    $shareHolderShareArray['user_shares_id'] = $userShareholderId;
+                                    ShareholderShare::insert($shareHolderShareArray);
+                                }
                             }
                         }
+                    } catch (Exception $e) {
+                        $errors[] = [
+                            "message" => "Đã có lỗi xảy ra tại dòng " . $row,
+                            "error" => $e->getMessage()
+                        ];
                     }
                 }
             } else {
                 return [
                     "status" => 2,
-                    "message" => "Không tìm thấy file dữ liệu cổ đông!",
+                    "message" => "File dữ liệu không hợp lệ!",
                 ];
             }
         } catch (Exception $e) {
             return [
                 "status" => 2,
                 "message" => "Đã có lỗi xảy ra!",
-                "error" => $e->getMessage()
+                "erros" => $errors,
+                "exception" => $e->getMessage()
             ];
         }
         return [
             "status" => 1,
             "message" => "Import Cổ đông thành công!",
+            "erros" => $errors,
         ];
     }
 
