@@ -4,3 +4,8 @@
     max-width: 100%;
 }
 
+.max-content{
+    width: -moz-max-content;
+    width: max-content;
+}
+

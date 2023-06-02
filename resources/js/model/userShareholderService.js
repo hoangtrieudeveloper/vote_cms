@@ -6,9 +6,30 @@ export const userShareholderService = {
     getListType,
     getListOrganization,
     importShareHolder,
+    getListByReport,
+    UpdateBlock
 };
 let user = JSON.parse(localStorage.getItem('user'));
 let api = "shareholder";
+
+function UpdateBlock(user_share_id,status,congress_id) {
+    const requestOptions = {
+        method: 'POST',
+        headers: authHeader(),
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/updateBlock?user_share_id=${user_share_id}&status=${status}&congress_id=${congress_id}`, requestOptions).then(handleResponse);
+}
+function getListByReport(page, id,name, block) {
+    console.log('block',block);
+    const requestOptions = {
+        method: 'GET',
+        'Content-Type': 'application/json',
+        headers: authHeader()
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/getListReport?page=${page}&id=${id}&name=${name}&block=${block}`, requestOptions).then(handleResponse);
+}
 
 function getList(page, name, type, organization) {
     const requestOptions = {

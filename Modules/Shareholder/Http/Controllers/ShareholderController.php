@@ -4,10 +4,12 @@ namespace Modules\Shareholder\Http\Controllers;
 
 use App\Models\ShareholderShare;
 use App\Models\UserShareholder;
+use App\Utils;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use \Exception;
+use Illuminate\Support\Facades\Validator;
 
 require("PHPExcel/PHPExcel.php");
 
@@ -17,6 +19,54 @@ class ShareholderController extends Controller
     /*
    * Feedback
    */
+
+    public function updateBlock(Request $request)
+    {
+
+        $validate = Validator::make($request->all(), [
+            'user_share_id' => 'required|numeric',
+            'status' => 'required',
+            'congress_id' => 'required',
+        ]);
+        if ($validate->fails()) {
+            return response()->json(Utils::messegerAlert(2, "alert-danger", $validate->errors()));
+        }
+        try {
+            $data = [
+                'id_user_share' => $request->user_share_id,
+                'status' => $request->status,
+                'id_vote_congress_report' => $request->congress_id,
+            ];
+            $edit = UserShareholder::updateStatusBlockVote($data);
+            $result = Utils::messegerAlert(1, "alert-success", 'Thành công!', $edit);
+        } catch (\Exception $exception) {
+            $result = Utils::messegerAlert(2, "alert-danger", 'Thất bại!',);
+        }
+        return response()->json($result);
+    }
+
+    public function getListReport(Request $request)
+    {
+        $congress_id = $request->id;
+        $status = $request->block;
+        $txtName = $request->name;
+        $query = UserShareholder::getListReport($congress_id, $status, $txtName);
+        $title = UserShareholder::getTitCongress($congress_id);
+        if ($query) {
+            $result = [
+                "status" => 1,
+                "message" => "Thành công!",
+                "data" => ["data" => $query,"title" => $title]
+            ];
+        } else {
+            $result = [
+                "status" => 2,
+                "message" => "Lỗi!",
+                "data" => '',
+            ];
+        }
+        return response()->json($result);
+    }
 
     public function getList(Request $request)
     {
@@ -84,7 +134,7 @@ class ShareholderController extends Controller
                 } catch (Exception $e) {
                     return [
                         "status" => 2,
-                        "message" => "Lỗi không thể tải file ".pathinfo($inputFileName, PATHINFO_BASENAME).'ERROR: '.$e->getMessage(),
+                        "message" => "Lỗi không thể tải file " . pathinfo($inputFileName, PATHINFO_BASENAME) . 'ERROR: ' . $e->getMessage(),
                     ];
                 }
                 $sheet = $objPHPExcel->getSheet(0);
@@ -113,7 +163,7 @@ class ShareholderController extends Controller
                         $userShareholderArray['name'] = trim($sheet->getCell('A' . $row)->getValue());
                         $userShareholderArray['code_dksh'] = $username;
                         $unixTime = strtotime(trim($sheet->getCell('C' . $row)->getFormattedValue()));
-                        $convertDate = date('Y-m-d H:i:s',$unixTime);
+                        $convertDate = date('Y-m-d H:i:s', $unixTime);
                         $userShareholderArray['date_range'] = $convertDate;
                         $userShareholderArray['issued_by'] = trim($sheet->getCell('D' . $row)->getValue());
                         $userShareholderArray['phone_number'] = trim($sheet->getCell('E' . $row)->getValue());
@@ -122,7 +172,7 @@ class ShareholderController extends Controller
                         $userShareholderArray['type'] = trim($sheet->getCell('I' . $row)->getValue());
                         $userShareholderArray['organization'] = trim($sheet->getCell('J' . $row)->getValue());
                         $userShareholderArray['username'] = $username;
-                        $userShareholderArray['password'] = rand(100000,999999);
+                        $userShareholderArray['password'] = rand(100000, 999999);
                         $shareHolderShareArray['total'] = $coPhan;
                         $tongSoCP += $coPhan;
 
