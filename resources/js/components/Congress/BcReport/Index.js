@@ -63,9 +63,9 @@ function Index() {
 
     const getListUserShare = (id, page = 1,) => {
         setObjectId(id);
-        setPageCurrent(page);
+        setPageCurrentUser(page);
         setLoading(true);
-        userShareholderService.getListByReport(page, id, nameSearch, block)
+        userShareholderService.getListByReport(id,page, nameSearch, block)
             .then(
                 data => {
                     setLoading(false);
@@ -359,7 +359,7 @@ function Index() {
                                                                                         linkPage={linkPageUser}
                                                                                         pageCurrent={pageCurrentUser}
                                                                                         pageLast={pageLastUser}
-                                                                                        pageCurentRollBack={e => getListUserShare(e)}></Paginate>
+                                                                                        pageCurentRollBack={e => getListUserShare(ObjectId,e)}></Paginate>
                                                                                 </Box>
                                                                             </Box>
                                                                         </Box>

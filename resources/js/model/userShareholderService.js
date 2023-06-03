@@ -2,6 +2,8 @@ import GlobalSetting from "../components/pages/GlobalSetting";
 import {userService} from "./userService";
 
 export const userShareholderService = {
+    getListCheckin,
+    getListById,
     getList,
     getListType,
     getListOrganization,
@@ -12,6 +14,16 @@ export const userShareholderService = {
 let user = JSON.parse(localStorage.getItem('user'));
 let api = "shareholder";
 
+function getListById(id) {
+    const requestOptions = {
+        method: 'GET',
+        'Content-Type': 'application/json',
+        headers: authHeader()
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/getListById?id=${id}`, requestOptions).then(handleResponse);
+}
+
 function UpdateBlock(user_share_id,status,congress_id) {
     const requestOptions = {
         method: 'POST',
@@ -20,7 +32,7 @@ function UpdateBlock(user_share_id,status,congress_id) {
 
     return fetch(`${GlobalSetting.url}api/${api}/updateBlock?user_share_id=${user_share_id}&status=${status}&congress_id=${congress_id}`, requestOptions).then(handleResponse);
 }
-function getListByReport(page, id,name, block) {
+function getListByReport(id,page,name, block) {
     console.log('block',block);
     const requestOptions = {
         method: 'GET',
@@ -29,6 +41,15 @@ function getListByReport(page, id,name, block) {
     };
 
     return fetch(`${GlobalSetting.url}api/${api}/getListReport?page=${page}&id=${id}&name=${name}&block=${block}`, requestOptions).then(handleResponse);
+}
+function getListCheckin(page, name, checkin) {
+    const requestOptions = {
+        method: 'GET',
+        'Content-Type': 'application/json',
+        headers: authHeader()
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/getListCheckin?page=${page}&name=${name}&checkin=${checkin}`, requestOptions).then(handleResponse);
 }
 
 function getList(page, name, type, organization) {

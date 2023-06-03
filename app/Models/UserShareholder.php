@@ -18,9 +18,10 @@ class UserShareholder extends Model
 
     const PERSONAL = 1;
     const ORGANIZATION = 2;
+    const CHECKIN = 1;
 
     protected $table = "user_shareholder";
-    protected $fillable = ['id', 'username', 'password', 'name', 'code_dksh', 'date_range', 'issued_by', 'phone_number', 'address', 'email', 'type', 'organization', 'user_id', 'created_at', 'updated_at', 'created_by', 'remember_token'];
+    protected $fillable = ['id', 'username', 'cccd', 'password', 'name', 'code_dksh', 'date_range', 'issued_by', 'phone_number', 'address', 'email', 'type', 'organization', 'user_id', 'created_at', 'updated_at', 'created_by', 'remember_token'];
 
     public static function getListType(): array
     {
@@ -77,18 +78,18 @@ class UserShareholder extends Model
             $query = $query->where('user_shareholder.name', 'like', '%' . $txtName . '%');
         }
         if ($status != self::BLOCK) {
-            $query = $query->select('user_shareholder.id as id', 'user_shareholder.name as name', 'user_shareholder.name as cccd', 'user_shareholder.phone_number',
+            $query = $query->select('user_shareholder.id as id', 'user_shareholder.name as name', 'user_shareholder.cccd as cccd', 'user_shareholder.phone_number',
                 'shareholder_shares.total as total')
                 ->orderBy('name', 'asc')
                 ->paginate(10);
-            foreach ($query as $k => $v) {
+            foreach ($query as $v) {
                 $blockVoting = DB::table('user_share_block_voting')->where('id_vote_congress_report', $congress_id)->where('id_user_share', $v->id)->first();
                 $v['block'] = $blockVoting != null ? $blockVoting->status : 0;
             }
         } else {
             $query = $query->leftJoin('user_share_block_voting', 'user_shareholder.id', '=', 'user_share_block_voting.id_user_share')
                 ->where('id_vote_congress_report', $congress_id)
-                ->select('user_shareholder.id as id', 'user_shareholder.name as name', 'user_shareholder.name as cccd', 'user_shareholder.phone_number',
+                ->select('user_shareholder.id as id', 'user_shareholder.name as name', 'user_shareholder.cccd as cccd', 'user_shareholder.phone_number',
                     'user_shares.total as total', 'user_share_block_voting.status as block')
                 ->orderBy('name', 'asc')
                 ->paginate(10);
@@ -119,5 +120,32 @@ class UserShareholder extends Model
             return $title->name_vn;
         }
         return null;
+    }
+
+    public static function getListCheckin($txtName, $checkin)
+    {
+
+        $user_id = Auth::user()->id;
+        $query = UserShareholder::query();
+        $query = $query->where(function ($query) use ($txtName) {
+            $query->where('name', 'like', '%' . $txtName . '%')
+                ->orWhere('cccd', 'like', '%' . $txtName . '%')
+                ->orWhere('phone_number', 'like', '%' . $txtName . '%')
+                ->orWhere('code_dksh', 'like', '%' . $txtName . '%');
+        })
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+
+        foreach ($query as $v) {
+            $shareholder_share_total = UserShareCheckin::query();
+            if ($checkin != null) {
+                $shareholder_share_total = $shareholder_share_total->where('is_check', $checkin);
+            }
+            $shareholder_share_total = $shareholder_share_total->where('user_shares_id', $v->id)->first();
+            $v['checkin'] = $shareholder_share_total != null ? $shareholder_share_total->is_check : 0;
+            $shareholder_share_total = DB::table('shareholder_shares')->where('user_id', $user_id)->where('user_shares_id', $v->id)->first();
+            $v['total'] = $shareholder_share_total != null ? $shareholder_share_total->total : 0;
+        }
+        return $query;
     }
 }

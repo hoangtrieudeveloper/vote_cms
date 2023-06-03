@@ -42,6 +42,7 @@ import UpdateDocuments from "./Congress/Documents/Update";
 import UpdateInfoBasic from "./Company/InfoBasic/Update";
 //cổ đông
 import Shareholder from "./Shareholder";
+import CheckShareholder from "./CheckShareholder";
 
 //profile
 import EditProfile from "./users/profile/EditProfile";
@@ -61,12 +62,18 @@ export default function Layout() {
                         <ErrorScope/>
                     </Route>
 
+
+                    <PrivateRoute path="/checkin-thu-cong">
+                        <Header/>
+                        <Sidebar/>
+                        <CheckShareholder/>
+                    </PrivateRoute>
+
                     <PrivateRoute path="/bien-ban-nghi-quyet">
                         <Header/>
                         <Sidebar/>
                         <VoteResult/>
                     </PrivateRoute>
-
                     <PrivateRoute path="/khai-bao-thu-tuc-khai-mac">
                         <Header/>
                         <Sidebar/>

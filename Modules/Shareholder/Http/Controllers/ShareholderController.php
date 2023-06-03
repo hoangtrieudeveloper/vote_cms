@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use \Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 require("PHPExcel/PHPExcel.php");
@@ -19,6 +20,30 @@ class ShareholderController extends Controller
     /*
    * Feedback
    */
+
+    public function getListById(Request $request){
+        try {
+            $id = $request->id;
+            $query = UserShareholder::getListCheckin($id,0);
+            $result = Utils::messegerAlert(1, "alert-success", 'Thành công!', $query);
+        } catch (\Exception $exception) {
+            $result = Utils::messegerAlert(2, "alert-danger", 'Thất bại!',);
+        }
+        return response()->json($result);
+    }
+
+    public function getListCheckin(Request $request)
+    {
+        try {
+            $txtName = $request->name;
+            $checkin = $request->checkin;
+            $query = UserShareholder::getListCheckin($txtName, $checkin);
+            $result = Utils::messegerAlert(1, "alert-success", 'Thành công!', $query);
+        } catch (\Exception $exception) {
+            $result = Utils::messegerAlert(2, "alert-danger", 'Thất bại!',);
+        }
+        return response()->json($result);
+    }
 
     public function updateBlock(Request $request)
     {
@@ -70,6 +95,7 @@ class ShareholderController extends Controller
 
     public function getList(Request $request)
     {
+        $user_id = Auth::user()->id;
         $txtName = $request->name;
         $type = $request->type;
         $organization = $request->organization;
@@ -84,6 +110,10 @@ class ShareholderController extends Controller
             ->where('code_dksh', 'like', '%' . $txtName . '%')
             ->orderBy('id', 'desc')
             ->paginate(10);
+        foreach ($query as $v) {
+            $shareholder_share_total = DB::table('shareholder_shares')->where('user_id', $user_id)->where('user_shares_id', $v->id)->first();
+            $v['total'] = $shareholder_share_total != null ? $shareholder_share_total->total : 0;
+        }
         if ($query) {
             $result = [
                 "status" => 1,

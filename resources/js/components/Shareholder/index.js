@@ -242,10 +242,10 @@ function Shareholder() {
                                                         {i.phone_number}
                                                     </td>
                                                     <td>
-                                                        <span className="badge badge-soft-success p-2">1.901</span>
+                                                        <span className="badge badge-soft-success p-2">{i.total}</span>
                                                     </td>
                                                     <td>
-                                                        ck
+                                                        ksb
                                                     </td>
                                                     <td>
                                                         {i.email}

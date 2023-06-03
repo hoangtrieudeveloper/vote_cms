@@ -136,8 +136,8 @@ export default function Sidebar({...props}) {
                                 </Box>
                             </li>}
 
-                        {localStorage.getItem('scopes').includes('ket-qua-bieu-quyet') && <li className="nav-item">
-                            <a className={route.includes('ket-qua-bieu-quyet') ? "nav-link menu-link active" : "nav-link menu-link"}
+                        {localStorage.getItem('scopes').includes('bien-ban-nghi-quyet') && <li className="nav-item">
+                            <a className={route.includes('bien-ban-nghi-quyet') ? "nav-link menu-link active" : "nav-link menu-link"}
                                href="#manager_report" data-bs-toggle="collapse"
                                role="button" aria-expanded="false" aria-controls="sidebarApps">
                                 <i className="ri-apps-2-line"></i> <span data-key="t-apps"> Quản lý kết quả biểu quyết</span>
@@ -151,6 +151,26 @@ export default function Sidebar({...props}) {
                                             <a href="/bien-ban-nghi-quyet"
                                                className={route.includes('bien-ban-nghi-quyet') ? "nav-link active" : "nav-link"}
                                                data-key="t-calendar"> Biên bản - Nghị quyết ĐH </a>
+                                        </li>}
+                                </ul>
+                            </Box>
+                        </li>}
+
+                        {localStorage.getItem('scopes').includes('checkin-thu-cong') && <li className="nav-item">
+                            <a className={route.includes('checkin-thu-cong') ? "nav-link menu-link active" : "nav-link menu-link"}
+                               href="#manager_report1" data-bs-toggle="collapse"
+                               role="button" aria-expanded="false" aria-controls="sidebarApps">
+                                <i className="ri-apps-2-line"></i> <span data-key="t-apps"> Kiểm tra tư cách CĐ</span>
+                            </a>
+                            <Box
+                                className={route.includes('checkin-thu-cong') ? "collapse menu-dropdown show" : "collapse menu-dropdown"}
+                                id="manager_report1">
+                                <ul className="nav nav-sm flex-column">
+                                    {JSON.parse(localStorage.getItem('scopes')).includes('checkin-thu-cong') &&
+                                        <li className="nav-item">
+                                            <a href="/checkin-thu-cong"
+                                               className={route.includes('checkin-thu-cong') ? "nav-link active" : "nav-link"}
+                                               data-key="t-calendar"> Checkin thủ công </a>
                                         </li>}
                                 </ul>
                             </Box>
