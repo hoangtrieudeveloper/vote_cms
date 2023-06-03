@@ -8,8 +8,10 @@ export const userShareholderService = {
     getListType,
     getListOrganization,
     importShareHolder,
+    exportPWCD,
     getListByReport,
-    UpdateBlock
+    UpdateBlock,
+    downloadCoDongDemo
 };
 let user = JSON.parse(localStorage.getItem('user'));
 let api = "shareholder";
@@ -32,7 +34,7 @@ function UpdateBlock(user_share_id,status,congress_id) {
 
     return fetch(`${GlobalSetting.url}api/${api}/updateBlock?user_share_id=${user_share_id}&status=${status}&congress_id=${congress_id}`, requestOptions).then(handleResponse);
 }
-function getListByReport(id,page,name, block) {
+function getListByReport(page, id,name, block) {
     console.log('block',block);
     const requestOptions = {
         method: 'GET',
@@ -82,6 +84,66 @@ function getListOrganization() {
     return fetch(`${GlobalSetting.url}api/${api}/getListOrganization`, requestOptions).then(handleResponse);
 }
 
+function downloadCoDongDemo() {
+    const requestOptions = {
+        method: 'GET',
+        'Content-Type': 'blob',
+        headers: authHeader()
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/downloadDemoCoDong`, requestOptions).then(response => {
+        let blob = response.blob();
+        if (response.ok && blob != null && blob != undefined) {
+            return blob;
+        }
+        return Promise.reject(response);
+    }).then(blob => {
+        if (blob != null && blob != undefined) {
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = "DanhsachcodongDemo.xlsx";
+            document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
+            a.click();
+            a.remove();  //afterwards we remove the element again
+            return true;
+        }
+        return Promise.reject(blob);
+    }).catch(response => {
+        console.log(response);
+    });
+}
+
+function exportPWCD() {
+    const requestOptions = {
+        method: 'GET',
+        'Content-Type': 'blob',
+        headers: authHeader()
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/exportPWCD`, requestOptions).then(response => {
+        let blob = response.blob();
+        if (response.ok && blob != null && blob != undefined) {
+            return blob;
+        }
+        return Promise.reject(response);
+    }).then(blob => {
+        if (blob != null && blob != undefined) {
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = "Danh_Sach_Mat_Khau_Co_Dong.xlsx";
+            document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
+            a.click();
+            a.remove();  //afterwards we remove the element again
+            return true;
+        }
+        return Promise.reject(blob);
+    }).catch(response => {
+        console.log(response);
+    });
+}
+
 
 function importShareHolder(file) {
     let formData = new FormData();
@@ -108,13 +170,6 @@ function handleResponse(response) {
 
             const error = (data && data.message) || response.statusText;
             return Promise.reject(error);
-        }
-        if (data?.data == null || data?.data == undefined) {
-            return {
-                data: '',
-                status: 2,
-                message: 'Không tìm thấy dữ liệu'
-            }
         }
         return data;
     });

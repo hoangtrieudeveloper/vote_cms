@@ -24,5 +24,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::any('/getListType', [ShareholderController::class, 'getListType'])->name('getListType'); //
         Route::any('/getListOrganization', [ShareholderController::class, 'getListOrganization'])->name('getListOrganization'); //
         Route::any('/importShareHolder', [ShareholderController::class, 'importCoDong'])->name('importShareHolder'); //
+        Route::any('/downloadDemoCoDong', [ShareholderController::class, 'downloadCDDemo'])->name('downloadDemoCoDong'); //
+        Route::any('/exportPWCD', [ShareholderController::class, 'downloadCDPass'])->name('exportPWCD'); //
     });
 });

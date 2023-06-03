@@ -21,7 +21,7 @@ class UserShareholder extends Model
     const CHECKIN = 1;
 
     protected $table = "user_shareholder";
-    protected $fillable = ['id', 'username', 'cccd', 'password', 'name', 'code_dksh', 'date_range', 'issued_by', 'phone_number', 'address', 'email', 'type', 'organization', 'user_id', 'created_at', 'updated_at', 'created_by', 'remember_token'];
+    protected $fillable = ['id', 'username', 'cccd', 'password','no_hash_password', 'name', 'code_dksh', 'date_range', 'issued_by', 'phone_number', 'address', 'email', 'type', 'organization', 'user_id', 'created_at', 'updated_at', 'created_by', 'remember_token'];
 
     public static function getListType(): array
     {

@@ -6,6 +6,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -43,6 +45,13 @@ class User extends Authenticatable
     public static function getList()
     {
         return self::where('type',2)->paginate(10);
+    }
+
+    public static function LockShareholderEdit(){
+        $user_id = Auth::user()->id;
+        $user = User::find($user_id);
+        $user->locked_shareholder_edit = true;
+        $user->save();
     }
 
     public static function Create($data)

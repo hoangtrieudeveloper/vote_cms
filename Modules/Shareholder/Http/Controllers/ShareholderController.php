@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use \Exception;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -21,10 +22,11 @@ class ShareholderController extends Controller
    * Feedback
    */
 
-    public function getListById(Request $request){
+    public function getListById(Request $request)
+    {
         try {
             $id = $request->id;
-            $query = UserShareholder::getListCheckin($id,0);
+            $query = UserShareholder::getListCheckin($id, 0);
             $result = Utils::messegerAlert(1, "alert-success", 'Thành công!', $query);
         } catch (\Exception $exception) {
             $result = Utils::messegerAlert(2, "alert-danger", 'Thất bại!',);
@@ -133,20 +135,20 @@ class ShareholderController extends Controller
 
     public function getListOrganization()
     {
-        return [
+        return response()->json([
             "status" => 1,
             "message" => "Thành công!",
             "data" => UserShareholder::getListOrganization(),
-        ];
+        ]);
     }
 
     public function getListType()
     {
-        return [
+        return response()->json([
             "status" => 1,
             "message" => "Thành công!",
             "data" => UserShareholder::getListType(),
-        ];
+        ]);
     }
 
     public function importCoDong(Request $request)
@@ -154,6 +156,11 @@ class ShareholderController extends Controller
         $request->validate([
             'file' => 'required|mimes:xlsx, xls'
         ]);
+        $response = [
+            "status" => 1,
+            "message" => "Import Cổ đông thành công!",
+            "erros" => [],
+        ];
         try {
             if ($request->hasFile('file') && $request->file('file')->isValid()) {
                 $inputFileName = $request->file('file')->getRealPath();
@@ -162,7 +169,7 @@ class ShareholderController extends Controller
                     $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
                     $objPHPExcel = $objReader->load($inputFileName);
                 } catch (Exception $e) {
-                    return [
+                    $response = [
                         "status" => 2,
                         "message" => "Lỗi không thể tải file " . pathinfo($inputFileName, PATHINFO_BASENAME) . 'ERROR: ' . $e->getMessage(),
                     ];
@@ -204,7 +211,9 @@ class ShareholderController extends Controller
                             $userShareholderArray['type'] = trim($sheet->getCell('I' . $row)->getValue());
                             $userShareholderArray['organization'] = trim($sheet->getCell('J' . $row)->getValue());
                             $userShareholderArray['username'] = $username;
-                            $userShareholderArray['password'] = Utils::generateRandomCode(6);
+                            $password = Utils::generateRandomCode(6);
+                            $userShareholderArray['password'] = Hash::make($password);
+                            $userShareholderArray['no_hash_password'] = $password;
                             $shareHolderShareArray['total'] = $coPhan;
                             $tongSoCP += $coPhan;
 
@@ -237,25 +246,64 @@ class ShareholderController extends Controller
                     }
                 }
             } else {
-                return [
+                $response = [
                     "status" => 2,
                     "message" => "File dữ liệu không hợp lệ!",
                 ];
             }
         } catch (Exception $e) {
-            return [
+            $response = [
                 "status" => 2,
                 "message" => "Đã có lỗi xảy ra!",
                 "erros" => $errors,
                 "exception" => $e->getMessage()
             ];
         }
-        return [
-            "status" => 1,
-            "message" => "Import Cổ đông thành công!",
-            "erros" => $errors,
-        ];
+        return response()->json($response);
     }
 
+    public function downloadCDDemo(Request $request)
+    {
+        $file = public_path() . "/files/DanhsachcodongDemo.xlsx";
+        // Download file with custom headers
+        return response()->withHeaders([
+            'Content-Type' => 'application/vnd.ms-excel',
+            'Content-Transfer-Encoding' => 'Binary',
+            'Content-Length' => filesize($file),
+            'Content-Disposition' => 'attachment; filename="' . $file . '"'
+        ]);
+    }
+
+    public function downloadCDPass(Request $request)
+    {
+        try {
+            $data = UserShareholder::where('user_id', Auth::user()->id)->get();
+            $fileType = 'Excel2007';
+            $fileName = public_path() . "/files/SchemaMKCD.xlsx";
+            $objPHPExcel = \PHPExcel_IOFactory::load($fileName);
+            $objPHPExcel->getActiveSheet();
+            $startRow = 2;
+            if ($data) {
+                foreach ($data as $idx => $row) {
+                    $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue("A" . ($startRow + $idx), $idx + 1)
+                        ->setCellValue("B" . ($startRow + $idx), $row->id)
+                        ->setCellValue("C" . ($startRow + $idx), $row->name)
+                        ->setCellValue("D" . ($startRow + $idx), $row->username)
+                        ->setCellValue("E" . ($startRow + $idx), $row->no_hash_password);
+                }
+                $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, $fileType);
+                header('Content-Description: File Transfer');
+                header('Content-Type: application/vnd.ms-excel');
+                header('Content-Disposition: attachment;filename="report.xlsx"');
+//                dd($objWriter);
+                $objWriter->save('php://output');
+            } else {
+                throw new Exception('Không có dữ liệu!');
+            }
+        } catch (\PHPExcel_Exception $e) {
+            throw new Exception('Error' . $e->getMessage());
+        }
+    }
 
 }
