@@ -37,6 +37,10 @@ function Update() {
         meeting_name_en: "",
         meeting_chairman: "",
         meeting_chairman_en: "",
+        vote_time: "",
+        vote_time_en: "",
+        vote_time_close: "",
+        vote_time_close_en: "",
         secretary_chairman: "",
         secretary_chairman_en: "",
         link_livestream: "",
@@ -72,6 +76,10 @@ function Update() {
         meeting_chairman_en,
         secretary_chairman,
         secretary_chairman_en,
+        vote_time,
+        vote_time_en,
+        vote_time_close,
+        vote_time_close_en,
         link_livestream,
         link_livestream_en,
         Link_hdsd,
@@ -100,39 +108,6 @@ function Update() {
                         setLoading(false);
                         if (data?.status == 1) {
                             Helpers.showToast('success', data?.mess);
-                            setReport({
-                                id: idObject,
-                                logo: "",
-                                banner: "",
-                                name_vn: "",
-                                name_en: "",
-                                phone_number: "",
-                                number_fax: "",
-                                stock_code: "",
-                                code_business: "",
-                                total_shareholder: "",
-                                total_share: "",
-                                header_company: "",
-                                header_company_en: "",
-                                meeting_venue: "",
-                                meeting_venue_en: "",
-                                meeting_time: "",
-                                meeting_time_en: "",
-                                meeting_name: "",
-                                meeting_name_en: "",
-                                meeting_chairman: "",
-                                meeting_chairman_en: "",
-                                secretary_chairman: "",
-                                secretary_chairman_en: "",
-                                link_livestream: "",
-                                link_livestream_en: "",
-                                Link_hdsd: "",
-                                Link_hdsd_en: "",
-                                link_stated: "",
-                                closing_date: "",
-                                hotline: "",
-                            });
-                            getInfoById(idObject);
                         } else {
                             Helpers.showToast('error', data?.mess);
                         }
@@ -168,6 +143,10 @@ function Update() {
                             meeting_name_en: data?.data?.meeting_name_en,
                             meeting_chairman: data?.data?.meeting_chairman,
                             meeting_chairman_en: data?.data?.meeting_chairman_en,
+                            vote_time: data?.data?.vote_time,
+                            vote_time_en: data?.data?.vote_time_en,
+                            vote_time_close: data?.data?.vote_time_close,
+                            vote_time_close_en: data?.data?.vote_time_close_en,
                             secretary_chairman: data?.data?.secretary_chairman,
                             secretary_chairman_en: data?.data?.secretary_chairman_en,
                             link_livestream: data?.data?.link_livestream,
@@ -285,7 +264,7 @@ function Update() {
                                                                     <img
                                                                         src={listFileEng}
                                                                         alt="Dropzone-Image"
-                                                                        style={{width: 150}}/>
+                                                                        style={{width: 266}}/>
                                                                 </Box>
                                                             }
                                                             <input name="file" type="file" id="form" hidden
@@ -735,6 +714,103 @@ function Update() {
                                             </Box>
                                         </Box>
                                     </Box>
+                                    <Box>
+                                        <Box className="row">
+                                            <Box className="col-xl-6">
+                                                <Box className="mb-3">
+                                                    <TextField
+                                                        className="form-control"
+                                                        fullWidth
+                                                        name="vote_time"
+                                                        type='text'
+                                                        required
+                                                        onChange={e => onInputChange(e)}
+                                                        sx={{
+                                                            'input': {
+                                                                '&::placeholder': {
+                                                                    fontSize: 16,
+                                                                }
+                                                            },
+                                                        }}
+                                                        label="Thời gian biểu quyết"
+                                                        variant="outlined"
+                                                        value={report.vote_time}
+                                                    />
+                                                </Box>
+                                            </Box>
+                                            <Box className="col-xl-6">
+                                                <Box className="mb-3">
+                                                    <TextField
+                                                        className="form-control"
+                                                        fullWidth
+                                                        name="vote_time_en"
+                                                        type='text'
+                                                        required
+                                                        onChange={e => onInputChange(e)}
+                                                        sx={{
+                                                            'input': {
+                                                                '&::placeholder': {
+                                                                    fontSize: 16,
+                                                                }
+                                                            },
+                                                        }}
+                                                        label="Thời gian biểu quyết(Tiếng Anh)"
+                                                        variant="outlined"
+                                                        value={report.vote_time_en}
+                                                    />
+                                                </Box>
+                                            </Box>
+                                        </Box>
+                                    </Box>
+                                    <Box>
+                                        <Box className="row">
+                                            <Box className="col-xl-6">
+                                                <Box className="mb-3">
+                                                    <TextField
+                                                        className="form-control"
+                                                        fullWidth
+                                                        name="vote_time_close"
+                                                        type='text'
+                                                        required
+                                                        onChange={e => onInputChange(e)}
+                                                        sx={{
+                                                            'input': {
+                                                                '&::placeholder': {
+                                                                    fontSize: 16,
+                                                                }
+                                                            },
+                                                        }}
+                                                        label="Thời gian đóng biểu quyết"
+                                                        variant="outlined"
+                                                        value={report.vote_time_close}
+                                                    />
+                                                </Box>
+                                            </Box>
+                                            <Box className="col-xl-6">
+                                                <Box className="mb-3">
+                                                    <TextField
+                                                        className="form-control"
+                                                        fullWidth
+                                                        name="vote_time_close_en"
+                                                        type='text'
+                                                        required
+                                                        onChange={e => onInputChange(e)}
+                                                        sx={{
+                                                            'input': {
+                                                                '&::placeholder': {
+                                                                    fontSize: 16,
+                                                                }
+                                                            },
+                                                        }}
+                                                        label="Thời gian đóng biểu quyết(Tiếng Anh)"
+                                                        variant="outlined"
+                                                        value={report.vote_time_close_en}
+                                                    />
+                                                </Box>
+                                            </Box>
+                                        </Box>
+                                    </Box>
+
                                     <Box>
                                         <Box className="row">
                                             <Box className="col-xl-6">

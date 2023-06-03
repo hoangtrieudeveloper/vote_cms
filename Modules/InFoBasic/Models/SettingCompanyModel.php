@@ -15,9 +15,9 @@ class SettingCompanyModel extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'id' ,
+        'id',
         'logo',
-        'banner' ,
+        'banner',
         'name_vn',
         'name_en',
         'phone_number',
@@ -36,6 +36,10 @@ class SettingCompanyModel extends Model
         'meeting_name_en',
         'meeting_chairman',
         'meeting_chairman_en',
+        'vote_time',
+        'vote_time_en',
+        'vote_time_close',
+        'vote_time_close_en',
         'secretary_chairman',
         'secretary_chairman_en',
         'link_livestream',
@@ -47,15 +51,17 @@ class SettingCompanyModel extends Model
         'hotline',
     ];
 
-    public function getById($id){
-        $data =  SettingCompanyModel::where('user_id', $id)->first();
-        $data['total_shareholder'] = UserShareholderModel::where('user_id',$id)->count();
-        $total_share = UserShareModel::where('user_id',$id)->first();
+    public function getById($id)
+    {
+        $data = SettingCompanyModel::where('user_id', $id)->first();
+        $data['total_shareholder'] = UserShareholderModel::where('user_id', $id)->count();
+        $total_share = UserShareModel::where('user_id', $id)->first();
         $data['total_share'] = $total_share['total'] ?? 0;
         return $data;
     }
 
-    public function edit(array $data){
+    public function edit(array $data)
+    {
         return SettingCompanyModel::where('id', $data['id'])->update($data);
     }
 

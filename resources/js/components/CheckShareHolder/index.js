@@ -7,6 +7,7 @@ import {userShareholderService} from "../../model/userShareholderService";
 import Pagination from "../pages/Pagination";
 import ToastNotifi from "../pages/ToastNotifi";
 import Loading from "../pages/Loading";
+import helpers from "../pages/Helpers";
 
 function CheckShareholder() {
     //paginate
@@ -23,7 +24,9 @@ function CheckShareholder() {
         {value: "0", label: "Chưa check in"},
         {value: "1", label: "Đã check in"},
     ];
+
     const [checkin, setCheckin] = useState({
+        id: "",
         user_name: "",
         password: "",
         name: "",
@@ -33,7 +36,8 @@ function CheckShareholder() {
         email: "",
         issued_by: "",
         share_total: 0,
-        total: "",
+        total: 0,
+        check_in: "",
     });
 
 
@@ -69,6 +73,21 @@ function CheckShareholder() {
             });
     }
 
+    const CheckIn = (id) => {
+        setLoading(true);
+        userShareholderService.CheckIn(id)
+            .then(data => {
+                setLoading(false);
+                if (data.status == 1) {
+                    helpers.showToast('success', data?.mess);
+                    getListData();
+                } else {
+                    resetData();
+                    helpers.showToast('error', data?.mess);
+                }
+            });
+    }
+
     const getListById = (id) => {
         setLoading(true);
         userShareholderService.getListById(id)
@@ -76,9 +95,20 @@ function CheckShareholder() {
                 console.log('data', data);
                 setLoading(false);
                 if (data.status == 1) {
-                    setData(data?.data?.data);
-                    setLinkPage(data?.data?.links);
-
+                    setCheckin({
+                        id: data?.data.id,
+                        user_name: "",
+                        password: "",
+                        name: data?.data.name,
+                        cccd: data?.data.cccd,
+                        phone_number: data?.data.phone_number,
+                        date_range: data?.data.date_range,
+                        email: data?.data.email,
+                        issued_by: data?.data.issued_by,
+                        share_total: data?.data.share_total,
+                        total: data?.data.total,
+                        check_in: data?.data.check_in,
+                    });
                 } else {
                     resetData();
                 }
@@ -193,19 +223,21 @@ function CheckShareholder() {
                                                     </td>
                                                     <td>
                                                         {i.checkin == 1 ?
-                                                            <span className="badge badge-label bg-danger">Đã check in</span>
+                                                            <span
+                                                                className="badge badge-label bg-danger">Đã check in</span>
                                                             :
-                                                            <span className="badge badge-label bg-danger">Chưa check in</span>
+                                                            <span
+                                                                className="badge badge-label bg-danger">Chưa check in</span>
                                                         }
                                                     </td>
-                                                    <td class="display-flex">
+                                                    <td className="display-flex">
                                                         <button type="button"
                                                                 className="btn btn-secondary custom-toggle active"
-                                                                data-bs-toggle="modal" data-bs-target="#exampleModalgrid"
-
-                                                                >
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#exampleModalgrid"
+                                                                onClick={() => getListById(i.id)}>
                                                             <span className="icon-off"><i
-                                                                className="ri-check-fill align-bottom me-1" >
+                                                                className="ri-check-fill align-bottom me-1">
                                                             </i> Check in</span>
                                                         </button>
                                                         <Box className="modal fade" id="exampleModalgrid"
@@ -214,23 +246,24 @@ function CheckShareholder() {
                                                                 <Box className="modal-content">
                                                                     <Box className="modal-header">
                                                                         <h5 className="modal-title"
-                                                                            id="exampleModalgridLabel">XÁC NHẬN TƯ CÁCH THAM GIA</h5>
+                                                                            id="exampleModalgridLabel">XÁC NHẬN TƯ CÁCH
+                                                                            THAM GIA</h5>
                                                                         <button type="button" className="btn-close"
                                                                                 data-bs-dismiss="modal"
                                                                                 aria-label="Close"></button>
                                                                     </Box>
                                                                     <Box className="modal-body">
-                                                                        <form action="javascript:void(0);">
                                                                             <Box className="row g-3">
                                                                                 <Box className="col-xxl-6">
                                                                                     <Box>
                                                                                         <label htmlFor="firstName"
-                                                                                               className="form-label">Cổ đông/ người đại diện</label>
+                                                                                               className="form-label">Cổ
+                                                                                            đông/ người đại diện</label>
                                                                                         <input type="text"
                                                                                                className="form-control"
-                                                                                               id="firstName"
                                                                                                disabled
-                                                                                               placeholder="Enter firstname"/>
+                                                                                               value={checkin.name}
+                                                                                        />
                                                                                     </Box>
                                                                                 </Box>
                                                                                 <Box className="col-xxl-6">
@@ -239,83 +272,114 @@ function CheckShareholder() {
                                                                                                className="form-label">ĐKSH/CMND/CCCD</label>
                                                                                         <input type="text"
                                                                                                className="form-control"
-                                                                                               id="lastName"
+                                                                                               disabled
+                                                                                               value={checkin.cccd}
                                                                                         />
                                                                                     </Box>
                                                                                 </Box>
                                                                                 <Box className="col-xxl-6">
                                                                                     <label htmlFor="emailInput"
-                                                                                           className="form-label">Số điện thoại</label>
-                                                                                    <input type="email"
+                                                                                           className="form-label">Số
+                                                                                        điện thoại</label>
+                                                                                    <input type="text"
                                                                                            className="form-control"
-                                                                                           id="emailInput"
-                                                                                           placeholder="Enter your email"/>
+                                                                                           disabled
+                                                                                           value={checkin.phone_number}
+                                                                                    />
                                                                                 </Box>
                                                                                 <Box className="col-xxl-6">
                                                                                     <label htmlFor="passwordInput"
-                                                                                           className="form-label">Ngày cấp</label>
-                                                                                    <input type="password"
+                                                                                           className="form-label">Ngày
+                                                                                        cấp</label>
+                                                                                    <input type="text"
                                                                                            className="form-control"
-                                                                                           id="passwordInput"
-                                                                                           value="451326546"
-                                                                                           placeholder="Enter password"/>
+                                                                                           disabled
+                                                                                           value={checkin.date_range}
+                                                                                    />
                                                                                 </Box>
 
                                                                                 <Box className="col-xxl-6">
                                                                                     <label htmlFor="emailInput"
                                                                                            className="form-label">Email</label>
-                                                                                    <input type="email"
+                                                                                    <input type="text"
                                                                                            className="form-control"
-                                                                                           id="emailInput"
-                                                                                           placeholder="Enter your email"/>
+                                                                                           disabled
+                                                                                           value={checkin.email}
+                                                                                    />
                                                                                 </Box>
                                                                                 <Box className="col-xxl-6">
                                                                                     <label htmlFor="passwordInput"
-                                                                                           className="form-label">Nơi cấp</label>
-                                                                                    <input type="password"
+                                                                                           className="form-label">Nơi
+                                                                                        cấp</label>
+                                                                                    <input type="text"
                                                                                            className="form-control"
-                                                                                           id="passwordInput"
-                                                                                           value="451326546"
-                                                                                           placeholder="Enter password"/>
+                                                                                           disabled
+                                                                                           value={checkin.issued_by}
+                                                                                    />
                                                                                 </Box>
                                                                                 <Box className="col-xxl-6">
                                                                                     <label htmlFor="emailInput"
-                                                                                           className="form-label">Cổ phần sở hữu</label>
-                                                                                    <input type="email"
+                                                                                           className="form-label">Cổ
+                                                                                        phần sở hữu</label>
+                                                                                    <input type="text"
                                                                                            className="form-control"
-                                                                                           id="emailInput"
-                                                                                           placeholder="Enter your email"/>
+                                                                                           disabled
+                                                                                           value={checkin.share_total}
+                                                                                    />
                                                                                 </Box>
                                                                                 <Box className="col-xxl-6">
                                                                                     <label htmlFor="passwordInput"
-                                                                                           className="form-label">Tổng số cổ phần đại diện</label>
-                                                                                    <input type="password"
+                                                                                           className="form-label">Tổng
+                                                                                        số cổ phần đại diện</label>
+                                                                                    <input type="text"
                                                                                            className="form-control"
-                                                                                           id="passwordInput"
-                                                                                           value="451326546"
-                                                                                           placeholder="Enter password"/>
+                                                                                           disabled
+                                                                                           value={checkin.total}
+                                                                                    />
                                                                                 </Box>
-
-                                                                                <Box className="col-lg-12">
-                                                                                    <Box
-                                                                                        className="hstack gap-2 justify-content-end">
-                                                                                        <button type="button"
-                                                                                                className="btn btn-light"
-                                                                                                data-bs-dismiss="modal">Close
+                                                                                <Box className="modal-body text-center">
+                                                                                    <img src="/QR/frame.png"
+                                                                                         style={{width: 200}} alt=""/>
+                                                                                    {checkin.check_in == null ?
+                                                                                    <Box className="mt-4 pt-4">
+                                                                                        <button
+                                                                                            className="btn btn-light bg-gradient waves-effect waves-light"
+                                                                                            data-bs-dismiss="modal"
+                                                                                            style={{marginRight: 22}}>
+                                                                                            Hủy bỏ
                                                                                         </button>
-                                                                                        <button type="submit"
-                                                                                                className="btn btn-primary">Submit
+                                                                                        <button
+                                                                                            className="btn btn-success bg-gradient waves-effect waves-light"
+                                                                                            data-bs-dismiss="modal"
+                                                                                            onClick={() => CheckIn(checkin.id)}>
+                                                                                            Xác nhận
                                                                                         </button>
                                                                                     </Box>
+                                                                                        :
+                                                                                        <Box className="mt-4 pt-4">
+                                                                                            <button
+                                                                                                className="btn btn-light bg-gradient waves-effect waves-light"
+                                                                                                data-bs-dismiss="modal"
+                                                                                                style={{marginRight: 22}}>
+                                                                                               In Phiếu Biểu Quyết
+                                                                                            </button>
+                                                                                            <button
+                                                                                                className="btn btn-success bg-gradient waves-effect waves-light"
+                                                                                                data-bs-dismiss="modal">
+                                                                                                In tài khoản đăng nhập
+                                                                                            </button>
+                                                                                        </Box>
+                                                                                    }
                                                                                 </Box>
                                                                             </Box>
-                                                                        </form>
                                                                     </Box>
                                                                 </Box>
                                                             </Box>
                                                         </Box>
                                                         <button type="button"
-                                                                className="btn btn-success btn-border" data-bs-toggle="modal" data-bs-target="#firstmodal">QR code
+                                                                className="btn btn-success btn-border"
+                                                                data-bs-toggle="modal" data-bs-target="#firstmodal">QR
+                                                            code
                                                         </button>
 
                                                         <Box className="modal fade" id="firstmodal" aria-hidden="true"
@@ -326,11 +390,10 @@ function CheckShareholder() {
                                                                         <img src="/QR/frame.png" alt=""/>
                                                                         <Box className="mt-4 pt-4">
                                                                             <h4>QR CODE</h4>
-                                                                            <p className="text-muted"> Quét mã QR để thực hiện đăng nhập cho Cổ đông</p>
-                                                                            <button className="btn btn-secondary waves-effect waves-light"
-                                                                                    data-bs-target="#secondmodal"
-                                                                                    data-bs-toggle="modal"
-                                                                                    data-bs-dismiss="modal">
+                                                                            <p className="text-muted"> Quét mã QR để
+                                                                                thực hiện đăng nhập cho Cổ đông</p>
+                                                                            <button
+                                                                                className="btn btn-secondary waves-effect waves-light">
                                                                                 In Tài khoản đăng nhập
                                                                             </button>
                                                                         </Box>

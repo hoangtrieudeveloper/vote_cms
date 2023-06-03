@@ -27,7 +27,7 @@ function Index() {
     const [pageCurrentUser, setPageCurrentUser] = useState(1);
     const [pageLastUser, setPageLastUser] = useState(1);
     const [ObjectId, setObjectId] = useState();
-    const [title, setTitle] = useState();
+    const [title, setTitle] = useState();;
 
     const deleteReport = (id) => {
         setLoading(true);

@@ -22,11 +22,21 @@ class ShareholderController extends Controller
    * Feedback
    */
 
+    public function checkIn(Request $request){
+        try {
+            $query = UserShareholder::checkIn($request->id);
+            $result = Utils::messegerAlert(1, "alert-success", 'Check in Thành công!');
+        } catch (\Exception $exception) {
+            $result = Utils::messegerAlert(2, "alert-danger", 'Check in Thất bại!',);
+        }
+        return response()->json($result);
+    }
+
     public function getListById(Request $request)
     {
         try {
             $id = $request->id;
-            $query = UserShareholder::getListCheckin($id, 0);
+            $query = UserShareholder::getListById($id);
             $result = Utils::messegerAlert(1, "alert-success", 'Thành công!', $query);
         } catch (\Exception $exception) {
             $result = Utils::messegerAlert(2, "alert-danger", 'Thất bại!',);

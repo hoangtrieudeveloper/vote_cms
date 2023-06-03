@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +22,7 @@ class UserShareholder extends Model
     const CHECKIN = 1;
 
     protected $table = "user_shareholder";
-    protected $fillable = ['id', 'username', 'cccd', 'password','no_hash_password', 'name', 'code_dksh', 'date_range', 'issued_by', 'phone_number', 'address', 'email', 'type', 'organization', 'user_id', 'created_at', 'updated_at', 'created_by', 'remember_token'];
+    protected $fillable = ['id', 'username', 'cccd', 'password', 'no_hash_password', 'name', 'code_dksh', 'date_range', 'issued_by', 'phone_number', 'address', 'email', 'type', 'organization', 'user_id', 'created_at', 'updated_at', 'created_by', 'remember_token'];
 
     public static function getListType(): array
     {
@@ -133,7 +134,7 @@ class UserShareholder extends Model
                 ->orWhere('phone_number', 'like', '%' . $txtName . '%')
                 ->orWhere('code_dksh', 'like', '%' . $txtName . '%');
         })
-            ->orderBy('id', 'desc')
+            ->orderBy('name', 'asc')
             ->paginate(10);
 
         foreach ($query as $v) {
@@ -141,11 +142,38 @@ class UserShareholder extends Model
             if ($checkin != null) {
                 $shareholder_share_total = $shareholder_share_total->where('is_check', $checkin);
             }
+            $v['date_range'] = Carbon::parse($v->date_range)->format('d-m-Y');
             $shareholder_share_total = $shareholder_share_total->where('user_shares_id', $v->id)->first();
             $v['checkin'] = $shareholder_share_total != null ? $shareholder_share_total->is_check : 0;
             $shareholder_share_total = DB::table('shareholder_shares')->where('user_id', $user_id)->where('user_shares_id', $v->id)->first();
             $v['total'] = $shareholder_share_total != null ? $shareholder_share_total->total : 0;
         }
         return $query;
+    }
+
+    public static function getListById($id)
+    {
+        $user_id = Auth::user()->id;
+        $user_share = UserShareholder::where([['id', $id], ['user_id', $user_id]])->first();
+        $user_share['date_range'] = Carbon::parse($user_share->date_range)->format('d-m-Y');
+        $shareholder_share_total = DB::table('shareholder_shares')->where('user_id', $user_id)->where('user_shares_id', $user_share->id)->first();
+        $user_share['total'] = $shareholder_share_total != null ? $shareholder_share_total->total : 0;
+        $user_share['share_total'] = $shareholder_share_total != null ? $shareholder_share_total->total : 0;
+        $checkin = UserShareCheckin::where('user_shares_id', $user_share->id)->first();
+        $user_share['check_in'] = $checkin != null ? $checkin->is_check : null;
+        return $user_share;
+    }
+
+    public static function checkIn($id)
+    {
+        $data = [
+            'user_shares_id' => $id,
+            'is_check' => self::CHECKIN,
+        ];
+        $checkin = UserShareCheckin::where('user_shares_id', $id)->first();
+        if ($checkin == null) {
+            $checkin = UserShareCheckin::Create($data);
+        }
+        return $checkin;
     }
 }
