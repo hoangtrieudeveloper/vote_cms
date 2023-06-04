@@ -22,10 +22,18 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::any('/getListReport', [ShareholderController::class, 'getListReport'])->name('getListReport'); //bc-tờ trình
         Route::any('/getListCheckin', [ShareholderController::class, 'getListCheckin'])->name('getListCheckin'); //chekin cổ đông
         Route::any('/getList', [ShareholderController::class, 'getList'])->name('getList'); //get list data
-        Route::any('/getListType', [ShareholderController::class, 'getListType'])->name('getListType'); //
-        Route::any('/getListOrganization', [ShareholderController::class, 'getListOrganization'])->name('getListOrganization'); //
+        Route::any('/lockChangePassword', [ShareholderController::class, 'lockChangePassword'])->name('lockChangePassword'); //
+        //export,import,download
         Route::any('/importShareHolder', [ShareholderController::class, 'importCoDong'])->name('importShareHolder'); //
         Route::any('/downloadDemoCoDong', [ShareholderController::class, 'downloadCDDemo'])->name('downloadDemoCoDong'); //
         Route::any('/exportPWCD', [ShareholderController::class, 'downloadCDPass'])->name('exportPWCD'); //
+        Route::any('/exportDSCD', [ShareholderController::class, 'exportDSCD'])->name('exportDSCD'); //
+        // select option
+        Route::any('/getListType', [ShareholderController::class, 'getListType'])->name('getListType'); //
+        Route::any('/getListOrganization', [ShareholderController::class, 'getListOrganization'])->name('getListOrganization'); //
+        Route::any('/getListVoteStatus', [ShareholderController::class, 'getListVoteStatus'])->name('getListVoteStatus'); //
+        Route::any('/getListStatus', [ShareholderController::class, 'getListStatus'])->name('getListStatus'); //
+        Route::any('/getListAuthority', [ShareholderController::class, 'getListAuthority'])->name('getListAuthority'); //
+        Route::any('/getListJointTypes', [ShareholderController::class, 'getListJointTypes'])->name('getListJointTypes'); //
     });
 });

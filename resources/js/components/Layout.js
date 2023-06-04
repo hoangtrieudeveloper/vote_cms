@@ -43,6 +43,7 @@ import UpdateInfoBasic from "./Company/InfoBasic/Update";
 //cổ đông
 import Shareholder from "./Shareholder";
 import CheckShareholder from "./CheckShareholder";
+import QuanLyCoDong from "./Shareholder/quanLyCoDong";
 
 //profile
 import EditProfile from "./users/profile/EditProfile";
@@ -144,8 +145,6 @@ export default function Layout() {
                         <UpdateInfoBasic/>
                     </PrivateRoute>
 
-
-
                     <PrivateRoute path="/edit-profile">
                         <Header/>
                         <Sidebar/>
@@ -182,10 +181,15 @@ export default function Layout() {
                         <UpdateGroupRole/>
                     </PrivateRoute>
                     {/*co dong */}
-                    <PrivateRoute path="/quan-ly-co-dong">
+                    <PrivateRoute path="/danh-sach-co-dong">
                         <Header/>
                         <Sidebar/>
                         <Shareholder/>
+                    </PrivateRoute>
+                    <PrivateRoute path="/quan-ly-co-dong">
+                        <Header/>
+                        <Sidebar/>
+                        <QuanLyCoDong/>
                     </PrivateRoute>
                     <PrivateRoute path="/">
                         <Header/>

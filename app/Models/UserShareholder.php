@@ -13,6 +13,24 @@ class UserShareholder extends Model
 {
     use HasFactory;
 
+//    VOTE STATUS
+    const VOTED = 1;
+    const NO_VOTED = 2;
+
+//    JOINT TYPE
+    const LIVE = 1;
+    const ONLINE = 2;
+    const AUTHORIZED = 3;
+    const NOT_CHECKIN = 4;
+
+//    AUTHORITY STATUS
+    const AUTHORITY = 1;
+    const NO_AUTHORITY = 2;
+
+//    STATUS
+    const STATUS_ACTIVE = 1;
+    const STATUS_DEACTIVE = 2;
+
     const BLOCK = 1;
     const FOREIGNER = 2;
     const VIETNAM = 1;
@@ -22,7 +40,7 @@ class UserShareholder extends Model
     const CHECKIN = 1;
 
     protected $table = "user_shareholder";
-    protected $fillable = ['id', 'username', 'cccd', 'password', 'no_hash_password', 'name', 'code_dksh', 'date_range', 'issued_by', 'phone_number', 'address', 'email', 'type', 'organization', 'user_id', 'created_at', 'updated_at', 'created_by', 'remember_token'];
+    protected $fillable = ['id', 'username', 'cccd', 'password', 'no_hash_password', 'name', 'code_dksh', 'date_range', 'issued_by', 'phone_number', 'address', 'email','cccd', 'type', 'organization', 'user_id', 'created_at', 'updated_at', 'created_by', 'remember_token'];
 
     public static function getListType(): array
     {
@@ -51,6 +69,76 @@ class UserShareholder extends Model
                 'value' => self::ORGANIZATION,
                 'label' => 'Tổ chức',
             ]
+        ];
+    }
+
+    public static function getListStatus(): array
+    {
+        return [
+            [
+                'value' => self::STATUS_ACTIVE,
+                'label' => 'Hoạt động',
+
+            ],
+            [
+                'value' => self::STATUS_DEACTIVE,
+                'label' => 'Không hoạt động',
+            ]
+        ];
+    }
+
+    public static function getListAuthority(): array
+    {
+        return [
+            [
+                'value' => self::AUTHORITY,
+                'label' => 'Nhận ủy quyền',
+
+            ],
+            [
+                'value' => self::NO_AUTHORITY,
+                'label' => 'Cổ đông',
+            ]
+        ];
+    }
+
+    public static function getListVoteStatus(): array
+    {
+        return [
+            [
+                'value' => self::VOTED,
+                'label' => 'Đã biểu quyết',
+
+            ],
+            [
+                'value' => self::NO_VOTED,
+                'label' => 'Chưa biết quyết',
+            ]
+        ];
+    }
+
+
+
+    public static function getListJointTypes(): array
+    {
+        return [
+            [
+                'value' => self::LIVE,
+                'label' => 'Trực tiếp',
+
+            ],
+            [
+                'value' => self::ONLINE,
+                'label' => 'Trực tuyến',
+            ],
+            [
+                'value' => self::AUTHORIZED,
+                'label' => 'Ủy quyền',
+            ],
+            [
+                'value' => self::NOT_CHECKIN,
+                'label' => 'Chưa checkin',
+            ],
         ];
     }
 

@@ -82,11 +82,18 @@ export default function Sidebar({...props}) {
                                 className={route.includes('quan-ly-co-dong') ? "collapse menu-dropdown show" : "collapse menu-dropdown"}
                                 id="shareholder">
                                 <ul className="nav nav-sm flex-column">
+                                    {JSON.parse(localStorage.getItem('scopes')).includes('danh-sach-co-dong') &&
+                                        <li className="nav-item">
+                                            <a href="/danh-sach-co-dong"
+                                               className={route.includes('danh-sach-co-dong') ? "nav-link active" : "nav-link"}
+                                               data-key="t-calendar"> Danh sách Cổ đông</a>
+                                        </li>}
+
                                     {JSON.parse(localStorage.getItem('scopes')).includes('quan-ly-co-dong') &&
                                         <li className="nav-item">
                                             <a href="/quan-ly-co-dong"
                                                className={route.includes('quan-ly-co-dong') ? "nav-link active" : "nav-link"}
-                                               data-key="t-calendar"> Danh sách </a>
+                                               data-key="t-calendar">Quản lý Cổ đông</a>
                                         </li>}
                                 </ul>
                             </Box>

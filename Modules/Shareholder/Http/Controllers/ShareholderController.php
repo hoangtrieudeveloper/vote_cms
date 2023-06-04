@@ -3,8 +3,10 @@
 namespace Modules\Shareholder\Http\Controllers;
 
 use App\Models\ShareholderShare;
+use App\Models\User;
 use App\Models\UserShareholder;
 use App\Utils;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +24,8 @@ class ShareholderController extends Controller
    * Feedback
    */
 
-    public function checkIn(Request $request){
+    public function checkIn(Request $request)
+    {
         try {
             $query = UserShareholder::checkIn($request->id);
             $result = Utils::messegerAlert(1, "alert-success", 'Check in Thành công!');
@@ -112,17 +115,18 @@ class ShareholderController extends Controller
         $type = $request->type;
         $organization = $request->organization;
         $query = UserShareholder::query();
-        if ($type) {
-            $query = $query->where('type', $type);
-        }
-        if ($organization) {
-            $query = $query->where('organization', $organization);
-        }
-        $query = $query->where('name', 'like', '%' . $txtName . '%')
-            ->where('code_dksh', 'like', '%' . $txtName . '%')
+        $query = $query->where(function ($query) use ($txtName, $type, $organization) {
+            $query->where('name', 'like', '%' . $txtName . '%')
+                ->orWhere('cccd', 'like', '%' . $txtName . '%')
+                ->orWhere('phone_number', 'like', '%' . $txtName . '%')
+                ->orWhere('code_dksh', 'like', '%' . $txtName . '%')
+                ->orWhere('type', $type)
+                ->orWhere('organization', $organization);
+        })
             ->orderBy('id', 'desc')
             ->paginate(10);
         foreach ($query as $v) {
+            $v['date_range'] = Carbon::parse($v->date_range)->format('d-m-Y');
             $shareholder_share_total = DB::table('shareholder_shares')->where('user_id', $user_id)->where('user_shares_id', $v->id)->first();
             $v['total'] = $shareholder_share_total != null ? $shareholder_share_total->total : 0;
         }
@@ -158,6 +162,42 @@ class ShareholderController extends Controller
             "status" => 1,
             "message" => "Thành công!",
             "data" => UserShareholder::getListType(),
+        ]);
+    }
+
+    public function getListVoteStatus()
+    {
+        return response()->json([
+            "status" => 1,
+            "message" => "Thành công!",
+            "data" => UserShareholder::getListVoteStatus(),
+        ]);
+    }
+
+    public function getListStatus()
+    {
+        return response()->json([
+            "status" => 1,
+            "message" => "Thành công!",
+            "data" => UserShareholder::getListStatus(),
+        ]);
+    }
+
+    public function getListAuthority()
+    {
+        return response()->json([
+            "status" => 1,
+            "message" => "Thành công!",
+            "data" => UserShareholder::getListAuthority(),
+        ]);
+    }
+
+    public function getListJointTypes()
+    {
+        return response()->json([
+            "status" => 1,
+            "message" => "Thành công!",
+            "data" => UserShareholder::getListJointTypes(),
         ]);
     }
 
@@ -218,6 +258,7 @@ class ShareholderController extends Controller
                             $userShareholderArray['phone_number'] = trim($sheet->getCell('E' . $row)->getValue());
                             $userShareholderArray['address'] = trim($sheet->getCell('F' . $row)->getValue());
                             $userShareholderArray['email'] = trim($sheet->getCell('G' . $row)->getValue());
+                            $userShareholderArray['cccd'] = $username;
                             $userShareholderArray['type'] = trim($sheet->getCell('I' . $row)->getValue());
                             $userShareholderArray['organization'] = trim($sheet->getCell('J' . $row)->getValue());
                             $userShareholderArray['username'] = $username;
@@ -306,7 +347,6 @@ class ShareholderController extends Controller
                 header('Content-Description: File Transfer');
                 header('Content-Type: application/vnd.ms-excel');
                 header('Content-Disposition: attachment;filename="report.xlsx"');
-//                dd($objWriter);
                 $objWriter->save('php://output');
             } else {
                 throw new Exception('Không có dữ liệu!');
@@ -314,6 +354,61 @@ class ShareholderController extends Controller
         } catch (\PHPExcel_Exception $e) {
             throw new Exception('Error' . $e->getMessage());
         }
+    }
+
+    public function exportDSCD(Request $request)
+    {
+        try {
+            $user_id = Auth::user()->id;
+            $data = UserShareholder::where('user_id', $user_id)->get();
+            $fileType = 'Excel2007';
+            $fileName = public_path() . "/files/SchemaCoDong.xlsx";
+            $objPHPExcel = \PHPExcel_IOFactory::load($fileName);
+            $objPHPExcel->getActiveSheet();
+            $startRow = 2;
+            if ($data) {
+                foreach ($data as $idx => $row) {
+                    $shareholder_share_total = DB::table('shareholder_shares')->where('user_id', $user_id)->where('user_shares_id', $row->id)->first();
+                    $cp = $shareholder_share_total != null ? $shareholder_share_total->total : 0;
+                    $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue("A" . ($startRow + $idx), $row->id)
+                        ->setCellValue("B" . ($startRow + $idx), $row->name)
+                        ->setCellValue("C" . ($startRow + $idx), $row->cccd)
+                        ->setCellValue("D" . ($startRow + $idx), $row->phone_number)
+                        ->setCellValue("E" . ($startRow + $idx), $cp)
+                        ->setCellValue("F" . ($startRow + $idx), 0)
+                        ->setCellValue("G" . ($startRow + $idx), $row->email)
+                        ->setCellValue("H" . ($startRow + $idx), 'Trực tuyến')
+                        ->setCellValue("I" . ($startRow + $idx), 'CĐ')
+                        ->setCellValue("J" . ($startRow + $idx), 'Chưa biểu quyết')
+                        ->setCellValue("K" . ($startRow + $idx), 'Không hoạt động');
+                }
+                $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, $fileType);
+                header('Content-Description: File Transfer');
+                header('Content-Type: application/vnd.ms-excel');
+                header('Content-Disposition: attachment;filename="report.xlsx"');
+                $objWriter->save('php://output');
+            } else {
+                throw new Exception('Không có dữ liệu!');
+            }
+        } catch (\PHPExcel_Exception $e) {
+            throw new Exception('Error' . $e->getMessage());
+        }
+    }
+
+    public function lockChangePassword(Request $request)
+    {
+        $locked = User::LockShareholderEdit();
+        if ($locked) {
+            return response()->json([
+                "status" => 1,
+                "message" => "Khóa việc thay đổi mật khẩu thành công!",
+            ]);
+        }
+        return response()->json([
+            "status" => 2,
+            "message" => "Khóa việc thay đổi mật khẩu không thành công!",
+        ]);
     }
 
 }

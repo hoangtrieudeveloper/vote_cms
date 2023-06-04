@@ -12,7 +12,12 @@ export const userShareholderService = {
     exportPWCD,
     getListByReport,
     UpdateBlock,
-    downloadCoDongDemo
+    downloadCoDongDemo,
+    getListStatus,
+    getListVoteStatus,
+    getListAuthority,
+    getListJointTypes,
+    exportCoDong
 };
 let user = JSON.parse(localStorage.getItem('user'));
 let api = "shareholder";
@@ -94,6 +99,46 @@ function getListOrganization() {
     return fetch(`${GlobalSetting.url}api/${api}/getListOrganization`, requestOptions).then(handleResponse);
 }
 
+function getListVoteStatus() {
+    const requestOptions = {
+        method: 'GET',
+        'Content-Type': 'application/json',
+        headers: authHeader()
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/getListVoteStatus`, requestOptions).then(handleResponse);
+}
+
+function getListStatus() {
+    const requestOptions = {
+        method: 'GET',
+        'Content-Type': 'application/json',
+        headers: authHeader()
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/getListStatus`, requestOptions).then(handleResponse);
+}
+
+function getListJointTypes() {
+    const requestOptions = {
+        method: 'GET',
+        'Content-Type': 'application/json',
+        headers: authHeader()
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/getListJointTypes`, requestOptions).then(handleResponse);
+}
+
+function getListAuthority() {
+    const requestOptions = {
+        method: 'GET',
+        'Content-Type': 'application/json',
+        headers: authHeader()
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/getListAuthority`, requestOptions).then(handleResponse);
+}
+
 function downloadCoDongDemo() {
     const requestOptions = {
         method: 'GET',
@@ -152,6 +197,46 @@ function exportPWCD() {
     }).catch(response => {
         console.log(response);
     });
+}
+
+function exportCoDong() {
+    const requestOptions = {
+        method: 'GET',
+        'Content-Type': 'blob',
+        headers: authHeader()
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/exportDSCD`, requestOptions).then(response => {
+        let blob = response.blob();
+        if (response.ok && blob != null && blob != undefined) {
+            return blob;
+        }
+        return Promise.reject(response);
+    }).then(blob => {
+        if (blob != null && blob != undefined) {
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = "Danh_sach_co_dong.xlsx";
+            document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
+            a.click();
+            a.remove();  //afterwards we remove the element again
+            return true;
+        }
+        return Promise.reject(blob);
+    }).catch(response => {
+        console.log(response);
+    });
+}
+
+function lockChangePassword() {
+    const requestOptions = {
+        method: 'GET',
+        'Content-Type': 'application/json',
+        headers: authHeader()
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/lockChangePassword`, requestOptions).then(handleResponse);
 }
 
 

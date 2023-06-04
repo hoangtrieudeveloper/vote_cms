@@ -50,8 +50,12 @@ class User extends Authenticatable
     public static function LockShareholderEdit(){
         $user_id = Auth::user()->id;
         $user = User::find($user_id);
-        $user->locked_shareholder_edit = true;
-        $user->save();
+        if ($user){
+            $user->locked_shareholder_edit = true;
+            $user->save();
+            return $user->save();
+        }
+        return false;
     }
 
     public static function Create($data)

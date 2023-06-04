@@ -9,7 +9,7 @@ import ToastNotifi from "../pages/ToastNotifi";
 import Loading from "../pages/Loading";
 import Helpers from "../pages/Helpers";
 
-function Shareholder() {
+function QuanLyCoDong() {
     //paginate
     const [pageCurrent, setPageCurrent] = useState(1);
     const [pageLast, setPageLast] = useState(1);
@@ -17,72 +17,16 @@ function Shareholder() {
     //props
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
-    const [listType, setListType] = useState([]);
-    const [listOrganization, setListOrganization] = useState([]);
     const [nameSearch, setNameSearch] = useState('');
-    const [type, setType] = useState('');
-    const [organization, setOrganization] = useState('');
-    const [file, setFile] = useState('');
-
-    const getListType = () => {
-        userShareholderService.getListType()
-            .then(data => {
-                if (data.status == 1) {
-                    setListType(Object.values(data?.data));
-                }
-            });
-    }
-
-    const getListOrganization = () => {
-        userShareholderService.getListOrganization()
-            .then(data => {
-                if (data.status == 1) {
-                    setListOrganization(Object.values(data?.data));
-                }
-            });
-    }
-
-    const handleImport = (e) => {
-        setFile(e.target.files[0]);
-        e.target.value = null;
-    }
-
-    const uploadFileImport = () => {
-        console.log(file);
-        if (file) {
-            userShareholderService.importShareHolder(file)
-                .then(data => {
-                    setFile(null);
-                    if (data.status == 1) {
-                        Helpers.showToast('success', data?.mess);
-                    } else {
-                        Helpers.showToast('error', data?.mess);
-                    }
-                });
-        } else {
-            Helpers.showToast('error', 'Vui lòng tải lên danh sách cổ đông!');
-        }
-    }
-
-    const downloadFileDemo = () => {
-        setLoading(true);
-        userShareholderService.downloadCoDongDemo().then((res) => {
-                setLoading(false);
-            }
-        ).catch((error) => {
-            setLoading(false);
-        })
-    }
-
-    const downloadFilePassCD = () => {
-        setLoading(true);
-        userShareholderService.exportPWCD().then((res) => {
-                setLoading(false);
-            }
-        ).catch((error) => {
-            setLoading(false);
-        })
-    }
+    const [status, setStatus] = useState('');
+    const [voteStatus, setVoteStatus] = useState('');
+    const [jointType, setJointType] = useState('');
+    const [authority, setAuthority] = useState('');
+    //select option
+    const [listStatus, setListStatus] = useState([]);
+    const [listJointTypes, setListJointTypes] = useState([]);
+    const [listAuthority, setListAuthority] = useState([]);
+    const [listVoteStatus, setListVoteStatus] = useState([]);
 
     const resetData = () => {
         setData([]);
@@ -91,11 +35,48 @@ function Shareholder() {
         setPageCurrent(1);
     }
 
+    const downloadFileCD = () => {
+        setLoading(true);
+        userShareholderService.exportCoDong().then((res) => {
+                setLoading(false);
+            }
+        ).catch((error) => {
+            setLoading(false);
+        })
+    }
+
+    const getListSelect = () => {
+        userShareholderService.getListStatus()
+            .then(data => {
+                if (data.status == 1) {
+                    setListStatus(Object.values(data?.data));
+                }
+            });
+        userShareholderService.getListAuthority()
+            .then(data => {
+                if (data.status == 1) {
+                    setListAuthority(Object.values(data?.data));
+                }
+            });
+        userShareholderService.getListJointTypes()
+            .then(data => {
+                if (data.status == 1) {
+                    setListJointTypes(Object.values(data?.data));
+                }
+            });
+        userShareholderService.getListVoteStatus()
+            .then(data => {
+                if (data.status == 1) {
+                    setListVoteStatus(Object.values(data?.data));
+                }
+            });
+    }
+
     const getListData = (page = 1) => {
         console.log(pageCurrent < pageLast);
         setPageCurrent(page);
         setLoading(true);
-        userShareholderService.getList(page, nameSearch, type, organization)
+        userShareholderService.getList(page, nameSearch, '', '')
             .then(data => {
                 setLoading(false);
                 if (data.status == 1) {
@@ -116,8 +97,7 @@ function Shareholder() {
 
     useEffect(() => {
         getListData(pageCurrent);
-        getListType();
-        getListOrganization();
+        getListSelect();
     }, []);
 
     return (
@@ -129,12 +109,10 @@ function Shareholder() {
                     <Box className="row">
                         <Box className="col-12">
                             <Box className="page-title-box d-sm-flex align-items-center justify-content-between">
-                                <h4 className="mb-sm-0">Danh sách cổ đông</h4>
+                                <h4 className="mb-sm-0">Quản lý Cổ đông</h4>
                                 <Box className="page-title-right">
                                     <ol className="breadcrumb m-0">
-                                        <li className="breadcrumb-item"><a href="#">Quản lý cổ đông</a>
-                                        </li>
-                                        <li className="breadcrumb-item active">Danh sách cổ đông</li>
+                                        <li className="breadcrumb-item active"><a href="#">Quản lý Cổ đông</a></li>
                                     </ol>
                                 </Box>
 
@@ -145,75 +123,76 @@ function Shareholder() {
                     <Box className="row">
                         <Box className="col-xl-12">
                             <Box className="card">
-                                <Box className="card-header align-items-center d-flex">
-                                    <h3 className="card-title mb-0 flex-grow-1">Danh sách cổ đông</h3>
+                                <Box className="card-header align-items-center text-center d-flex">
+                                    <h4 className="card-title mb-0 flex-grow-1">Danh sách cổ đông</h4>
                                 </Box>
                                 <Box className="card-body">
-                                    <Box className="row justify-content-sm-end">
-                                        {JSON.parse(localStorage.getItem('scopes')).includes('import-co-dong') && (<>
-                                            <Box className="col-sm-auto">
-                                                <button type="button"
-                                                        onClick={downloadFileDemo}
-                                                        className="btn btn-outline-primary waves-effect waves-ligh">
-                                                    <i className="mdi mdi-download"></i>
-                                                    Tải về file mẫu
-                                                </button>
-                                            </Box>
-                                            <Box className="col-sm-auto">
-                                                <label onChange={handleImport}
-                                                       className="btn btn-outline-primary waves-effect waves-ligh"
-                                                       htmlFor="formId">
-                                                    <i className="mdi mdi-upload"></i>
-                                                    Tải lên danh sách cổ đông
-                                                    <input name="file" type="file" id="formId" hidden
-                                                           accept="application/xlsx"/>
-                                                </label>
-                                            </Box>
-                                            <Box className="col-sm-auto">
-                                                <button type="button"
-                                                        onClick={uploadFileImport}
-                                                        className="btn btn-outline-primary waves-effect waves-ligh">
-                                                    <i className="mdi mdi-plus"></i>
-                                                    Tạo danh sách
-                                                </button>
-                                            </Box></>)}
-                                    </Box>
-                                    <Box className="row mb-2">
+                                    <Box className="row mb-4">
                                         <Box className="col-4">
                                             <input type="text" className="form-control"
                                                    placeholder={'Họ tên/CMND/CCCD...'}
                                                    value={nameSearch}
                                                    onChange={(e) => setNameSearch(e.target.value)}/>
                                         </Box>
-                                        <Box className="col-3">
+                                        <Box className="col-4">
                                             <select className="form-select"
                                                     aria-label="Default select example" onChange={(e) => {
                                                 console.log(e.target.value);
-                                                setType(e.target.value);
+                                                setVoteStatus(e.target.value);
                                             }}>
-                                                <option value="" selected>--- Quan hệ ---</option>
-                                                {listType?.map((item, index) => (
+                                                <option value="" selected>--- Trạng thái biể quyết ---</option>
+                                                {listVoteStatus?.map((item, index) => (
                                                     <option key={index} value={item.value}
-                                                            selected={item.value == type}>
+                                                            selected={item.value == voteStatus}>
                                                         {item.label}
                                                     </option>))}
                                             </select>
                                         </Box>
-                                        <Box className="col-3">
+                                        <Box className="col-4">
                                             <select className="form-select"
                                                     aria-label="Default select example" onChange={(e) => {
                                                 console.log(e.target.value);
-                                                setOrganization(e.target.value);
+                                                setJointType(e.target.value);
                                             }}>
-                                                <option value="" selected>--- Tổ chức ---</option>
-                                                {listOrganization?.map((item, index) => (
+                                                <option value="" selected>--- Hình thức tham gia ---</option>
+                                                {listJointTypes?.map((item, index) => (
                                                     <option key={index} value={item.value}
-                                                            selected={item.value == organization}>
+                                                            selected={item.value == jointType}>
                                                         {item.label}
                                                     </option>))}
                                             </select>
                                         </Box>
-                                        <Box className="col-2">
+                                    </Box>
+                                    <Box className="row mb-4">
+                                        <Box className="col-4">
+                                            <select className="form-select"
+                                                    aria-label="Default select example" onChange={(e) => {
+                                                console.log(e.target.value);
+                                                setAuthority(e.target.value);
+                                            }}>
+                                                <option value="" selected>--- Hình thức Cổ đông ---</option>
+                                                {listAuthority?.map((item, index) => (
+                                                    <option key={index} value={item.value}
+                                                            selected={item.value == authority}>
+                                                        {item.label}
+                                                    </option>))}
+                                            </select>
+                                        </Box>
+                                        <Box className="col-4">
+                                            <select className="form-select"
+                                                    aria-label="Default select example" onChange={(e) => {
+                                                console.log(e.target.value);
+                                                setStatus(e.target.value);
+                                            }}>
+                                                <option value="" selected>--- Trạng thái ---</option>
+                                                {listStatus?.map((item, index) => (
+                                                    <option key={index} value={item.value}
+                                                            selected={item.value == status}>
+                                                        {item.label}
+                                                    </option>))}
+                                            </select>
+                                        </Box>
+                                        <Box className="col-4">
                                             <Box className="d-grid gap-1">
                                                 <button type="button"
                                                         onClick={() => getListData()}
@@ -224,24 +203,14 @@ function Shareholder() {
                                         </Box>
                                     </Box>
                                     <Box className="row justify-content-sm-end">
-                                        {JSON.parse(localStorage.getItem('scopes')).includes('export-password-co-dong') && (<>
-                                            <Box className="col-sm-auto">
-                                                <button type="button"
-                                                        onClick={downloadFilePassCD}
-                                                        className="btn btn-outline-primary waves-effect waves-ligh">
-                                                    <i className="mdi mdi-plus"></i>
-                                                    Xuất mật khẩu của Cổ đông
-                                                </button>
-                                            </Box>
-                                            <Box className="col-sm-auto">
-                                                <button type="button"
-                                                        className="btn btn-outline-primary waves-effect waves-ligh">
-                                                    <i className="mdi mdi-plus"></i>
-                                                    Khóa việc thay đổi Mật khẩu
-                                                </button>
-                                            </Box>
-                                        </>
-                                    )}
+                                        <Box className="col-sm-auto">
+                                            <button type="button"
+                                                    onClick={downloadFileCD}
+                                                    className="btn btn-outline-primary waves-effect waves-ligh">
+                                                <i className="mdi mdi-plus"></i>
+                                                Xuất file excel
+                                            </button>
+                                        </Box>
                                     </Box>
                                 </Box>
                             </Box>
@@ -261,13 +230,13 @@ function Shareholder() {
                                                 <th scope="col">Mã CĐ</th>
                                                 <th scope="col">Họ tên Cổ đông</th>
                                                 <th scope="col">CMND/CCCD</th>
-                                                <th scope="col">Ngày cấp</th>
-                                                <th scope="col">Nơi cấp</th>
-                                                <th scope="col">Số điện thoại</th>
-                                                <th scope="col">Số lượng CP</th>
-                                                <th scope="col">Mã CK</th>
+                                                <th scope="col">CP sở hữu</th>
+                                                <th scope="col">CP tham dự</th>
                                                 <th scope="col">Email</th>
-                                                <th scope="col">Địa chỉ</th>
+                                                <th scope="col">Loại hình tham dự</th>
+                                                <th scope="col">Loại hình CĐ</th>
+                                                <th scope="col">Trạng thái biểu quyết</th>
+                                                <th scope="col">Trạng thái hoạt động</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -286,25 +255,25 @@ function Shareholder() {
                                                         {i.code_dksh}
                                                     </td>
                                                     <td>
-                                                        {i.date_range}
+                                                        {i.total}
                                                     </td>
                                                     <td>
-                                                        {i.issued_by}
-                                                    </td>
-                                                    <td>
-                                                        {i.phone_number}
-                                                    </td>
-                                                    <td>
-                                                        <span className="badge badge-soft-success p-2">{i.total}</span>
-                                                    </td>
-                                                    <td>
-                                                        ksb
+                                                        0
                                                     </td>
                                                     <td>
                                                         {i.email}
                                                     </td>
                                                     <td>
-                                                        {i.address}
+                                                        Trực tiếp
+                                                    </td>
+                                                    <td>
+                                                        Cổ đông
+                                                    </td>
+                                                    <td>
+                                                        Chưa biểu quyết
+                                                    </td>
+                                                    <td>
+                                                        Không hoạt động
                                                     </td>
                                                 </tr>
                                             )) : <tr>
@@ -329,4 +298,4 @@ function Shareholder() {
     )
 }
 
-export default Shareholder;
+export default QuanLyCoDong;
