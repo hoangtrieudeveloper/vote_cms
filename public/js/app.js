@@ -34784,7 +34784,7 @@ function UpdateBlock(user_share_id, status, congress_id) {
   };
   return fetch("".concat(_components_pages_GlobalSetting__WEBPACK_IMPORTED_MODULE_0__["default"].url, "api/").concat(api, "/updateBlock?user_share_id=").concat(user_share_id, "&status=").concat(status, "&congress_id=").concat(congress_id), requestOptions).then(handleResponse);
 }
-function getListByReport(page, id, name, block) {
+function getListByReport(id, page, name, block) {
   console.log('block', block);
   var requestOptions = {
     method: 'GET',

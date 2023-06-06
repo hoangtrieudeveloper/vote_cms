@@ -60,7 +60,7 @@ function UpdateBlock(user_share_id,status,congress_id) {
 
     return fetch(`${GlobalSetting.url}api/${api}/updateBlock?user_share_id=${user_share_id}&status=${status}&congress_id=${congress_id}`, requestOptions).then(handleResponse);
 }
-function getListByReport(page, id,name, block) {
+function getListByReport(id,page,name, block) {
     console.log('block',block);
     const requestOptions = {
         method: 'GET',

@@ -162,17 +162,18 @@ class UserShareholder extends Model
     {
         $user_id = Auth::user()->id;
         $query = UserShareholder::query();
-        $query = $query->leftJoin('shareholder_shares', 'user_shareholder.id', '=', 'shareholder_shares.user_shares_id')->where('user_shareholder.user_id', $user_id);
+        $query = $query->where('user_shareholder.user_id', $user_id);
         if ($txtName != null) {
             $query = $query->where('user_shareholder.name', 'like', '%' . $txtName . '%');
         }
         if ($status != self::BLOCK) {
-            $query = $query->select('user_shareholder.id as id', 'user_shareholder.name as name', 'user_shareholder.cccd as cccd', 'user_shareholder.phone_number',
-                'shareholder_shares.total as total')
+            $query = $query->select('user_shareholder.id as id', 'user_shareholder.name as name', 'user_shareholder.cccd as cccd', 'user_shareholder.phone_number')
                 ->orderBy('name', 'asc')
                 ->paginate(10);
             foreach ($query as $v) {
                 $blockVoting = DB::table('user_share_block_voting')->where('id_vote_congress_report', $congress_id)->where('id_user_share', $v->id)->first();
+                $shareHolderShares = DB::table('shareholder_shares')->where('user_shares_id', $v->id)->first();
+                $v['total'] = $shareHolderShares != null ? $shareHolderShares->total : 0;
                 $v['block'] = $blockVoting != null ? $blockVoting->status : 0;
             }
         } else {
