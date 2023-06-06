@@ -6,6 +6,7 @@ use App\Models\ShareholderShare;
 use App\Models\User;
 use App\Models\UserShareholder;
 use App\Utils;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -24,11 +25,37 @@ class ShareholderController extends Controller
    * Feedback
    */
 
+    public function getTkLogin(Request $request){
+        /*try {*/
+            $query = UserShareholder::getTkLogin($request->id);
+            $data = ['title' => 'Welcome to Viet Nam'];
+                $pdf = Pdf::loadView("myPDF",$data)->save("/myPDF.pdf");
+//                $pdf = Pdf::loadHTML('<h1 class="text-dark">123</h1>');
+            //Nếu muốn hiển thị file pdf theo chiều ngang
+            // $pdf->setPaper('A4', 'landscape');
+
+            //Nếu muốn download file pdf
+          /*  return $pdf->download('myPDF.pdf');*/
+
+            //Nếu muốn preview in pdf
+//        $headers = [
+//            'Content-Type' => 'application/pdf',
+//            'Content-Disposition' => 'inline; myPDF.pdf',
+//        ];
+            return response()->json(mb_convert_encoding($pdf->stream("myPDF.pdf"), 'UTF-8', 'UTF-8'));
+
+       /*     $result = Utils::messegerAlert(1, "alert-success", 'Thành công!',$query);
+        } catch (\Exception $exception) {
+            $result = Utils::messegerAlert(2, "alert-danger", 'Thất bại!',);
+        }
+        return response()->json($result);*/
+    }
+
     public function checkIn(Request $request)
     {
         try {
             $query = UserShareholder::checkIn($request->id);
-            $result = Utils::messegerAlert(1, "alert-success", 'Check in Thành công!');
+            $result = Utils::messegerAlert(1, "alert-success", 'Check in Thành công!',$query);
         } catch (\Exception $exception) {
             $result = Utils::messegerAlert(2, "alert-danger", 'Check in Thất bại!',);
         }

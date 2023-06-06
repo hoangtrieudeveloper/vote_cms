@@ -180,6 +180,14 @@ export default function Sidebar({...props}) {
                                                data-key="t-calendar"> Checkin thủ công </a>
                                         </li>}
                                 </ul>
+                                <ul className="nav nav-sm flex-column">
+                                    {JSON.parse(localStorage.getItem('scopes')).includes('export-report-co-dong') &&
+                                        <li className="nav-item">
+                                            <a href="/export-report-co-dong"
+                                               className={route.includes('checkin-thu-cong') ? "nav-link active" : "nav-link"}
+                                               data-key="t-calendar"> Xuất biên bản KTTC CĐ </a>
+                                        </li>}
+                                </ul>
                             </Box>
                         </li>}
                         {JSON.parse(localStorage.getItem('scopes')).includes('list-group-role') &&

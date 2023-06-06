@@ -42,14 +42,15 @@ import UpdateDocuments from "./Congress/Documents/Update";
 import UpdateInfoBasic from "./Company/InfoBasic/Update";
 //cổ đông
 import Shareholder from "./Shareholder";
-import CheckShareholder from "./CheckShareholder";
 import QuanLyCoDong from "./Shareholder/quanLyCoDong";
 
 //profile
 import EditProfile from "./users/profile/EditProfile";
 import VoteResult from "./VoteResults/Report/Index";
 
-
+//kiểm tra tư cách cổ đông
+import CheckShareholder from "./CheckShareholder";
+import ExportShareHolder from "./CheckShareHolder/exportShareholder";
 
 export default function Layout() {
     return (
@@ -69,6 +70,12 @@ export default function Layout() {
                         <Sidebar/>
                         <CheckShareholder/>
                     </PrivateRoute>
+                    <PrivateRoute path="/export-report-co-dong">
+                        <Header/>
+                        <Sidebar/>
+                        <ExportShareHolder/>
+                    </PrivateRoute>
+
 
                     <PrivateRoute path="/bien-ban-nghi-quyet">
                         <Header/>

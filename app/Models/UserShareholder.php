@@ -38,9 +38,10 @@ class UserShareholder extends Model
     const PERSONAL = 1;
     const ORGANIZATION = 2;
     const CHECKIN = 1;
+    const URL_QR = "https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=https://vote.vn";
 
     protected $table = "user_shareholder";
-    protected $fillable = ['id', 'username', 'cccd', 'password', 'no_hash_password', 'name', 'code_dksh', 'date_range', 'issued_by', 'phone_number', 'address', 'email','cccd', 'type', 'organization', 'user_id', 'created_at', 'updated_at', 'created_by', 'remember_token'];
+    protected $fillable = ['id', 'username', 'cccd', 'password', 'no_hash_password', 'name', 'code_dksh', 'date_range', 'issued_by', 'phone_number', 'address', 'email', 'cccd', 'type', 'organization', 'user_id', 'created_at', 'updated_at', 'created_by', 'remember_token'];
 
     public static function getListType(): array
     {
@@ -116,7 +117,6 @@ class UserShareholder extends Model
             ]
         ];
     }
-
 
 
     public static function getListJointTypes(): array
@@ -216,6 +216,10 @@ class UserShareholder extends Model
 
         $user_id = Auth::user()->id;
         $query = UserShareholder::query();
+        if ($checkin != null && $checkin != 0) {
+            $query = $query->leftJoin('user_shares_checkin', 'user_shares_checkin.user_shares_id', '=', 'user_shareholder.id')
+                ->where('user_shares_checkin.is_check', $checkin);
+        }
         $query = $query->where(function ($query) use ($txtName) {
             $query->where('name', 'like', '%' . $txtName . '%')
                 ->orWhere('cccd', 'like', '%' . $txtName . '%')
@@ -227,12 +231,13 @@ class UserShareholder extends Model
 
         foreach ($query as $v) {
             $shareholder_share_total = UserShareCheckin::query();
-            if ($checkin != null) {
+            if ($checkin != null && $checkin != 0) {
                 $shareholder_share_total = $shareholder_share_total->where('is_check', $checkin);
             }
             $v['date_range'] = Carbon::parse($v->date_range)->format('d-m-Y');
             $shareholder_share_total = $shareholder_share_total->where('user_shares_id', $v->id)->first();
             $v['checkin'] = $shareholder_share_total != null ? $shareholder_share_total->is_check : 0;
+            $v['url_qr'] = $shareholder_share_total != null ? $shareholder_share_total->url_qr : self::URL_QR;
             $shareholder_share_total = DB::table('shareholder_shares')->where('user_id', $user_id)->where('user_shares_id', $v->id)->first();
             $v['total'] = $shareholder_share_total != null ? $shareholder_share_total->total : 0;
         }
@@ -244,24 +249,36 @@ class UserShareholder extends Model
         $user_id = Auth::user()->id;
         $user_share = UserShareholder::where([['id', $id], ['user_id', $user_id]])->first();
         $user_share['date_range'] = Carbon::parse($user_share->date_range)->format('d-m-Y');
+        $user_share['cccd'] = $user_share['cccd'] . "/" . $user_share['code_dksh'];
         $shareholder_share_total = DB::table('shareholder_shares')->where('user_id', $user_id)->where('user_shares_id', $user_share->id)->first();
         $user_share['total'] = $shareholder_share_total != null ? $shareholder_share_total->total : 0;
         $user_share['share_total'] = $shareholder_share_total != null ? $shareholder_share_total->total : 0;
         $checkin = UserShareCheckin::where('user_shares_id', $user_share->id)->first();
         $user_share['check_in'] = $checkin != null ? $checkin->is_check : null;
+        $user_share['url_qr'] = $checkin != null ? $checkin->url_qr : self::URL_QR;
         return $user_share;
     }
 
     public static function checkIn($id)
     {
-        $data = [
-            'user_shares_id' => $id,
-            'is_check' => self::CHECKIN,
-        ];
+
         $checkin = UserShareCheckin::where('user_shares_id', $id)->first();
+        $qr = null;
         if ($checkin == null) {
-            $checkin = UserShareCheckin::Create($data);
+            $qr = UserShareholder::where('id', $id)->first();
+            $data = [
+                'user_shares_id' => $id,
+                'is_check' => self::CHECKIN,
+                'url_qr' => $qr != null ? self::URL_QR . "?token=" . $qr->token_key : self::URL_QR . "?token="
+            ];
+            $qr['url_qr'] = $data['url_qr'];
+            UserShareCheckin::Create($data);
         }
-        return $checkin;
+        return $qr;
+    }
+
+    public function getTkLogin($id)
+    {
+        return UserShareholder::where('id', $id)->first();
     }
 }

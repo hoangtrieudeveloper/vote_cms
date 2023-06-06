@@ -2,6 +2,7 @@ import GlobalSetting from "../components/pages/GlobalSetting";
 import {userService} from "./userService";
 
 export const userShareholderService = {
+    getTkLogin,
     CheckIn,
     getListCheckin,
     getListById,
@@ -21,6 +22,16 @@ export const userShareholderService = {
 };
 let user = JSON.parse(localStorage.getItem('user'));
 let api = "shareholder";
+
+function getTkLogin(id) {
+    const requestOptions = {
+        method: 'GET',
+        'Content-Type': 'application/json',
+        headers: authHeader()
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/getTkLogin?id=${id}`, requestOptions).then(handleResponse);
+}
 
 function CheckIn(id) {
     const requestOptions = {

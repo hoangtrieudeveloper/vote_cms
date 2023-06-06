@@ -12,6 +12,6 @@ class UserShareCheckin extends Model
 {
     public $timestamps = true;
     protected $table = "user_shares_checkin";
-    protected $fillable = ['id', 'user_shares_id', 'is_check', 'created_at', 'updated_at'];
+    protected $fillable = ['id', 'user_shares_id', 'is_check','url_qr','created_at', 'updated_at'];
 
 }

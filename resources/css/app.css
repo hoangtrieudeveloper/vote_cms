@@ -15,3 +15,11 @@
     -webkit-box-pack: justify;
     justify-content: space-between;
 }
+
+.background-label{
+    background-color: powderblue !important;
+}
+
+.h4-color{
+    color: revert;
+}
