@@ -29,7 +29,16 @@ class ShareholderController extends Controller
         /*try {*/
             $query = UserShareholder::getTkLogin($request->id);
             $data = ['title' => 'Welcome to Viet Nam'];
-                $pdf = Pdf::loadView("myPDF",$data)->save("/myPDF.pdf");
+                $pdf = Pdf::loadView("myPDF",$data);
+        $pdf->loadHTML('<html>
+<head>
+<title>My first PHP Page</title>
+</head>
+<body>
+This is normal HTML code
+Back into normal HTML
+</body>
+</html>')->setPaper('a4')->setWarnings(false);
 //                $pdf = Pdf::loadHTML('<h1 class="text-dark">123</h1>');
             //Nếu muốn hiển thị file pdf theo chiều ngang
             // $pdf->setPaper('A4', 'landscape');
@@ -42,7 +51,7 @@ class ShareholderController extends Controller
 //            'Content-Type' => 'application/pdf',
 //            'Content-Disposition' => 'inline; myPDF.pdf',
 //        ];
-            return response()->json(mb_convert_encoding($pdf->stream("myPDF.pdf"), 'UTF-8', 'UTF-8'));
+            return response()->json(mb_convert_encoding($pdf->stream("myPDF.pdf", array("Attachment" => false)), 'UTF-8', 'UTF-8'));
 
        /*     $result = Utils::messegerAlert(1, "alert-success", 'Thành công!',$query);
         } catch (\Exception $exception) {

@@ -16,17 +16,8 @@ function ExportShareHolder() {
     const [pageLast, setPageLast] = useState(1);
     const [linkPage, setLinkPage] = useState([]);
     //props
-    const [checkAction, setCheckAction] = useState(false);
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
-    const [nameSearch, setNameSearch] = useState('');
-
-    const [block, setBlock] = useState('');
-    const options = [
-        {value: "0", label: "Chưa check in"},
-        {value: "1", label: "Đã check in"},
-    ];
-    const [checkin, setCheckin] = useState('');
 
     useEffect(() => {
         getListData(pageCurrent);
@@ -43,7 +34,7 @@ function ExportShareHolder() {
         console.log(pageCurrent < pageLast);
         setPageCurrent(page);
         setLoading(true);
-        userShareholderService.getListCheckin(page, nameSearch, block)
+        userShareholderService.getListCheckin(page)
             .then(data => {
                 console.log('data', data);
                 setLoading(false);
@@ -57,48 +48,6 @@ function ExportShareHolder() {
                     // Helpers.showToast('error', data?.mess);
 
                 }
-            });
-    }
-
-    const CheckIn = (id) => {
-        setLoading(true);
-        userShareholderService.CheckIn(id)
-            .then(data => {
-                setLoading(false);
-                if (data.status == 1) {
-                    setCheckin({...checkin, check_in: 1, url_qr: data?.data?.url_qr});
-                    getListData(pageCurrent);
-                    helpers.showToast('success', data?.mess);
-                } else {
-                    resetData();
-                    helpers.showToast('error', data?.mess);
-                }
-            });
-    }
-
-
-    const openPdf = (id) => {
-        setLoading(true);
-        userShareholderService.getTkLogin(id)
-            .then(data => {
-                setLoading(false);
-                console.log('data', data);
-                // downloadPDF(data);
-                var file = new Blob([data], {type: 'application/pdf'});
-                var fileURL = URL.createObjectURL(file);
-                window.open(fileURL);
-            });
-    }
-
-    const getListById = (id) => {
-        setLoading(true);
-        userShareholderService.getListById(id)
-            .then(data => {
-                console.log('data', data);
-                setLoading(false);
-                if (data.status == 1) {
-                    setCheckin(data?.data);
-                } else Helpers.showToast('error', data?.mess);
             });
     }
 
