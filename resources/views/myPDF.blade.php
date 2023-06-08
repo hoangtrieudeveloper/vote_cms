@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <header>TÀI KHOẢN ĐĂNG NHẬP DÀNH CHO CỔ ĐÔNG</header>
+
+    <title>{{ $title }}</title>
 </head>
 <body>
-aaaaaaaa
+<p>{{ $description }}</p>
+
+<br>
+
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, autem dicta eveniet pariatur placeat sapiente veritatis. A blanditiis deleniti dolor ea modi non nostrum quibusdam rem. Aspernatur nemo pariatur voluptatum?</p>
+
 </body>
 </html>

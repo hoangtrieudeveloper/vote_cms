@@ -26,11 +26,26 @@ let api = "shareholder";
 function getTkLogin(id) {
     const requestOptions = {
         method: 'GET',
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/pdf',
         headers: authHeader()
     };
 
-    return fetch(`${GlobalSetting.url}api/${api}/getTkLogin?id=${id}`, requestOptions).then(handleResponse);
+    return fetch(`${GlobalSetting.url}api/${api}/getTkLogin?id=${id}`, requestOptions).then(response => {
+        let blob = response.blob();
+        if (response.ok && blob != null && blob != undefined) {
+            return blob;
+        }
+        return Promise.reject(response);
+    }).then(blob => {
+        if (blob != null && blob != undefined) {
+            var fileURL = window.URL.createObjectURL(blob);
+            window.open(fileURL,"_blank");
+            return true;
+        }
+        return Promise.reject(blob);
+    }).catch(response => {
+        console.log(response);
+    });
 }
 
 function CheckIn(id) {

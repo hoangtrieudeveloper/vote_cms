@@ -80,13 +80,11 @@ function CheckShareholder() {
     const openPdf = (id) => {
         setLoading(true);
         userShareholderService.getTkLogin(id)
-            .then(data => {
+            .then(res => {
                 setLoading(false);
-                // downloadPDF(data);
-                var file = new Blob([data], {type: 'application/pdf'});
-                var fileURL = URL.createObjectURL(file);
-                window.open(fileURL,"_blank");
-            });
+            }).catch((error) => {
+            setLoading(false);
+        });
     }
 
     const getListById = (id) => {
@@ -204,7 +202,8 @@ function CheckShareholder() {
                                                         {i.phone_number}
                                                     </td>
                                                     <td>
-                                                        <span className="badge badge-soft-success p-2">{helpers.formatNumber(i.total)}</span>
+                                                        <span
+                                                            className="badge badge-soft-success p-2">{helpers.formatNumber(i.total)}</span>
                                                     </td>
                                                     <td>
                                                         {i.checkin == 1 ?

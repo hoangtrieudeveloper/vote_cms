@@ -25,46 +25,38 @@ class ShareholderController extends Controller
    * Feedback
    */
 
-    public function getTkLogin(Request $request){
+    public function getTkLogin(Request $request)
+    {
         /*try {*/
-            $query = UserShareholder::getTkLogin($request->id);
-            $data = ['title' => 'Welcome to Viet Nam'];
-                $pdf = Pdf::loadView("myPDF",$data);
-        $pdf->loadHTML('<html>
-<head>
-<title>My first PHP Page</title>
-</head>
-<body>
-This is normal HTML code
-Back into normal HTML
-</body>
-</html>')->setPaper('a4')->setWarnings(false);
-//                $pdf = Pdf::loadHTML('<h1 class="text-dark">123</h1>');
-            //Nếu muốn hiển thị file pdf theo chiều ngang
-            // $pdf->setPaper('A4', 'landscape');
+        $query = UserShareholder::getTkLogin($request->id);
+        $pdf = Pdf::loadView("myPDF", [
+            'title' => 'Hello world',
+            'description' => 'This is an example Laravel pdf tutorial.',
+        ]);
+        //Nếu muốn hiển thị file pdf theo chiều ngang
+        // $pdf->setPaper('A4', 'landscape');
 
-            //Nếu muốn download file pdf
-          /*  return $pdf->download('myPDF.pdf');*/
+        //Nếu muốn download file pdf
+        return $pdf->download('myPDF.pdf');
 
-            //Nếu muốn preview in pdf
+        //Nếu muốn preview in pdf
 //        $headers = [
 //            'Content-Type' => 'application/pdf',
 //            'Content-Disposition' => 'inline; myPDF.pdf',
 //        ];
-            return response()->json(mb_convert_encoding($pdf->stream("myPDF.pdf", array("Attachment" => false)), 'UTF-8', 'UTF-8'));
-
-       /*     $result = Utils::messegerAlert(1, "alert-success", 'Thành công!',$query);
-        } catch (\Exception $exception) {
-            $result = Utils::messegerAlert(2, "alert-danger", 'Thất bại!',);
-        }
-        return response()->json($result);*/
+//        return response()->json(mb_convert_encoding($pdf->stream("myPDF.pdf"), 'UTF-8', 'UTF-8'));
+        /*     $result = Utils::messegerAlert(1, "alert-success", 'Thành công!',$query);
+         } catch (\Exception $exception) {
+             $result = Utils::messegerAlert(2, "alert-danger", 'Thất bại!',);
+         }
+         return response()->json($result);*/
     }
 
     public function checkIn(Request $request)
     {
         try {
             $query = UserShareholder::checkIn($request->id);
-            $result = Utils::messegerAlert(1, "alert-success", 'Check in Thành công!',$query);
+            $result = Utils::messegerAlert(1, "alert-success", 'Check in Thành công!', $query);
         } catch (\Exception $exception) {
             $result = Utils::messegerAlert(2, "alert-danger", 'Check in Thất bại!',);
         }
