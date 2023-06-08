@@ -57,7 +57,7 @@ export default function Sidebar({...props}) {
                             <a className={route.includes('listuser') ? "nav-link menu-link active" : "nav-link menu-link"}
                                href="#manager_user" data-bs-toggle="collapse"
                                role="button" aria-expanded="false" aria-controls="sidebarApps">
-                                <i className="ri-apps-2-line"></i> <span data-key="t-apps"> Quản lý nhân viên</span>
+                                <i className="ri-account-circle-line"></i> <span data-key="t-apps"> Quản lý nhân viên</span>
                             </a>
                             <Box
                                 className={route.includes('listuser') ? "collapse menu-dropdown show" : "collapse menu-dropdown"}
@@ -76,7 +76,7 @@ export default function Sidebar({...props}) {
                             <a className={route.includes('quan-ly-co-dong') ? "nav-link menu-link active" : "nav-link menu-link"}
                                href="#shareholder" data-bs-toggle="collapse"
                                role="button" aria-expanded="false" aria-controls="sidebarApps">
-                                <i className="ri-apps-2-line"></i> <span data-key="t-apps">Quản lý cổ đông</span>
+                                <i className="ri-account-circle-line"></i> <span data-key="t-apps">Quản lý cổ đông</span>
                             </a>
                             <Box
                                 className={route.includes('quan-ly-co-dong') ? "collapse menu-dropdown show" : "collapse menu-dropdown"}
@@ -94,6 +94,39 @@ export default function Sidebar({...props}) {
                                             <a href="/quan-ly-co-dong"
                                                className={route.includes('quan-ly-co-dong') ? "nav-link active" : "nav-link"}
                                                data-key="t-calendar">Quản lý Cổ đông</a>
+                                        </li>}
+                                </ul>
+                            </Box>
+                        </li>}
+                        {localStorage.getItem('scopes').includes('quan-ly-uy-quyen') && <li className="nav-item">
+                            <a className={route.includes('quan-ly-uy-quyen') ? "nav-link menu-link active" : "nav-link menu-link"}
+                               href="#shareholderuy" data-bs-toggle="collapse"
+                               role="button" aria-expanded="false" aria-controls="sidebarApps">
+                                <i className="ri-pages-line"></i> <span data-key="t-apps">Quản lý ủy quyền</span>
+                            </a>
+                            <Box
+                                className={route.includes('quan-ly-uy-quyen') ? "collapse menu-dropdown show" : "collapse menu-dropdown"}
+                                id="shareholderuy">
+                                <ul className="nav nav-sm flex-column">
+                                    {JSON.parse(localStorage.getItem('scopes')).includes('xu-ly-uy-quyen') &&
+                                        <li className="nav-item">
+                                            <a href="/xu-ly-uy-quyen"
+                                               className={route.includes('xu-ly-uy-quyen') ? "nav-link active" : "nav-link"}
+                                               data-key="t-calendar"> Xử lý ủy quyền</a>
+                                        </li>}
+
+                                    {JSON.parse(localStorage.getItem('scopes')).includes('danh-sach-uy-quyen') &&
+                                        <li className="nav-item">
+                                            <a href="/danh-sach-uy-quyen"
+                                               className={route.includes('quan-ly-co-dong') ? "nav-link active" : "nav-link"}
+                                               data-key="t-calendar">Danh sách ủy quyền</a>
+                                        </li>}
+
+                                    {JSON.parse(localStorage.getItem('scopes')).includes('thiet-lap-thong-tin-uy-quyen') &&
+                                        <li className="nav-item">
+                                            <a href="/thiet-lap-thong-tin-uy-quyen"
+                                               className={route.includes('thiet-lap-thong-tin-uy-quyen') ? "nav-link active" : "nav-link"}
+                                               data-key="t-calendar">Thiết lập thông tin ủy quyền</a>
                                         </li>}
                                 </ul>
                             </Box>
@@ -147,7 +180,7 @@ export default function Sidebar({...props}) {
                             <a className={route.includes('bien-ban-nghi-quyet') ? "nav-link menu-link active" : "nav-link menu-link"}
                                href="#manager_report" data-bs-toggle="collapse"
                                role="button" aria-expanded="false" aria-controls="sidebarApps">
-                                <i className="ri-apps-2-line"></i> <span data-key="t-apps"> Quản lý kết quả biểu quyết</span>
+                                <i className="ri-honour-line"></i> <span data-key="t-apps"> Quản lý kết quả biểu quyết</span>
                             </a>
                             <Box
                                 className={route.includes('bien-ban-nghi-quyet') ? "collapse menu-dropdown show" : "collapse menu-dropdown"}
@@ -167,7 +200,7 @@ export default function Sidebar({...props}) {
                             <a className={route.includes('checkin-thu-cong') ? "nav-link menu-link active" : "nav-link menu-link"}
                                href="#manager_report1" data-bs-toggle="collapse"
                                role="button" aria-expanded="false" aria-controls="sidebarApps">
-                                <i className="ri-apps-2-line"></i> <span data-key="t-apps"> Kiểm tra tư cách CĐ</span>
+                                <i className="ri-file-list-3-line"></i> <span data-key="t-apps"> Kiểm tra tư cách CĐ</span>
                             </a>
                             <Box
                                 className={route.includes('checkin-thu-cong') ? "collapse menu-dropdown show" : "collapse menu-dropdown"}

@@ -8,7 +8,6 @@ import Pagination from "../pages/Pagination";
 import ToastNotifi from "../pages/ToastNotifi";
 import Loading from "../pages/Loading";
 import helpers from "../pages/Helpers";
-import Helpers from "../pages/Helpers";
 
 function ExportShareHolder() {
     //paginate
@@ -18,8 +17,10 @@ function ExportShareHolder() {
     //props
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
+    const [total, setTotal] = useState([]);
 
     useEffect(() => {
+        statisticalShareHolder();
         getListData(pageCurrent);
     }, [])
 
@@ -30,11 +31,26 @@ function ExportShareHolder() {
         setPageCurrent(1);
     }
 
+    const statisticalShareHolder = () => {
+        userShareholderService.statistical()
+            .then(data => {
+                setLoading(false);
+                if (data.status == 1) {
+                    setTotal(data?.data);
+                    // Helpers.showToast('success', data?.mess);
+                } else {
+                    resetData();
+                    // Helpers.showToast('error', data?.mess);
+
+                }
+            });
+    }
+
     const getListData = (page = 1) => {
         console.log(pageCurrent < pageLast);
         setPageCurrent(page);
         setLoading(true);
-        userShareholderService.getListCheckin(page)
+        userShareholderService.getListExport(page)
             .then(data => {
                 console.log('data', data);
                 setLoading(false);

@@ -16,6 +16,8 @@ use Modules\Shareholder\Http\Controllers\ShareholderController;
 */
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::group(['prefix' => 'shareholder'], function () {
+        Route::any('/statistical', [ShareholderController::class, 'statistical'])->name('statistical'); //bc-tờ trình
+        Route::any('/getListExport', [ShareholderController::class, 'getListExport'])->name('getListExport'); //bc-tờ trình
         Route::any('/getTkLogin', [ShareholderController::class, 'getTkLogin'])->name('getTkLogin'); //bc-tờ trình
         Route::any('/checkIn', [ShareholderController::class, 'checkIn'])->name('checkIn'); //bc-tờ trình
         Route::any('/getListById', [ShareholderController::class, 'getListById'])->name('getListById'); //bc-tờ trình

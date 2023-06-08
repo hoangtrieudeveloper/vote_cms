@@ -52,6 +52,10 @@ import VoteResult from "./VoteResults/Report/Index";
 import CheckShareholder from "./CheckShareholder";
 import ExportShareHolder from "./CheckShareHolder/exportShareholder";
 
+//Quản lý ủy quyền
+import Authority3 from "./Authority/index3";
+
+
 export default function Layout() {
     return (
         <Router>
@@ -64,6 +68,12 @@ export default function Layout() {
                         <ErrorScope/>
                     </Route>
 
+                    <PrivateRoute path="/thiet-lap-thong-tin-uy-quyen">
+                        <Header/>
+                        <Sidebar/>
+                        <Authority3/>
+                    </PrivateRoute>
+
 
                     <PrivateRoute path="/checkin-thu-cong">
                         <Header/>
@@ -75,7 +85,6 @@ export default function Layout() {
                         <Sidebar/>
                         <ExportShareHolder/>
                     </PrivateRoute>
-
 
                     <PrivateRoute path="/bien-ban-nghi-quyet">
                         <Header/>

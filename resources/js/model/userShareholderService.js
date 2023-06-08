@@ -18,11 +18,31 @@ export const userShareholderService = {
     getListVoteStatus,
     getListAuthority,
     getListJointTypes,
-    exportCoDong
+    exportCoDong,
+    getListExport,
+    statistical
 };
 let user = JSON.parse(localStorage.getItem('user'));
 let api = "shareholder";
 
+function statistical() {
+    const requestOptions = {
+        method: 'GET',
+        'Content-Type': 'application/json',
+        headers: authHeader()
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/statistical`, requestOptions).then(handleResponse);
+}
+function getListExport() {
+    const requestOptions = {
+        method: 'GET',
+        'Content-Type': 'application/json',
+        headers: authHeader()
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/getListExport`, requestOptions).then(handleResponse);
+}
 function getTkLogin(id) {
     const requestOptions = {
         method: 'GET',

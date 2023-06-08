@@ -25,8 +25,7 @@ class ShareholderController extends Controller
    * Feedback
    */
 
-    public function getTkLogin(Request $request)
-    {
+    public function getTkLogin(Request $request){
         /*try {*/
         $query = UserShareholder::getTkLogin($request->id);
         $pdf = Pdf::loadView("myPDF", [

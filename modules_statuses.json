@@ -3,5 +3,6 @@
     "Congress": true,
     "InFoBasic": true,
     "Shareholder": true,
-    "VoteResult": true
+    "VoteResult": true,
+    "Authority": true
 }
