@@ -8,6 +8,7 @@ import {userShareholderService} from "../../../model/userShareholderService";
 import Paginate from "../../pages/Paginate";
 import Helpers from "../../pages/Helpers";
 import Footer from "../../pages/Footer";
+import helpers from "../../pages/Helpers";
 
 function Index() {
     const [dataList, setDataList] = useState([]);
@@ -299,7 +300,8 @@ function Index() {
                                                                                                                     {i.phone_number}
                                                                                                                 </td>
                                                                                                                 <td>
-                                                                                                                    <b>{i.total}</b>
+                                                                                                                    <span
+                                                                                                                        className="badge badge-soft-success p-2">{helpers.formatNumber(i.total)}</span>
                                                                                                                 </td>
                                                                                                                 <td>
                                                                                                                     <Box

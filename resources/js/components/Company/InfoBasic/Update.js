@@ -14,6 +14,7 @@ import helpers from "../../pages/Helpers";
 import GlobalSetting from "../../pages/GlobalSetting";
 
 function Update() {
+
     const [loading, setLoading] = useState(false);
     const [idObject, setIdObject] = useState();
     const [report, setReport] = useState({
@@ -445,7 +446,7 @@ function Update() {
                                                         }}
                                                         label="Tổng số cổ đông"
                                                         variant="outlined"
-                                                        value={report.total_shareholder}
+                                                        value={helpers.formatNumber(report.total_shareholder)}
                                                     />
                                                 </Box>
                                             </Box>
@@ -468,7 +469,7 @@ function Update() {
                                                         }}
                                                         label="Tổng số cổ phần"
                                                         variant="outlined"
-                                                        value={report.total_share}
+                                                        value={helpers.formatNumber(report.total_share)}
                                                     />
                                                 </Box>
                                             </Box>

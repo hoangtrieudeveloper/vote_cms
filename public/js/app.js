@@ -22788,12 +22788,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_ToastNotifi__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../pages/ToastNotifi */ "./resources/js/components/pages/ToastNotifi.js");
 /* harmony import */ var _pages_Loading__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../pages/Loading */ "./resources/js/components/pages/Loading.js");
 /* harmony import */ var _pages_Helpers__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../pages/Helpers */ "./resources/js/components/pages/Helpers.js");
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -22826,35 +22820,12 @@ function ExportShareHolder() {
   //props
   var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState8 = _slicedToArray(_useState7, 2),
-    checkAction = _useState8[0],
-    setCheckAction = _useState8[1];
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    loading = _useState8[0],
+    setLoading = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState10 = _slicedToArray(_useState9, 2),
-    loading = _useState10[0],
-    setLoading = _useState10[1];
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
-    _useState12 = _slicedToArray(_useState11, 2),
-    data = _useState12[0],
-    setData = _useState12[1];
-  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
-    _useState14 = _slicedToArray(_useState13, 2),
-    nameSearch = _useState14[0],
-    setNameSearch = _useState14[1];
-  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
-    _useState16 = _slicedToArray(_useState15, 2),
-    block = _useState16[0],
-    setBlock = _useState16[1];
-  var options = [{
-    value: "0",
-    label: "Chưa check in"
-  }, {
-    value: "1",
-    label: "Đã check in"
-  }];
-  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
-    _useState18 = _slicedToArray(_useState17, 2),
-    checkin = _useState18[0],
-    setCheckin = _useState18[1];
+    data = _useState10[0],
+    setData = _useState10[1];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     getListData(pageCurrent);
   }, []);
@@ -22869,7 +22840,7 @@ function ExportShareHolder() {
     console.log(pageCurrent < pageLast);
     setPageCurrent(page);
     setLoading(true);
-    _model_userShareholderService__WEBPACK_IMPORTED_MODULE_2__.userShareholderService.getListCheckin(page, nameSearch, block).then(function (data) {
+    _model_userShareholderService__WEBPACK_IMPORTED_MODULE_2__.userShareholderService.getListCheckin(page).then(function (data) {
       console.log('data', data);
       setLoading(false);
       if (data.status == 1) {
@@ -22885,47 +22856,6 @@ function ExportShareHolder() {
     });
   };
 
-  var CheckIn = function CheckIn(id) {
-    setLoading(true);
-    _model_userShareholderService__WEBPACK_IMPORTED_MODULE_2__.userShareholderService.CheckIn(id).then(function (data) {
-      setLoading(false);
-      if (data.status == 1) {
-        var _data$data4;
-        setCheckin(_objectSpread(_objectSpread({}, checkin), {}, {
-          check_in: 1,
-          url_qr: data === null || data === void 0 ? void 0 : (_data$data4 = data.data) === null || _data$data4 === void 0 ? void 0 : _data$data4.url_qr
-        }));
-        getListData(pageCurrent);
-        _pages_Helpers__WEBPACK_IMPORTED_MODULE_6__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.mess);
-      } else {
-        resetData();
-        _pages_Helpers__WEBPACK_IMPORTED_MODULE_6__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.mess);
-      }
-    });
-  };
-  var openPdf = function openPdf(id) {
-    setLoading(true);
-    _model_userShareholderService__WEBPACK_IMPORTED_MODULE_2__.userShareholderService.getTkLogin(id).then(function (data) {
-      setLoading(false);
-      console.log('data', data);
-      // downloadPDF(data);
-      var file = new Blob([data], {
-        type: 'application/pdf'
-      });
-      var fileURL = URL.createObjectURL(file);
-      window.open(fileURL);
-    });
-  };
-  var getListById = function getListById(id) {
-    setLoading(true);
-    _model_userShareholderService__WEBPACK_IMPORTED_MODULE_2__.userShareholderService.getListById(id).then(function (data) {
-      console.log('data', data);
-      setLoading(false);
-      if (data.status == 1) {
-        setCheckin(data === null || data === void 0 ? void 0 : data.data);
-      } else _pages_Helpers__WEBPACK_IMPORTED_MODULE_6__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.mess);
-    });
-  };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
     className: "main-content"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_ToastNotifi__WEBPACK_IMPORTED_MODULE_4__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Loading__WEBPACK_IMPORTED_MODULE_5__["default"], {
@@ -23341,13 +23271,12 @@ function CheckShareholder() {
     setLoading(true);
     _model_userShareholderService__WEBPACK_IMPORTED_MODULE_2__.userShareholderService.getTkLogin(id).then(function (data) {
       setLoading(false);
-      console.log('data', data);
       // downloadPDF(data);
       var file = new Blob([data], {
         type: 'application/pdf'
       });
       var fileURL = URL.createObjectURL(file);
-      window.open(fileURL);
+      window.open(fileURL, "_blank");
     });
   };
   var getListById = function getListById(id) {
@@ -23376,7 +23305,7 @@ function CheckShareholder() {
     className: "page-title-box d-sm-flex align-items-center justify-content-between"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", {
     className: "mb-sm-0"
-  }, "Danh s\xE1ch c\u1ED5 \u0111\xF4ng"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  }, "Checkin th\u1EE7 c\xF4ng"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
     className: "page-title-right"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ol", {
     className: "breadcrumb m-0"
@@ -23384,9 +23313,7 @@ function CheckShareholder() {
     className: "breadcrumb-item"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("a", {
     href: "#"
-  }, "Qu\u1EA3n l\xFD c\u1ED5 \u0111\xF4ng")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", {
-    className: "breadcrumb-item active"
-  }, "Danh s\xE1ch c\u1ED5 \u0111\xF4ng")))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  }, "Danh s\xE1ch c\u1ED5 \u0111\xF4ng"))))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
     className: "row"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
     className: "col-xl-12"
@@ -23396,7 +23323,7 @@ function CheckShareholder() {
     className: "card-header align-items-center d-flex"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", {
     className: "card-title mb-0 flex-grow-1"
-  }, "Danh s\xE1ch c\u1ED5 \u0111\xF4ng")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  }, "Checkin th\u1EE7 c\xF4ng")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
     className: "card-body"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
     className: "row"
@@ -23477,12 +23404,12 @@ function CheckShareholder() {
       className: "text-center"
     }, index + 1), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.id), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.cccd), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.date_range), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.phone_number), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
       className: "badge badge-soft-success p-2"
-    }, i.total)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.checkin == 1 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    }, _pages_Helpers__WEBPACK_IMPORTED_MODULE_6__["default"].formatNumber(i.total))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.checkin == 1 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
       className: "badge badge-label bg-success"
     }, "\u0110\xE3 check in") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
       className: "badge badge-label bg-danger"
     }, "Ch\u01B0a check in")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
-      className: "display-flex"
+      className: "display-inline-grid"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
       type: "button",
       className: "btn btn-secondary custom-toggle active",
@@ -23587,7 +23514,7 @@ function CheckShareholder() {
       type: "text",
       className: "form-control",
       disabled: true,
-      value: checkin.share_total
+      value: _pages_Helpers__WEBPACK_IMPORTED_MODULE_6__["default"].formatNumber(checkin.share_total)
     })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
       className: "col-xxl-6"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
@@ -23597,7 +23524,7 @@ function CheckShareholder() {
       type: "text",
       className: "form-control",
       disabled: true,
-      value: checkin.total
+      value: _pages_Helpers__WEBPACK_IMPORTED_MODULE_6__["default"].formatNumber(checkin.total)
     })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
       className: "modal-body text-center"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
@@ -23632,7 +23559,7 @@ function CheckShareholder() {
       "data-bs-dismiss": "modal"
     }, "In t\xE0i kho\u1EA3n \u0111\u0103ng nh\u1EADp")))))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
       type: "button",
-      className: "btn btn-success btn-border",
+      className: "btn btn-success btn-border margin-top",
       "data-bs-toggle": "modal",
       "data-bs-target": "#firstmodal"
     }, "QR code"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
@@ -24209,7 +24136,7 @@ function Update() {
     },
     label: "T\u1ED5ng s\u1ED1 c\u1ED5 \u0111\xF4ng",
     variant: "outlined",
-    value: report.total_shareholder
+    value: _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].formatNumber(report.total_shareholder)
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
     className: "col-xl-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
@@ -24233,7 +24160,7 @@ function Update() {
     },
     label: "T\u1ED5ng s\u1ED1 c\u1ED5 ph\u1EA7n",
     variant: "outlined",
-    value: report.total_share
+    value: _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].formatNumber(report.total_share)
   }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
     className: "row"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
@@ -25218,6 +25145,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 function Index() {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState2 = _slicedToArray(_useState, 2),
@@ -25530,7 +25458,9 @@ function Index() {
         key: index
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
         className: "text-center"
-      }, index + 1), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.cccd), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.phone_number), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("b", null, i.total)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      }, index + 1), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.cccd), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.phone_number), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+        className: "badge badge-soft-success p-2"
+      }, _pages_Helpers__WEBPACK_IMPORTED_MODULE_4__["default"].formatNumber(i.total))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
         className: "d-flex flex-wrap gap-2 max-content"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Link, {
         to: "/khai-bao-bc-to-trinh",
@@ -31174,8 +31104,15 @@ var showToast = function showToast(type, message) {
     });
   }
 };
+var formatNumber = function formatNumber(number) {
+  var value = parseInt(number);
+  return number ? value.toLocaleString('it-IT', {
+    currency: 'VND'
+  }) : 0;
+};
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  showToast: showToast
+  showToast: showToast,
+  formatNumber: formatNumber
 });
 
 /***/ }),
@@ -33867,9 +33804,9 @@ function EditProfile() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
     action: "javascript:void(0);"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "row"
+    className: "row display-block"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "col-lg-6"
+    className: "col-lg-8"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
     className: "mb-3"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
@@ -33895,7 +33832,7 @@ function EditProfile() {
     variant: "outlined",
     value: user.name
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "col-lg-6"
+    className: "col-lg-8"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
     className: "mb-3"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
@@ -33921,7 +33858,7 @@ function EditProfile() {
     variant: "outlined",
     value: user.phone
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "col-lg-6"
+    className: "col-lg-8"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
     className: "mb-3"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
@@ -33947,7 +33884,7 @@ function EditProfile() {
     variant: "outlined",
     value: user.address
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "col-lg-12"
+    className: "col-lg-8"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
     className: "text-center"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_lab_LoadingButton__WEBPACK_IMPORTED_MODULE_7__["default"], {
@@ -33971,9 +33908,9 @@ function EditProfile() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
     action: "javascript:void(0);"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "row g-2"
+    className: "row g-2 display-block"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "col-lg-6"
+    className: "col-lg-8"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     className: "form-label"
   }, "M\u1EADt kh\u1EA9u c\u0169*"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
@@ -33996,7 +33933,7 @@ function EditProfile() {
     variant: "outlined",
     value: report.old_pass
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "col-lg-6"
+    className: "col-lg-8"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     className: "form-label"
   }, "M\u1EADt kh\u1EA9u m\u1EDBi*"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
@@ -34019,7 +33956,7 @@ function EditProfile() {
     variant: "outlined",
     value: report.new_pass
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "col-lg-6"
+    className: "col-lg-8"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     className: "form-label"
   }, "X\xE1c nh\u1EADn m\u1EADt kh\u1EA9u m\u1EDBi*"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
@@ -34042,7 +33979,7 @@ function EditProfile() {
     variant: "outlined",
     value: report.new_pass_1
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "col-lg-12"
+    className: "col-lg-8"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
     className: "text-center"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_lab_LoadingButton__WEBPACK_IMPORTED_MODULE_7__["default"], {

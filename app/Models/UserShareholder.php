@@ -178,14 +178,14 @@ class UserShareholder extends Model
             }
         } else {
             $query = $query->leftJoin('user_share_block_voting', 'user_shareholder.id', '=', 'user_share_block_voting.id_user_share')
+                ->leftJoin('shareholder_shares', 'user_shareholder.id', '=', 'shareholder_shares.user_shares_id')
                 ->where('id_vote_congress_report', $congress_id)
                 ->select('user_shareholder.id as id', 'user_shareholder.name as name', 'user_shareholder.cccd as cccd', 'user_shareholder.phone_number',
-                    'user_shares.total as total', 'user_share_block_voting.status as block')
+                    'shareholder_shares.total as total', 'user_share_block_voting.status as block')
                 ->orderBy('name', 'asc')
                 ->paginate(10);
         }
         return $query;
-
     }
 
     public static function updateStatusBlockVote($data)

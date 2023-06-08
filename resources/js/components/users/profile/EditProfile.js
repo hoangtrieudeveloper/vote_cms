@@ -274,8 +274,8 @@ function EditProfile() {
                                                         <Box className="tab-pane active" id="personalDetails"
                                                              role="tabpanel">
                                                             <form action="javascript:void(0);">
-                                                                <Box className="row">
-                                                                    <Box className="col-lg-6">
+                                                                <Box className="row display-block">
+                                                                    <Box className="col-lg-8">
                                                                         <Box className="mb-3">
                                                                             <label htmlFor="firstnameInput"
                                                                                    className="form-label">Tên*</label>
@@ -299,7 +299,7 @@ function EditProfile() {
                                                                             />
                                                                         </Box>
                                                                     </Box>
-                                                                    <Box className="col-lg-6">
+                                                                    <Box className="col-lg-8">
                                                                         <Box className="mb-3">
                                                                             <label htmlFor="lastnameInput"
                                                                                    className="form-label">Số điện
@@ -324,7 +324,7 @@ function EditProfile() {
                                                                             />
                                                                         </Box>
                                                                     </Box>
-                                                                    <Box className="col-lg-6">
+                                                                    <Box className="col-lg-8">
                                                                         <Box className="mb-3">
                                                                             <label htmlFor="phonenumberInput"
                                                                                    className="form-label">Địa
@@ -349,7 +349,7 @@ function EditProfile() {
                                                                             />
                                                                         </Box>
                                                                     </Box>
-                                                                    <Box className="col-lg-12">
+                                                                    <Box className="col-lg-8">
                                                                         <Box className="text-center">
                                                                             <LoadingButton
                                                                                 onClick={UpdateProfile}
@@ -374,8 +374,8 @@ function EditProfile() {
                                                         </Box>
                                                         <Box className="tab-pane" id="changePassword" role="tabpanel">
                                                             <form action="javascript:void(0);">
-                                                                <Box className="row g-2">
-                                                                    <Box className="col-lg-6">
+                                                                <Box className="row g-2 display-block">
+                                                                    <Box className="col-lg-8">
                                                                         <Box>
                                                                             <label
                                                                                 className="form-label">Mật khẩu
@@ -400,7 +400,7 @@ function EditProfile() {
                                                                             />
                                                                         </Box>
                                                                     </Box>
-                                                                    <Box className="col-lg-6">
+                                                                    <Box className="col-lg-8">
                                                                         <Box>
                                                                             <label
                                                                                 className="form-label">Mật khẩu
@@ -425,7 +425,7 @@ function EditProfile() {
                                                                             />
                                                                         </Box>
                                                                     </Box>
-                                                                    <Box className="col-lg-6">
+                                                                    <Box className="col-lg-8">
                                                                         <Box>
                                                                             <label
                                                                                 className="form-label">Xác nhận mật khẩu
@@ -450,7 +450,7 @@ function EditProfile() {
                                                                             />
                                                                         </Box>
                                                                     </Box>
-                                                                    <Box className="col-lg-12">
+                                                                    <Box className="col-lg-8">
                                                                         <Box className="text-center">
                                                                             <LoadingButton
                                                                                 onClick={ChangePassword}

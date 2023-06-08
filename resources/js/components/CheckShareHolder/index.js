@@ -110,12 +110,11 @@ function CheckShareholder() {
                     <Box className="row">
                         <Box className="col-12">
                             <Box className="page-title-box d-sm-flex align-items-center justify-content-between">
-                                <h4 className="mb-sm-0">Danh sách cổ đông</h4>
+                                <h4 className="mb-sm-0">Checkin thủ công</h4>
                                 <Box className="page-title-right">
                                     <ol className="breadcrumb m-0">
-                                        <li className="breadcrumb-item"><a href="#">Quản lý cổ đông</a>
+                                        <li className="breadcrumb-item"><a href="#">Danh sách cổ đông</a>
                                         </li>
-                                        <li className="breadcrumb-item active">Danh sách cổ đông</li>
                                     </ol>
                                 </Box>
 
@@ -126,7 +125,7 @@ function CheckShareholder() {
                         <Box className="col-xl-12">
                             <Box className="card">
                                 <Box className="card-header align-items-center d-flex">
-                                    <h3 className="card-title mb-0 flex-grow-1">Danh sách cổ đông</h3>
+                                    <h3 className="card-title mb-0 flex-grow-1">Checkin thủ công</h3>
                                 </Box>
                                 <Box className="card-body">
                                     <Box className="row">
@@ -205,7 +204,7 @@ function CheckShareholder() {
                                                         {i.phone_number}
                                                     </td>
                                                     <td>
-                                                        <span className="badge badge-soft-success p-2">{i.total}</span>
+                                                        <span className="badge badge-soft-success p-2">{helpers.formatNumber(i.total)}</span>
                                                     </td>
                                                     <td>
                                                         {i.checkin == 1 ?
@@ -216,7 +215,7 @@ function CheckShareholder() {
                                                                 className="badge badge-label bg-danger">Chưa check in</span>
                                                         }
                                                     </td>
-                                                    <td className="display-flex">
+                                                    <td className="display-inline-grid">
                                                         <button type="button"
                                                                 className="btn btn-secondary custom-toggle active"
                                                                 data-bs-toggle="modal"
@@ -311,7 +310,7 @@ function CheckShareholder() {
                                                                                 <input type="text"
                                                                                        className="form-control"
                                                                                        disabled
-                                                                                       value={checkin.share_total}
+                                                                                       value={helpers.formatNumber(checkin.share_total)}
                                                                                 />
                                                                             </Box>
                                                                             <Box className="col-xxl-6">
@@ -321,7 +320,7 @@ function CheckShareholder() {
                                                                                 <input type="text"
                                                                                        className="form-control"
                                                                                        disabled
-                                                                                       value={checkin.total}
+                                                                                       value={helpers.formatNumber(checkin.total)}
                                                                                 />
                                                                             </Box>
                                                                             <Box className="modal-body text-center">
@@ -362,7 +361,7 @@ function CheckShareholder() {
                                                             </Box>
                                                         </Box>
                                                         <button type="button"
-                                                                className="btn btn-success btn-border"
+                                                                className="btn btn-success btn-border margin-top"
                                                                 data-bs-toggle="modal" data-bs-target="#firstmodal">QR
                                                             code
                                                         </button>

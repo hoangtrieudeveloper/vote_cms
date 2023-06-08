@@ -16,6 +16,11 @@ const showToast = (type, message) => {
     }
 }
 
+const formatNumber = (number) => {
+    let value = parseInt(number);
+    return number ? value.toLocaleString('it-IT', {currency: 'VND'}) : 0;
+}
+
 export default {
-    showToast
+    showToast , formatNumber
 };

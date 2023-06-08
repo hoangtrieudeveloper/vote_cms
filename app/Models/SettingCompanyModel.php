@@ -1,7 +1,9 @@
 <?php
 
-namespace Modules\InfoBasic\Models;
+namespace App\Models;
 
+use App\Models\UserShare;
+use App\Models\UserShareholder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -54,9 +56,9 @@ class SettingCompanyModel extends Model
     public function getById($id)
     {
         $data = SettingCompanyModel::where('user_id', $id)->first();
-        $data['total_shareholder'] = UserShareholderModel::where('user_id', $id)->count();
-        $total_share = UserShareModel::where('user_id', $id)->first();
-        $data['total_share'] = $total_share['total'] ?? 0;
+        $data['total_shareholder'] = UserShareholder::where('user_id', $id)->count();
+        $total_share = ShareholderShare::where('user_id', $id)->sum('total');
+        $data['total_share'] = $total_share ?? 0;
         return $data;
     }
 
