@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use \Exception;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
 require("PHPExcel/PHPExcel.php");
@@ -25,7 +26,8 @@ class ShareholderController extends Controller
    * Feedback
    */
 
-    public function getTkLogin(Request $request){
+    public function getTkLogin(Request $request)
+    {
         /*try {*/
         $query = UserShareholder::getTkLogin($request->id);
         $pdf = Pdf::loadView("myPDF", [
@@ -156,6 +158,10 @@ class ShareholderController extends Controller
             $v['date_range'] = Carbon::parse($v->date_range)->format('d-m-Y');
             $shareholder_share_total = DB::table('shareholder_shares')->where('user_id', $user_id)->where('user_shares_id', $v->id)->first();
             $v['total'] = $shareholder_share_total != null ? $shareholder_share_total->total : 0;
+            $checkIn = DB::table('user_shares_checkin')->where('user_shares_id', $v->id)->first();
+            $v['checkIn'] = $checkIn != null ? $shareholder_share_total->is_check : 0;
+            $voteStatus = DB::table('user_shares_vote')->where('user_id', $user_id)->where('id_user_shares', $v->id)->first();
+            $v['voteStatus'] = $voteStatus != null;
         }
         if ($query) {
             $result = [
@@ -344,12 +350,14 @@ class ShareholderController extends Controller
     {
         $file = public_path() . "/files/DanhsachcodongDemo.xlsx";
         // Download file with custom headers
-        return response()->withHeaders([
+
+        $header = array([
             'Content-Type' => 'application/vnd.ms-excel',
             'Content-Transfer-Encoding' => 'Binary',
             'Content-Length' => filesize($file),
             'Content-Disposition' => 'attachment; filename="' . $file . '"'
         ]);
+        return Response::download($file,'DanhsachcodongDemo',$header);
     }
 
     public function downloadCDPass(Request $request)

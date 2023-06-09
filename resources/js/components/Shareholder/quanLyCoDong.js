@@ -140,7 +140,7 @@ function QuanLyCoDong() {
                                                 console.log(e.target.value);
                                                 setVoteStatus(e.target.value);
                                             }}>
-                                                <option value="" selected>--- Trạng thái biể quyết ---</option>
+                                                <option value="" selected>--- Trạng thái biểu quyết ---</option>
                                                 {listVoteStatus?.map((item, index) => (
                                                     <option key={index} value={item.value}
                                                             selected={item.value == voteStatus}>
@@ -267,10 +267,10 @@ function QuanLyCoDong() {
                                                         Trực tiếp
                                                     </td>
                                                     <td>
-                                                        Cổ đông
+                                                        {i.is_auth ? 'Ủy quyển' : 'Cổ đông'}
                                                     </td>
                                                     <td>
-                                                        Chưa biểu quyết
+                                                        {i.voteStatus ? 'Đã biểu quyết' : 'Chưa biểu quyết'}
                                                     </td>
                                                     <td>
                                                         Không hoạt động
