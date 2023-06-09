@@ -118,7 +118,7 @@ export default function Sidebar({...props}) {
                                     {JSON.parse(localStorage.getItem('scopes')).includes('danh-sach-uy-quyen') &&
                                         <li className="nav-item">
                                             <a href="/danh-sach-uy-quyen"
-                                               className={route.includes('quan-ly-co-dong') ? "nav-link active" : "nav-link"}
+                                               className={route.includes('danh-sach-uy-quyen') ? "nav-link active" : "nav-link"}
                                                data-key="t-calendar">Danh sách ủy quyền</a>
                                         </li>}
 

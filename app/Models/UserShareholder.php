@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Modules\Congress\Config\constants;
 
 class UserShareholder extends Model
@@ -37,11 +38,13 @@ class UserShareholder extends Model
 
     const PERSONAL = 1;
     const ORGANIZATION = 2;
+    //CHECKIN
     const CHECKIN = 1;
     const URL_QR = "https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=https://vote.vn";
 
     protected $table = "user_shareholder";
-    protected $fillable = ['id', 'username', 'cccd', 'password', 'no_hash_password', 'name', 'code_dksh', 'date_range', 'issued_by', 'phone_number', 'address', 'email', 'cccd', 'type', 'organization', 'user_id', 'created_at', 'updated_at', 'created_by', 'remember_token'];
+    public $timestamps = true;
+    protected $fillable = ['id', 'username', 'cccd', 'password', 'no_hash_password', 'name', 'code_dksh', 'date_range', 'issued_by', 'phone_number', 'address', 'email', 'cccd', 'type', 'is_auth', 'organization', 'user_id', 'created_at', 'updated_at', 'created_by', 'remember_token'];
 
     public static function getListType(): array
     {
@@ -212,6 +215,7 @@ class UserShareholder extends Model
         return null;
     }
 
+    //Checkin User
     public static function getListCheckin($txtName, $checkin)
     {
 
@@ -282,4 +286,104 @@ class UserShareholder extends Model
     {
         return UserShareholder::where('id', $id)->first();
     }
+
+    //End checkin user
+
+
+    //Authority
+
+    public static function getAllShareHolder($nameSearch)
+    {
+        $user_id = Auth::user()->id;
+        $setTotalAuthority = 0;
+        $getTotalAuthority = 0;
+        $query = UserShareholder::query();
+        $query = $query->where('user_id', $user_id);
+        if ($nameSearch != null) {
+            $query = $query->where(function ($query) use ($nameSearch) {
+                $query->where('name', 'like', '%' . $nameSearch . '%')
+                    ->orWhere('cccd', 'like', '%' . $nameSearch . '%')
+                    ->orWhere('phone_number', 'like', '%' . $nameSearch . '%');
+            });
+        }
+        $query = $query->orderBy('name', 'asc')
+            ->paginate(10);
+
+        foreach ($query as $item){
+            $total  = ShareholderShare::where([['user_shares_id', $item->id], ['user_id', $user_id]])->first();
+            $item['total'] = $total != null ? $total->total : 0;
+            $item['date_range'] = Carbon::parse($item->date_range)->format('d-m-Y');
+            if($item->is_auth != self::AUTHORITY){
+                $setTotalAuthority = self::sumShareAuthor('id_shareholder',$item->id);
+            }else{
+                $getTotalAuthority = self::sumShareAuthor('id_author',$item->id);
+            }
+            $item['setAuthority'] = $setTotalAuthority;
+            $item['getAuthority'] = $getTotalAuthority;
+            $item['totalALL'] = ($item['total'] +  $item['getAuthority']) -  $item['setAuthority'];
+        }
+        return $query;
+    }
+
+    public function sumShareAuthor($column,$id){
+        return UserShareAuthor::where($column,$id)->sum('total_authority');
+    }
+
+    public static function getAuthority($nameSearch)
+    {
+        $user_id = Auth::user()->id;
+        $query = UserShareholder::query();
+        $query = $query->where('user_id', $user_id)
+            ->where('is_auth', self::AUTHORITY);
+        if ($nameSearch != null) {
+            $query = $query->where(function ($query) use ($nameSearch) {
+                $query->where('name', 'like', '%' . $nameSearch . '%')
+                    ->orWhere('cccd', 'like', '%' . $nameSearch . '%')
+                    ->orWhere('phone_number', 'like', '%' . $nameSearch . '%');
+            });
+        }
+        $query = $query->orderBy('updated_at', 'desc')
+            ->paginate(10);
+
+        return $query;
+    }
+
+    public function add($data)
+    {
+        $userId = Auth::user()->id;
+        $data = [
+            'name' => $data['name'],
+            'cccd' => $data['cccd'],
+            'username' => $data['cccd'],
+            'email' => $data['email'],
+            'phone_number' => empty($data['phone_number']) ? null : $data['phone_number'],
+            'password' => Hash::make($data['password']),
+            'no_hash_password' => $data['password'],
+            'organization' => empty($data['organization']) ? null : $data['organization'],
+            'user_id' => $userId,
+            'is_auth' => self::AUTHORITY,
+        ];
+        $create = UserShareholder::Create($data);
+        return $create;
+    }
+
+    public function edit($data)
+    {
+        $data = [
+            'id' => $data['id'],
+            'name' => $data['name'],
+            'cccd' => $data['cccd'],
+            'username' => $data['cccd'],
+            'email' => $data['email'],
+            'phone_number' => empty($data['phone_number']) ? null : $data['phone_number'],
+            'password' => Hash::make($data['password']),
+            'no_hash_password' => $data['password'],
+            'organization' => empty($data['organization']) ? null : $data['organization'],
+        ];
+        $update = UserShareholder::where('id', $data['id'])->update($data);
+        return $update;
+    }
+
+
+    //END Authority
 }

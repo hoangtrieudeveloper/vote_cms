@@ -20,10 +20,11 @@ export const userShareholderService = {
     getListJointTypes,
     exportCoDong,
     getListExport,
-    statistical
+    statistical,
 };
 let user = JSON.parse(localStorage.getItem('user'));
 let api = "shareholder";
+
 
 function statistical() {
     const requestOptions = {
