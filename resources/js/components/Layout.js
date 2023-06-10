@@ -55,6 +55,7 @@ import ExportShareHolder from "./CheckShareHolder/exportShareholder";
 //Quản lý ủy quyền
 import Authority3 from "./Authority/index3";
 import Authority1 from "./Authority/index1";
+import Authority2 from "./Authority/index2";
 import CreateAuthority from "./Authority/Create/index";
 
 
@@ -80,7 +81,11 @@ export default function Layout() {
                         <Sidebar/>
                         <CreateAuthority/>
                     </PrivateRoute>
-
+                    <PrivateRoute path="/danh-sach-uy-quyen">
+                        <Header/>
+                        <Sidebar/>
+                        <Authority2/>
+                    </PrivateRoute>
                     <PrivateRoute path="/thiet-lap-thong-tin-uy-quyen">
                         <Header/>
                         <Sidebar/>

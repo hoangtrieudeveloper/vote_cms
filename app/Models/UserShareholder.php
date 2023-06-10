@@ -403,12 +403,15 @@ class UserShareholder extends Model
     }
 
     public function getUserAuthorByShareHolder($id){
-        $userId = Auth::user()->id;
         return UserShareholder::leftJoin('user_shares_author','user_shares_author.id_author','=','user_shareholder.id')
-            ->where([['user_shareholder.user_id',$userId],['user_shares_author.id_shareholder',$id]])
-            ->select('user_shareholder.name','user_shareholder.cccd','user_shareholder.number_phone','user_shareholder.email','user_shares_author.total_authority')
+            ->where('user_shares_author.id_shareholder',$id)
+            ->select('user_shareholder.name','user_shareholder.cccd','user_shareholder.phone_number','user_shareholder.email','user_shares_author.total_authority')
             ->orderBy('user_shares_author.id', 'desc')
-            ->paginate();
+            ->paginate(10);
+    }
+
+    public function getAuthor(){
+        return UserShareholder::where([['user_id',Auth::user()->id],['is_auth',self::AUTHORITY]])->orderBy('id', 'desc')->paginate(10);
     }
 
 

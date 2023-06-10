@@ -35,6 +35,14 @@
 }
 
 .input{
-    -webkit-text-fill-color:blue
+    -webkit-text-fill-color:blue !important;
+}
+
+.textCenter{
+    text-align: center;
+}
+
+.colSpan2{
+    padding: 11px 14px 34px 20px !important;
 }
 

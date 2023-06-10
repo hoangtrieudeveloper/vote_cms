@@ -8,19 +8,46 @@ export const AuthorityService = {
     getListById,
     edit,
     getAllUserShareHolder,
-    getUserAuthorByShareHolder
+    getUserAuthorByShareHolder,
+    getAuthor,
+    getByIdAuthor,
+    addShare
 };
 let user = JSON.parse(localStorage.getItem('user'));
 let api = "authority";
 
-function getUserAuthorByShareHolder(id) {
+function addShare(object) {
+    const requestOptions = {
+        method: 'POST',
+        headers: authHeader(),
+        body: JSON.stringify(object)
+    };
+    return fetch(`${GlobalSetting.url}api/${api}/addShare`, requestOptions).then(handleResponse);
+}
+function getByIdAuthor(id) {
+    const requestOptions = {
+        method: 'POST',
+        headers: authHeader(),
+    };
+    return fetch(`${GlobalSetting.url}api/${api}/getByIdAuthor?id=${id}`, requestOptions).then(handleResponse);
+}
+function getAuthor() {
     const requestOptions = {
         method: 'GET',
         'Content-Type': 'application/json',
         headers: authHeader()
     };
 
-    return fetch(`${GlobalSetting.url}api/${api}/getUserAuthorByShareHolder?id=${id}`, requestOptions).then(handleResponse);
+    return fetch(`${GlobalSetting.url}api/${api}/getAuthor`, requestOptions).then(handleResponse);
+}
+function getUserAuthorByShareHolder(page,id) {
+    const requestOptions = {
+        method: 'GET',
+        'Content-Type': 'application/json',
+        headers: authHeader()
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/getUserAuthorByShareHolder?page=${page}&id=${id}`, requestOptions).then(handleResponse);
 }
 function getAllUserShareHolder(page,nameSearch) {
     const requestOptions = {
