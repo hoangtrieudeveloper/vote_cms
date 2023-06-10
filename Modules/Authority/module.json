@@ -1,0 +1,13 @@
+{
+    "name": "Authority",
+    "alias": "authority",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Authority\\Providers\\AuthorityServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

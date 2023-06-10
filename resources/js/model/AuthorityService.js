@@ -7,12 +7,21 @@ export const AuthorityService = {
     register,
     getListById,
     edit,
-    getAllUserShareHolder
+    getAllUserShareHolder,
+    getUserAuthorByShareHolder
 };
 let user = JSON.parse(localStorage.getItem('user'));
 let api = "authority";
 
+function getUserAuthorByShareHolder(id) {
+    const requestOptions = {
+        method: 'GET',
+        'Content-Type': 'application/json',
+        headers: authHeader()
+    };
 
+    return fetch(`${GlobalSetting.url}api/${api}/getUserAuthorByShareHolder?id=${id}`, requestOptions).then(handleResponse);
+}
 function getAllUserShareHolder(page,nameSearch) {
     const requestOptions = {
         method: 'GET',

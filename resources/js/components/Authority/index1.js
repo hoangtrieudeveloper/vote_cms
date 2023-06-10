@@ -232,9 +232,11 @@ function Authority1() {
                                                                         </td>
 
                                                                         <td>
-                                                                            <button type="button"
-                                                                                    className="btn btn-soft-success waves-effect waves-light">Ủy quyền
-                                                                            </button>
+                                                                            <Link
+                                                                                  to={"/them-moi-uy-quyen?id=" + i.id}
+                                                                                  className="btn btn-soft-success waves-effect waves-light"
+                                                                            > Ủy quyền
+                                                                            </Link>
                                                                        </td>
 
 

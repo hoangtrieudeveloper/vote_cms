@@ -12,6 +12,8 @@ import {Link} from "react-router-dom";
 import {congressService} from "../../../model/congressService";
 
 function CreateAuthority() {
+    const params = new URLSearchParams(window.location.search);
+    const [id, setId] = useState(params.get('id') || "");
     //paginate
     const [pageCurrent, setPageCurrent] = useState(1);
     const [pageLast, setPageLast] = useState(1);
@@ -19,15 +21,7 @@ function CreateAuthority() {
     //props
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
-    const [nameSearch, setNameSearch] = useState('');
-    const [authority, setAuthority] = useState({});
-    const onInputChange = e => {
-        setAuthority({...authority, [e.target.name]: e.target.value});
-    };
-
-    useEffect(() => {
-        getListData(pageCurrent);
-    }, [])
+    const [authority, setAuthor] = useState({});
 
     const resetData = () => {
         setData([]);
@@ -40,7 +34,7 @@ function CreateAuthority() {
         console.log(pageCurrent < pageLast);
         setPageCurrent(page);
         setLoading(true);
-        AuthorityService.getAllUserShareHolder(page, nameSearch)
+        AuthorityService.getUserAuthorByShareHolder(page)
             .then(data => {
                 setLoading(false);
                 if (data.status == 1) {
@@ -56,14 +50,14 @@ function CreateAuthority() {
             });
     }
 
-    const getListById = (id) => {
+    const getListById = (idObject) => {
         setLoading(true);
-        AuthorityService.getListById(id)
+        AuthorityService.getListById(idObject)
             .then(data => {
                 console.log('data', data);
                 setLoading(false);
                 if (data.status == 1) {
-                    setAuthority(data?.data);
+                    setAuthor(data?.data);
                 } else Helpers.showToast('error', data?.mess);
             });
     }
@@ -115,7 +109,9 @@ function CreateAuthority() {
                 );
         }
     }
-
+    useEffect(() => {
+        getListById(params.get('id') || "");
+    }, []);
 
     return (
         <Box className="main-content">
@@ -126,10 +122,10 @@ function CreateAuthority() {
                     <Box className="row">
                         <Box className="col-12">
                             <Box className="page-title-box d-sm-flex align-items-center justify-content-between">
-                                <h4 className="mb-sm-0">Xử lý ủy quyền</h4>
+                                <h4 className="mb-sm-0">Thêm người được ủy quyền</h4>
                                 <Box className="page-title-right">
                                     <ol className="breadcrumb m-0">
-                                        <li className="breadcrumb-item"><a href="#">Xử lý ủy quyền</a>
+                                        <li className="breadcrumb-item"><a href="#">Thêm người được ủy quyền</a>
                                         </li>
                                     </ol>
                                 </Box>
@@ -146,23 +142,127 @@ function CreateAuthority() {
                                             <Box className="col-xl-12">
                                                 <Box className="card">
                                                     <Box className="card-header align-items-center d-flex">
-                                                        <h3 className="card-title mb-0 flex-grow-1">Tìm kiếm</h3>
+                                                        <h3 className="card-title mb-0 flex-grow-1">Thông tin cổ đông</h3>
                                                     </Box>
                                                     <Box className="card-body">
-                                                        <Box className="row">
-                                                            <Box className="col-4">
-                                                                <input type="text" className="form-control"
-                                                                       placeholder={'Họ tên/CMND/CCCD...'}
-                                                                       value={nameSearch}
-                                                                       onChange={(e) => setNameSearch(e.target.value)}/>
+                                                            <Box className="row">
+                                                                <Box className="col-xl-4">
+                                                                    <Box className="mb-3">
+                                                                        <label htmlFor="cleave-date" className="form-label">Họ tên</label>
+                                                                        <TextField
+                                                                            className="form-control input"
+                                                                            fullWidth
+                                                                            type='text'
+                                                                            name="name"
+                                                                            disabled
+                                                                            variant="outlined"
+                                                                            sx={{
+                                                                                'input': {
+                                                                                    '&::placeholder': {
+                                                                                        fontSize: 16,
+                                                                                    },
+                                                                                },
+                                                                            }}
+                                                                            value={authority.name}
+                                                                        />
+                                                                    </Box>
+                                                                </Box>
+                                                                <Box className="col-xl-4">
+                                                                    <Box className="mb-3">
+                                                                        <label htmlFor="cleave-date-format" className="form-label">Số điện thoại</label>
+                                                                        <TextField
+                                                                            className="form-control input"
+                                                                            fullWidth
+                                                                            type='text'
+                                                                            disabled
+                                                                            sx={{
+                                                                                'input': {
+                                                                                    '&::placeholder': {
+                                                                                        fontSize: 16,
+                                                                                    }
+                                                                                },
+                                                                            }}
+                                                                            value={authority.phone_number}
+                                                                        />
+                                                                    </Box>
+                                                                </Box>
+                                                                <Box className="col-xl-4">
+                                                                    <Box className="mb-3">
+                                                                        <label htmlFor="cleave-date-format" className="form-label">CCCD/DKSH</label>
+                                                                        <TextField
+                                                                            className="form-control input"
+                                                                            fullWidth
+                                                                            type='text'
+                                                                            disabled
+                                                                            sx={{
+                                                                                'input': {
+                                                                                    '&::placeholder': {
+                                                                                        fontSize: 16,
+                                                                                    }
+                                                                                },
+                                                                            }}
+                                                                            value={authority.cccd}
+                                                                        />
+                                                                    </Box>
+                                                                </Box>
                                                             </Box>
-
-                                                            <Box className="col-2">
-                                                                <button type="button"
-                                                                        onClick={() => getListData()}
-                                                                        className="btn btn-primary waves-effect waves-ligh">
-                                                                    Tìm kiếm
-                                                                </button>
+                                                        <Box className="row">
+                                                            <Box className="col-xl-4">
+                                                                <Box className="mb-3">
+                                                                    <label htmlFor="cleave-date" className="form-label">Ngày cấp</label>
+                                                                    <TextField
+                                                                        className="form-control input"
+                                                                        fullWidth
+                                                                        type='text'
+                                                                        disabled
+                                                                        sx={{
+                                                                            'input': {
+                                                                                '&::placeholder': {
+                                                                                    fontSize: 16,
+                                                                                }
+                                                                            },
+                                                                        }}
+                                                                        value={authority.date_range}
+                                                                    />
+                                                                </Box>
+                                                            </Box>
+                                                            <Box className="col-xl-4">
+                                                                <Box className="mb-3">
+                                                                    <label htmlFor="cleave-date-format" className="form-label">Nơi cấp</label>
+                                                                    <TextField
+                                                                        className="form-control input"
+                                                                        fullWidth
+                                                                        type='text'
+                                                                        disabled
+                                                                        sx={{
+                                                                            'input': {
+                                                                                '&::placeholder': {
+                                                                                    fontSize: 16,
+                                                                                }
+                                                                            },
+                                                                        }}
+                                                                        value={authority.issued_by}
+                                                                    />
+                                                                </Box>
+                                                            </Box>
+                                                            <Box className="col-xl-4">
+                                                                <Box className="mb-3">
+                                                                    <label htmlFor="cleave-date-format" className="form-label">Cổ phần</label>
+                                                                    <TextField
+                                                                        className="form-control input"
+                                                                        fullWidth
+                                                                        type='text'
+                                                                        disabled
+                                                                        sx={{
+                                                                            'input': {
+                                                                                '&::placeholder': {
+                                                                                    fontSize: 16,
+                                                                                }
+                                                                            },
+                                                                        }}
+                                                                        value={authority.totalALL}
+                                                                    />
+                                                                </Box>
                                                             </Box>
                                                         </Box>
                                                     </Box>
@@ -171,22 +271,194 @@ function CreateAuthority() {
 
                                             <Box className="col-xl-12">
                                                 <Box className="card">
+                                                    <Box className="card-header align-items-center d-flex">
+                                                        <h4 className="card-title mb-0 flex-grow-1">Danh sách người được ủy quyền</h4>
+
+                                                        <Link to={"/them-moi-uy-quyen?id=" + id}
+                                                              className="btn btn-info squer-btn mt-2 mr-2 sm-btn"
+                                                              data-bs-toggle="modal"
+                                                              data-bs-target="#exampleModalgrid"
+                                                        ><i
+                                                            className={"fas fa-plus"}
+                                                            style={{marginTop: "0px !important"}}></i> Thêm được người ủy quyền
+                                                        </Link>
+                                                        <Box className="modal fade" id="exampleModalgrid"
+                                                             tabIndex="-1" aria-labelledby="exampleModalgridLabel">
+                                                            <Box className="modal-dialog">
+                                                                <Box className="modal-content">
+                                                                    <Box className="modal-header">
+                                                                        <h5 className="modal-title"
+                                                                            id="exampleModalgridLabel">XÁC NHẬN TƯ CÁCH
+                                                                            THAM GIA</h5>
+                                                                        <button type="button" className="btn-close"
+                                                                                data-bs-dismiss="modal"
+                                                                                aria-label="Close"></button>
+                                                                    </Box>
+                                                                    <Box className="modal-body">
+                                                                        <Box className="row g-3">
+                                                                            <Box className="row">
+                                                                            <Box className="col-xxl-6">
+                                                                                <Box>
+                                                                                    <label htmlFor="cleave-date-format" className="form-label">CMND/CCCD (Tài khoản)</label>
+                                                                                    <TextField
+                                                                                        className="form-control"
+                                                                                        fullWidth
+                                                                                        name="name"
+                                                                                        type='text'
+                                                                                        required
+                                                                                        disable
+                                                                                        onChange={e => onInputChange(e)}
+                                                                                        sx={{
+                                                                                            'input': {
+                                                                                                '&::placeholder': {
+                                                                                                    fontSize: 16,
+                                                                                                }
+                                                                                            },
+                                                                                        }}
+                                                                                        variant="outlined"
+                                                                                        value=""
+                                                                                    />
+                                                                                </Box>
+                                                                            </Box>
+                                                                            <Box className="col-xxl-6">
+                                                                                <Box>
+                                                                                    <label htmlFor="cleave-date-format" className="form-label">Họ tên người được ủy quyền</label>
+                                                                                    <TextField
+                                                                                        className="form-control"
+                                                                                        fullWidth
+                                                                                        name="cccd"
+                                                                                        type='text'
+                                                                                        required
+                                                                                        disable
+                                                                                        onChange={e => onInputChange(e)}
+                                                                                        sx={{
+                                                                                            'input': {
+                                                                                                '&::placeholder': {
+                                                                                                    fontSize: 16,
+                                                                                                }
+                                                                                            },
+                                                                                        }}
+                                                                                        variant="outlined"
+                                                                                        value=''
+                                                                                    />
+                                                                                </Box>
+                                                                            </Box>
+                                                                            </Box>
+                                                                            <Box className="row">
+                                                                            <Box className="col-xxl-6">
+                                                                                <label htmlFor="cleave-date-format" className="form-label">Số điện thoại</label>
+                                                                                <TextField
+                                                                                    className="form-control"
+                                                                                    fullWidth
+                                                                                    name="phone_number"
+                                                                                    type='text'
+                                                                                    disable
+                                                                                    onChange={e => onInputChange(e)}
+                                                                                    sx={{
+                                                                                        'input': {
+                                                                                            '&::placeholder': {
+                                                                                                fontSize: 16,
+                                                                                            }
+                                                                                        },
+                                                                                    }}
+                                                                                    value=''
+                                                                                />
+                                                                            </Box>
+                                                                            <Box className="col-xxl-6">
+                                                                                <label htmlFor="cleave-date-format" className="form-label">Email</label>
+                                                                                <TextField
+                                                                                    className="form-control"
+                                                                                    fullWidth
+                                                                                    name="email"
+                                                                                    type='email'
+                                                                                    disable
+                                                                                    onChange={e => onInputChange(e)}
+                                                                                    sx={{
+                                                                                        'input': {
+                                                                                            '&::placeholder': {
+                                                                                                fontSize: 16,
+                                                                                            }
+                                                                                        },
+                                                                                    }}
+                                                                                    value=''
+                                                                                />
+                                                                            </Box>
+                                                                            </Box>
+                                                                            <Box className="row">
+                                                                            <Box className="col-xxl-6">
+                                                                                <label htmlFor="cleave-date-format" className="form-label">Số cổ phần còn lại</label>
+                                                                                <TextField
+                                                                                    className="form-control"
+                                                                                    fullWidth
+                                                                                    name="password"
+                                                                                    type='password'
+                                                                                    required
+                                                                                    disable
+                                                                                    onChange={e => onInputChange(e)}
+                                                                                    sx={{
+                                                                                        'input': {
+                                                                                            '&::placeholder': {
+                                                                                                fontSize: 16,
+                                                                                            }
+                                                                                        },
+                                                                                    }}
+                                                                                    variant="outlined"
+                                                                                    value=""
+                                                                                />
+                                                                            </Box>
+                                                                            <Box className="col-xxl-6">
+                                                                                <label htmlFor="cleave-date-format" className="form-label">Mật khẩu</label>
+                                                                                <TextField
+                                                                                    className="form-control"
+                                                                                    fullWidth
+                                                                                    name="password"
+                                                                                    type='password'
+                                                                                    disable
+                                                                                    onChange={e => onInputChange(e)}
+                                                                                    sx={{
+                                                                                        'input': {
+                                                                                            '&::placeholder': {
+                                                                                                fontSize: 16,
+                                                                                            }
+                                                                                        },
+                                                                                    }}
+                                                                                    value=""
+                                                                                />
+                                                                            </Box>
+                                                                            </Box>
+                                                                            <Box className="modal-body text-center">
+                                                                                <Box className="mt-4 pt-4">
+                                                                                    <button
+                                                                                        className="btn btn-light bg-gradient waves-effect waves-light"
+                                                                                        data-bs-dismiss="modal"
+                                                                                        style={{marginRight: 22}}>
+                                                                                        Hủy bỏ
+                                                                                    </button>
+                                                                                    <button
+                                                                                        className="btn btn-success bg-gradient waves-effect waves-light"
+                                                                                    >
+                                                                                        Thêm
+                                                                                    </button>
+                                                                                </Box>
+                                                                            </Box>
+                                                                        </Box>
+                                                                    </Box>
+                                                                </Box>
+                                                            </Box>
+                                                        </Box>
+
+                                                    </Box>
                                                     <Box className="card-body">
                                                         <Box className="table-responsive table-card mb-3">
                                                             <table
                                                                 className="table table-borderless table-hover table-nowrap align-middle mb-0">
                                                                 <thead className="table-light">
                                                                 <tr className="text-muted">
-                                                                    <th scope="col">Mã CĐ</th>
-                                                                    <th scope="col">Họ và tên</th>
+                                                                    <th scope="col">Stt</th>
+                                                                    <th scope="col">Tên cổ đông</th>
                                                                     <th scope="col">CMND/CCCD</th>
-                                                                    <th scope="col">Ngày cấp</th>
                                                                     <th scope="col">Số điện thoại</th>
-                                                                    <th scope="col">Cổ phần sở hữu(1)</th>
-                                                                    <th scope="col">Cổ phần ủy quyền (2)</th>
-                                                                    <th scope="col">Cổ phần nhận ủy quyền (3)</th>
-                                                                    <th scope="col">Tổng (4) = (1) + (3) - (2)</th>
-                                                                    <th scope="col">Xử lý</th>
+                                                                    <th scope="col">Cổ phần ủy quyền</th>
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -202,43 +474,14 @@ function CreateAuthority() {
                                                                             {i.cccd}
                                                                         </td>
                                                                         <td>
-                                                                            {i.date_range}
-                                                                        </td>
-                                                                        <td>
                                                                             {i.phone_number}
-                                                                        </td>
-                                                                        <td>
-                                                                            <span
-                                                                                className="badge badge-soft-success p-2">{helpers.formatNumber(i.total)}</span>
-
-                                                                        </td>
-                                                                        <td>
-                                                                            <span
-                                                                                className="badge badge-soft-warning p-2">
-                                                                            {helpers.formatNumber(i.setAuthority)}
-                                                                            </span>
                                                                         </td>
                                                                         <td>
                                                                              <span
                                                                                  className="badge badge-soft-secondary p-2">
-                                                                            {helpers.formatNumber(i.getAuthority)}
+                                                                            {helpers.formatNumber(i.total_authority)}
                                                                              </span>
                                                                         </td>
-                                                                        <td>
-                                                                            <span
-                                                                                className="badge text-bg-success">
-                                                                            {helpers.formatNumber(i.totalALL)}
-                                                                            </span>
-                                                                        </td>
-
-                                                                        <td>
-                                                                            <button type="button"
-                                                                                    className="btn btn-soft-success waves-effect waves-light">Ủy quyền
-                                                                            </button>
-
-                                                                       </td>
-
-
                                                                     </tr>
                                                                 )) : <tr>
                                                                     <td colSpan="9" className="text-center"><Typography
