@@ -79,7 +79,7 @@ export default function Sidebar({...props}) {
                                 <i className="ri-account-circle-line"></i> <span data-key="t-apps">Quản lý cổ đông</span>
                             </a>
                             <Box
-                                className={route.includes('quan-ly-co-dong') ? "collapse menu-dropdown show" : "collapse menu-dropdown"}
+                                className={route.includes('quan-ly-co-dong') || route.includes('danh-sach-co-dong') ? "collapse menu-dropdown show" : "collapse menu-dropdown"}
                                 id="shareholder">
                                 <ul className="nav nav-sm flex-column">
                                     {JSON.parse(localStorage.getItem('scopes')).includes('danh-sach-co-dong') &&

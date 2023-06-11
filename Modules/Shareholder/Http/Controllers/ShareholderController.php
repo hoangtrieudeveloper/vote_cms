@@ -5,6 +5,7 @@ namespace Modules\Shareholder\Http\Controllers;
 use App\Models\ShareholderShare;
 use App\Models\User;
 use App\Models\UserShareholder;
+use App\Models\UserSharesVote;
 use App\Utils;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -162,14 +163,70 @@ class ShareholderController extends Controller
                 ->orWhere('type', $type)
                 ->orWhere('organization', $organization);
         })
-            ->orderBy('id', 'desc')
+            ->orderBy('id', 'asc')
+            ->paginate(10);
+        foreach ($query as $v) {
+            $v['date_range'] = Carbon::parse($v->date_range)->format('d-m-Y');
+            $shareholder_share_total = DB::table('shareholder_shares')->where('user_id', $user_id)->where('user_shares_id', $v->id)->first();
+            $v['total'] = $shareholder_share_total != null ? $shareholder_share_total->total : 0;
+        }
+        if ($query) {
+            $result = [
+                "status" => 1,
+                "message" => "Thành công!",
+                "data" => $query,
+            ];
+        } else {
+            $result = [
+                "status" => 2,
+                "message" => "Lỗi!",
+                "data" => '',
+                "group_name" => ''
+            ];
+        }
+        return response()->json($result);
+    }
+
+    public function getListQLCD(Request $request)
+    {
+        $user_id = Auth::user()->id;
+        $txtName = $request->name;
+        $voteStatus = $request->voteStatus;
+        $jointType = $request->jointType;
+        $authority = $request->authority;
+        $query = UserShareholder::query();
+        if ($voteStatus) {
+            if ($voteStatus == UserShareholder::VOTED) {
+                $query = $query->whereHas('userSharesVote');
+            } else {
+                $query = $query->doesntHave('userSharesVote');
+            }
+        }
+        if (array_key_exists($jointType,UserShareholder::getListJointTypes())) {
+            $query = $query->whereHas('userSharesCheckin', function ($query) use ($jointType) {
+                $query->where('is_check', $jointType);
+            });
+        }
+        if ($authority) {
+            if ($authority == UserShareholder::AUTHORITY) {
+                $query = $query->whereHas('userSharesAuthor');
+            } else {
+                $query = $query->doesntHave('userSharesAuthor');
+            }
+        }
+        $query = $query->where(function ($query) use ($txtName) {
+            $query->where('name', 'like', '%' . $txtName . '%')
+                ->orWhere('cccd', 'like', '%' . $txtName . '%')
+                ->orWhere('phone_number', 'like', '%' . $txtName . '%')
+                ->orWhere('code_dksh', 'like', '%' . $txtName . '%');
+        })->orderBy('id', 'asc')
             ->paginate(10);
         foreach ($query as $v) {
             $v['date_range'] = Carbon::parse($v->date_range)->format('d-m-Y');
             $shareholder_share_total = DB::table('shareholder_shares')->where('user_id', $user_id)->where('user_shares_id', $v->id)->first();
             $v['total'] = $shareholder_share_total != null ? $shareholder_share_total->total : 0;
             $checkIn = DB::table('user_shares_checkin')->where('user_shares_id', $v->id)->first();
-            $v['checkIn'] = $checkIn != null ? $shareholder_share_total->is_check : 0;
+            $v['checkIn'] = $checkIn != null && $checkIn->is_check;
             $voteStatus = DB::table('user_shares_vote')->where('user_id', $user_id)->where('id_user_shares', $v->id)->first();
             $v['voteStatus'] = $voteStatus != null;
         }
@@ -186,6 +243,33 @@ class ShareholderController extends Controller
                 "data" => '',
                 "group_name" => ''
             ];
+        }
+        return response()->json($result);
+    }
+
+    public function getListCongressContent(Request $request)
+    {
+        $user_share_id = $request->id;
+        $result = [
+            "status" => 2,
+            "message" => "Lỗi!",
+            "data" => '',
+            "group_name" => ''
+        ];
+        if ($user_share_id) {
+            $query = UserShareholder::find($user_share_id)->voteCongressContent()->orderBy('type', 'asc')->orderBy('sort', 'asc')->get();
+            foreach ($query as $v) {
+                $shareVote = UserSharesVote::where(['id_congress' => $v->id,
+                    'id_user_shares' => $user_share_id])->first();
+                $v['status'] = UserSharesVote::getBadgeStatus()[$shareVote->vote];
+            }
+            if ($query) {
+                $result = [
+                    "status" => 1,
+                    "message" => "Thành công!",
+                    "data" => $query,
+                ];
+            }
         }
         return response()->json($result);
     }
@@ -367,7 +451,7 @@ class ShareholderController extends Controller
             'Content-Length' => filesize($file),
             'Content-Disposition' => 'attachment; filename="' . $file . '"'
         ]);
-        return Response::download($file,'DanhsachcodongDemo',$header);
+        return Response::download($file, 'DanhsachcodongDemo', $header);
     }
 
     public function downloadCDPass(Request $request)
@@ -415,6 +499,10 @@ class ShareholderController extends Controller
                 foreach ($data as $idx => $row) {
                     $shareholder_share_total = DB::table('shareholder_shares')->where('user_id', $user_id)->where('user_shares_id', $row->id)->first();
                     $cp = $shareholder_share_total != null ? $shareholder_share_total->total : 0;
+                    $checkIn = DB::table('user_shares_checkin')->where('user_shares_id', $v->id)->first();
+                    $checkIn = $checkIn != null && $checkIn->is_check;
+                    $voteStatus = DB::table('user_shares_vote')->where('user_id', $user_id)->where('id_user_shares', $v->id)->first();
+                    $voteStatus = $voteStatus != null;
                     $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue("A" . ($startRow + $idx), $row->id)
                         ->setCellValue("B" . ($startRow + $idx), $row->name)
@@ -423,10 +511,9 @@ class ShareholderController extends Controller
                         ->setCellValue("E" . ($startRow + $idx), $cp)
                         ->setCellValue("F" . ($startRow + $idx), 0)
                         ->setCellValue("G" . ($startRow + $idx), $row->email)
-                        ->setCellValue("H" . ($startRow + $idx), 'Trực tuyến')
-                        ->setCellValue("I" . ($startRow + $idx), 'CĐ')
-                        ->setCellValue("J" . ($startRow + $idx), 'Chưa biểu quyết')
-                        ->setCellValue("K" . ($startRow + $idx), 'Không hoạt động');
+                        ->setCellValue("H" . ($startRow + $idx), $checkIn ? 'Trực tiếp' : 'Chưa checkin')
+                        ->setCellValue("I" . ($startRow + $idx), $row->is_auth ? 'Ủy quyển' : 'Cổ đông')
+                        ->setCellValue("J" . ($startRow + $idx), $voteStatus ? 'Đã biểu quyết' : 'Chưa biểu quyết');
                 }
                 $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, $fileType);
                 header('Content-Description: File Transfer');

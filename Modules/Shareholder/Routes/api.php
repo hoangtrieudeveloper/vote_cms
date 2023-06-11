@@ -24,8 +24,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::any('/updateBlock', [ShareholderController::class, 'updateBlock'])->name('updateBlock'); //bc-tờ trình
         Route::any('/getListReport', [ShareholderController::class, 'getListReport'])->name('getListReport'); //bc-tờ trình
         Route::any('/getListCheckin', [ShareholderController::class, 'getListCheckin'])->name('getListCheckin'); //chekin cổ đông
-        Route::any('/getList', [ShareholderController::class, 'getList'])->name('getList'); //get list data
+        Route::any('/getList', [ShareholderController::class, 'getList'])->name('getList'); //Danh sách cổ đông
+        Route::any('/getListQLCD', [ShareholderController::class, 'getListQLCD'])->name('getListQLCD'); //Quản lý cổ đông
         Route::any('/lockChangePassword', [ShareholderController::class, 'lockChangePassword'])->name('lockChangePassword'); //
+        Route::any('/getListCongressContent', [ShareholderController::class, 'getListCongressContent'])->name('getListCongressContent'); //
         //export,import,download
         Route::any('/importShareHolder', [ShareholderController::class, 'importCoDong'])->name('importShareHolder'); //
         Route::any('/downloadDemoCoDong', [ShareholderController::class, 'downloadCDDemo'])->name('downloadDemoCoDong'); //

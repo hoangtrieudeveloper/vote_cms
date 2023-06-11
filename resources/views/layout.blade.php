@@ -68,6 +68,7 @@
 <script src="{{asset('assets/libs/swiper/swiper-bundle.min.js')}}"></script>
 <script src="{{asset('assets/js/pages/dashboard-ecommerce.init.js')}}"></script>
 <script src="{{asset('assets/js/pages/materialdesign.list.js')}}"></script>
+<script src="{{asset('assets/js/pages/modal.init.js')}}"></script>
 <script src="{{asset('assets/js/app.js')}}"></script>
 </body>
 </html>

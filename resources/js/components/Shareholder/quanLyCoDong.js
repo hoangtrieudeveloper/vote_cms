@@ -8,6 +8,7 @@ import Pagination from "../pages/Pagination";
 import ToastNotifi from "../pages/ToastNotifi";
 import Loading from "../pages/Loading";
 import Helpers from "../pages/Helpers";
+import Modals from "./components/Modals";
 
 function QuanLyCoDong() {
     //paginate
@@ -17,13 +18,13 @@ function QuanLyCoDong() {
     //props
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
+    const [dataVotes, setDataVotes] = useState([]);
+    const [userShare, setUserShare] = useState({});
     const [nameSearch, setNameSearch] = useState('');
-    const [status, setStatus] = useState('');
     const [voteStatus, setVoteStatus] = useState('');
     const [jointType, setJointType] = useState('');
     const [authority, setAuthority] = useState('');
     //select option
-    const [listStatus, setListStatus] = useState([]);
     const [listJointTypes, setListJointTypes] = useState([]);
     const [listAuthority, setListAuthority] = useState([]);
     const [listVoteStatus, setListVoteStatus] = useState([]);
@@ -46,12 +47,6 @@ function QuanLyCoDong() {
     }
 
     const getListSelect = () => {
-        userShareholderService.getListStatus()
-            .then(data => {
-                if (data.status == 1) {
-                    setListStatus(Object.values(data?.data));
-                }
-            });
         userShareholderService.getListAuthority()
             .then(data => {
                 if (data.status == 1) {
@@ -76,21 +71,41 @@ function QuanLyCoDong() {
         console.log(pageCurrent < pageLast);
         setPageCurrent(page);
         setLoading(true);
-        userShareholderService.getList(page, nameSearch, '', '')
-            .then(data => {
-                setLoading(false);
-                if (data.status == 1) {
-                    if (data?.data) {
-                        setData(data?.data?.data);
-                        setLinkPage(data?.data?.links);
-                        setPageLast(parseInt(data?.data?.last_page));
-                    }
-                    Helpers.showToast('success', data?.mess);
-                } else {
-                    resetData();
-                    Helpers.showToast('error', data?.mess);
+        userShareholderService.getQuanLyCD(page, nameSearch, voteStatus, jointType, authority).then(data => {
+            setLoading(false);
+            if (data.status == 1) {
+                if (data?.data) {
+                    setData(data?.data?.data);
+                    setLinkPage(data?.data?.links);
+                    setPageLast(parseInt(data?.data?.last_page));
                 }
-            }).catch((error) => {
+                Helpers.showToast('success', data?.mess);
+            } else {
+                resetData();
+                Helpers.showToast('error', data?.mess);
+            }
+        }).catch((error) => {
+            setLoading(false);
+        });
+    }
+
+    const getCongressContent = (id, userShare) => {
+        setLoading(true);
+        userShareholderService.getCongressContent(id).then(data => {
+            console.log(data);
+            setLoading(false);
+            if (data.status == 1) {
+                Helpers.showToast('success', data?.mess);
+                setDataVotes(data?.data);
+                setUserShare(userShare);
+            } else {
+                setDataVotes([]);
+                setUserShare({});
+                Helpers.showToast('error', data?.mess);
+            }
+        }).catch((error) => {
+            setDataVotes([]);
+            setUserShare({});
             setLoading(false);
         });
     }
@@ -140,7 +155,7 @@ function QuanLyCoDong() {
                                                 console.log(e.target.value);
                                                 setVoteStatus(e.target.value);
                                             }}>
-                                                <option value="" selected>--- Trạng thái biểu quyết ---</option>
+                                                <option value={''} selected>--- Trạng thái biểu quyết ---</option>
                                                 {listVoteStatus?.map((item, index) => (
                                                     <option key={index} value={item.value}
                                                             selected={item.value == voteStatus}>
@@ -154,7 +169,7 @@ function QuanLyCoDong() {
                                                 console.log(e.target.value);
                                                 setJointType(e.target.value);
                                             }}>
-                                                <option value="" selected>--- Hình thức tham gia ---</option>
+                                                <option value={''} selected>--- Hình thức tham gia ---</option>
                                                 {listJointTypes?.map((item, index) => (
                                                     <option key={index} value={item.value}
                                                             selected={item.value == jointType}>
@@ -170,24 +185,10 @@ function QuanLyCoDong() {
                                                 console.log(e.target.value);
                                                 setAuthority(e.target.value);
                                             }}>
-                                                <option value="" selected>--- Hình thức Cổ đông ---</option>
+                                                <option value={''} selected>--- Hình thức Cổ đông ---</option>
                                                 {listAuthority?.map((item, index) => (
                                                     <option key={index} value={item.value}
                                                             selected={item.value == authority}>
-                                                        {item.label}
-                                                    </option>))}
-                                            </select>
-                                        </Box>
-                                        <Box className="col-4">
-                                            <select className="form-select"
-                                                    aria-label="Default select example" onChange={(e) => {
-                                                console.log(e.target.value);
-                                                setStatus(e.target.value);
-                                            }}>
-                                                <option value="" selected>--- Trạng thái ---</option>
-                                                {listStatus?.map((item, index) => (
-                                                    <option key={index} value={item.value}
-                                                            selected={item.value == status}>
                                                         {item.label}
                                                     </option>))}
                                             </select>
@@ -236,7 +237,7 @@ function QuanLyCoDong() {
                                                 <th scope="col">Loại hình tham dự</th>
                                                 <th scope="col">Loại hình CĐ</th>
                                                 <th scope="col">Trạng thái biểu quyết</th>
-                                                <th scope="col">Trạng thái hoạt động</th>
+                                                <th scope="col">Hành động</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -264,7 +265,7 @@ function QuanLyCoDong() {
                                                         {i.email}
                                                     </td>
                                                     <td>
-                                                        Trực tiếp
+                                                        {i.checkIn ? 'Trực tiếp' : 'Chưa checkin'}
                                                     </td>
                                                     <td>
                                                         {i.is_auth ? 'Ủy quyển' : 'Cổ đông'}
@@ -273,11 +274,16 @@ function QuanLyCoDong() {
                                                         {i.voteStatus ? 'Đã biểu quyết' : 'Chưa biểu quyết'}
                                                     </td>
                                                     <td>
-                                                        Không hoạt động
+                                                        {i.voteStatus ? (<button type="button" className="btn btn-primary"
+                                                                                 onClick={() => getCongressContent(i.id, i)}
+                                                                                 data-bs-toggle="modal"
+                                                                                 data-bs-target="#voteDataModals">Kết quả biểu quyết
+                                                        </button>) : ''}
+
                                                     </td>
                                                 </tr>
                                             )) : <tr>
-                                                <td colSpan="9" className="text-center"><Typography
+                                                <td colSpan="11" className="text-center"><Typography
                                                     variant="subtitle1">Không
                                                     có dữ liệu!</Typography>
                                                 </td>
@@ -293,6 +299,7 @@ function QuanLyCoDong() {
                     </Box>
                 </Box>
             </Box>
+            <Modals listVotes={dataVotes} user={userShare}/>
             <Footer></Footer>
         </Box>
     )

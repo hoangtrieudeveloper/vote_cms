@@ -22,15 +22,11 @@ class UserShareholder extends Model
     const LIVE = 1;
     const ONLINE = 2;
     const AUTHORIZED = 3;
-    const NOT_CHECKIN = 4;
+    const NOT_CHECKIN = 0;
 
 //    AUTHORITY STATUS
     const AUTHORITY = 1;
     const NO_AUTHORITY = 2;
-
-//    STATUS
-    const STATUS_ACTIVE = 1;
-    const STATUS_DEACTIVE = 2;
 
     const BLOCK = 1;
     const FOREIGNER = 2;
@@ -45,6 +41,26 @@ class UserShareholder extends Model
     protected $table = "user_shareholder";
     public $timestamps = true;
     protected $fillable = ['id', 'username', 'cccd', 'password', 'no_hash_password', 'name', 'code_dksh', 'date_range', 'issued_by', 'phone_number', 'address', 'email', 'cccd', 'type', 'is_auth', 'organization', 'user_id', 'created_at', 'updated_at', 'created_by', 'remember_token'];
+
+    public function userSharesVote()
+    {
+        return $this->hasMany(UserSharesVote::class, 'id_user_shares', 'id');
+    }
+
+    public function userSharesCheckin()
+    {
+        return $this->hasOne(UserShareCheckin::class, 'user_shares_id', 'id');
+    }
+
+    public function userSharesAuthor()
+    {
+        return $this->hasOne(UserShareAuthor::class, 'id_author', 'id');
+    }
+
+    public function voteCongressContent()
+    {
+        return $this->belongsToMany(VoteCongressContent::class, UserSharesVote::class, 'id_user_shares', 'id_congress');
+    }
 
     public static function getListType(): array
     {
@@ -72,21 +88,6 @@ class UserShareholder extends Model
             [
                 'value' => self::ORGANIZATION,
                 'label' => 'Tổ chức',
-            ]
-        ];
-    }
-
-    public static function getListStatus(): array
-    {
-        return [
-            [
-                'value' => self::STATUS_ACTIVE,
-                'label' => 'Hoạt động',
-
-            ],
-            [
-                'value' => self::STATUS_DEACTIVE,
-                'label' => 'Không hoạt động',
             ]
         ];
     }
@@ -126,22 +127,21 @@ class UserShareholder extends Model
     {
         return [
             [
-                'value' => self::LIVE,
-                'label' => 'Trực tiếp',
-
-            ],
-            [
-                'value' => self::ONLINE,
-                'label' => 'Trực tuyến',
-            ],
-            [
-                'value' => self::AUTHORIZED,
-                'label' => 'Ủy quyền',
-            ],
-            [
                 'value' => self::NOT_CHECKIN,
                 'label' => 'Chưa checkin',
             ],
+            [
+                'value' => self::LIVE,
+                'label' => 'Trực tiếp',
+            ],
+//            [
+//                'value' => self::ONLINE,
+//                'label' => 'Trực tuyến',
+//            ],
+//            [
+//                'value' => self::AUTHORIZED,
+//                'label' => 'Ủy quyền',
+//            ],
         ];
     }
 
@@ -402,16 +402,18 @@ class UserShareholder extends Model
         return $update;
     }
 
-    public function getUserAuthorByShareHolder($id){
-        return UserShareholder::leftJoin('user_shares_author','user_shares_author.id_author','=','user_shareholder.id')
-            ->where('user_shares_author.id_shareholder',$id)
-            ->select('user_shareholder.name','user_shareholder.cccd','user_shareholder.phone_number','user_shareholder.email','user_shares_author.total_authority')
+    public function getUserAuthorByShareHolder($id)
+    {
+        return UserShareholder::leftJoin('user_shares_author', 'user_shares_author.id_author', '=', 'user_shareholder.id')
+            ->where('user_shares_author.id_shareholder', $id)
+            ->select('user_shareholder.name', 'user_shareholder.cccd', 'user_shareholder.phone_number', 'user_shareholder.email', 'user_shares_author.total_authority')
             ->orderBy('user_shares_author.id', 'desc')
             ->paginate(10);
     }
 
-    public function getAuthor(){
-        return UserShareholder::where([['user_id',Auth::user()->id],['is_auth',self::AUTHORITY]])->orderBy('id', 'desc')->paginate(10);
+    public function getAuthor()
+    {
+        return UserShareholder::where([['user_id', Auth::user()->id], ['is_auth', self::AUTHORITY]])->orderBy('id', 'desc')->paginate(10);
     }
 
     public function getUserShareHolderById($id){

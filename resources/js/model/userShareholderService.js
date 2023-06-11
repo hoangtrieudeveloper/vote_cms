@@ -6,7 +6,9 @@ export const userShareholderService = {
     CheckIn,
     getListCheckin,
     getListById,
-    getList,
+    getDanhSachCD,
+    getCongressContent,
+    getQuanLyCD,
     getListType,
     getListOrganization,
     importShareHolder,
@@ -14,7 +16,6 @@ export const userShareholderService = {
     getListByReport,
     UpdateBlock,
     downloadCoDongDemo,
-    getListStatus,
     getListVoteStatus,
     getListAuthority,
     getListJointTypes,
@@ -35,6 +36,7 @@ function statistical() {
 
     return fetch(`${GlobalSetting.url}api/${api}/statistical`, requestOptions).then(handleResponse);
 }
+
 function getListExport() {
     const requestOptions = {
         method: 'GET',
@@ -44,6 +46,7 @@ function getListExport() {
 
     return fetch(`${GlobalSetting.url}api/${api}/getListExport`, requestOptions).then(handleResponse);
 }
+
 function getTkLogin(id) {
     const requestOptions = {
         method: 'GET',
@@ -60,7 +63,7 @@ function getTkLogin(id) {
     }).then(blob => {
         if (blob != null && blob != undefined) {
             var fileURL = window.URL.createObjectURL(blob);
-            window.open(fileURL,"_blank");
+            window.open(fileURL, "_blank");
             return true;
         }
         return Promise.reject(blob);
@@ -78,6 +81,7 @@ function CheckIn(id) {
 
     return fetch(`${GlobalSetting.url}api/${api}/checkIn?id=${id}`, requestOptions).then(handleResponse);
 }
+
 function getListById(id) {
     const requestOptions = {
         method: 'GET',
@@ -88,7 +92,17 @@ function getListById(id) {
     return fetch(`${GlobalSetting.url}api/${api}/getListById?id=${id}`, requestOptions).then(handleResponse);
 }
 
-function UpdateBlock(user_share_id,status,congress_id) {
+function getCongressContent(id) {
+    const requestOptions = {
+        method: 'GET',
+        'Content-Type': 'application/json',
+        headers: authHeader()
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/getListCongressContent?id=${id}`, requestOptions).then(handleResponse);
+}
+
+function UpdateBlock(user_share_id, status, congress_id) {
     const requestOptions = {
         method: 'POST',
         headers: authHeader(),
@@ -96,8 +110,9 @@ function UpdateBlock(user_share_id,status,congress_id) {
 
     return fetch(`${GlobalSetting.url}api/${api}/updateBlock?user_share_id=${user_share_id}&status=${status}&congress_id=${congress_id}`, requestOptions).then(handleResponse);
 }
-function getListByReport(id,page,name, block) {
-    console.log('block',block);
+
+function getListByReport(id, page, name, block) {
+    console.log('block', block);
     const requestOptions = {
         method: 'GET',
         'Content-Type': 'application/json',
@@ -106,6 +121,7 @@ function getListByReport(id,page,name, block) {
 
     return fetch(`${GlobalSetting.url}api/${api}/getListReport?page=${page}&id=${id}&name=${name}&block=${block}`, requestOptions).then(handleResponse);
 }
+
 function getListCheckin(page, name, checkin) {
     const requestOptions = {
         method: 'GET',
@@ -116,7 +132,7 @@ function getListCheckin(page, name, checkin) {
     return fetch(`${GlobalSetting.url}api/${api}/getListCheckin?page=${page}&name=${name}&checkin=${checkin}`, requestOptions).then(handleResponse);
 }
 
-function getList(page, name, type, organization) {
+function getDanhSachCD(page, name, type, organization) {
     const requestOptions = {
         method: 'GET',
         'Content-Type': 'application/json',
@@ -124,6 +140,17 @@ function getList(page, name, type, organization) {
     };
 
     return fetch(`${GlobalSetting.url}api/${api}/getList?page=${page}&name=${name}&type=${type}&organization=${organization}`, requestOptions).then(handleResponse);
+}
+
+function getQuanLyCD(page, name, voteStatus, jointType, authority)
+{
+    const requestOptions = {
+        method: 'GET',
+        'Content-Type': 'application/json',
+        headers: authHeader()
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/getListQLCD?page=${page}&name=${name}&voteStatus=${voteStatus}&jointType=${jointType}&authority=${authority}`, requestOptions).then(handleResponse);
 }
 
 function getListType() {
@@ -154,16 +181,6 @@ function getListVoteStatus() {
     };
 
     return fetch(`${GlobalSetting.url}api/${api}/getListVoteStatus`, requestOptions).then(handleResponse);
-}
-
-function getListStatus() {
-    const requestOptions = {
-        method: 'GET',
-        'Content-Type': 'application/json',
-        headers: authHeader()
-    };
-
-    return fetch(`${GlobalSetting.url}api/${api}/getListStatus`, requestOptions).then(handleResponse);
 }
 
 function getListJointTypes() {

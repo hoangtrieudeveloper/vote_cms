@@ -232,21 +232,12 @@ function UpdateGroupRole() {
                                     <Box className="col-xl-6">
                                         <Box className="mb-3 mb-xl-0">
                                             <Box className={"juscontent-right"}>
-                                                <LoadingButton
-                                                    onClick={updateGroup}
-                                                    className="ad-btn ad-login-member"
-                                                    variant="outlined"
-                                                    loading={loading}
-                                                    disabled={loading}
-                                                    sx={{
-                                                        backgroundColor: '#11a1fd',
-                                                        color: 'white',
-                                                        fontSize: 13,
-                                                        fontWeight: 400,
-                                                    }}
-                                                >
+                                                <button type="button"
+                                                        onClick={updateGroup}
+                                                        disabled={loading}
+                                                        className="btn btn-primary waves-effect waves-ligh ">
                                                     {!loading ? 'Cập nhật' : ''}
-                                                </LoadingButton>
+                                                </button>
                                             </Box>
                                         </Box>
                                     </Box>

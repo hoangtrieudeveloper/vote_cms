@@ -43,7 +43,17 @@ function Shareholder() {
     }
 
     const handleImport = (e) => {
-        setFile(e.target.files[0]);
+        console.log(e.target.files[0]);
+        if (e.target.files[0]){
+            if (Helpers.validateExcelFile(e.target.files[0])){
+                setFile(e.target.files[0]);
+                Helpers.showToast('success', 'Upload file thành công!');
+            }else {
+                Helpers.showToast('error', 'Vui lòng chọn đúng định dạng đuôi file (.xls/.xlsx)!');
+            }
+        }else{
+            Helpers.showToast('error', 'Upload file không thành công!');
+        }
         e.target.value = null;
     }
 
@@ -95,7 +105,7 @@ function Shareholder() {
         console.log(pageCurrent < pageLast);
         setPageCurrent(page);
         setLoading(true);
-        userShareholderService.getList(page, nameSearch, type, organization)
+        userShareholderService.getDanhSachCD(page, nameSearch, type, organization)
             .then(data => {
                 setLoading(false);
                 if (data.status == 1) {
@@ -149,35 +159,57 @@ function Shareholder() {
                                     <h3 className="card-title mb-0 flex-grow-1">Danh sách cổ đông</h3>
                                 </Box>
                                 <Box className="card-body">
-                                    <Box className="row justify-content-sm-end">
-                                        {JSON.parse(localStorage.getItem('scopes')).includes('import-co-dong') && (<>
-                                            <Box className="col-sm-auto">
-                                                <button type="button"
-                                                        onClick={downloadFileDemo}
-                                                        className="btn btn-outline-primary waves-effect waves-ligh">
-                                                    <i className="mdi mdi-download"></i>
-                                                    Tải về file mẫu
-                                                </button>
+                                    {
+                                        JSON.parse(localStorage.getItem('scopes')).includes('update-co-dong') && (
+                                            <Box className="row justify-content-sm-end">
+                                                {JSON.parse(localStorage.getItem('scopes')).includes('export-password-co-dong') && (<>
+                                                        <Box className="col-sm-auto">
+                                                            <button type="button"
+                                                                    onClick={downloadFilePassCD}
+                                                                    className="btn btn-outline-primary waves-effect waves-ligh">
+                                                                <i className="mdi mdi-plus"></i>
+                                                                Xuất mật khẩu của Cổ đông
+                                                            </button>
+                                                        </Box>
+                                                        <Box className="col-sm-auto">
+                                                            <button type="button"
+                                                                    className="btn btn-outline-primary waves-effect waves-ligh">
+                                                                <i className="mdi mdi-plus"></i>
+                                                                Khóa việc thay đổi Mật khẩu
+                                                            </button>
+                                                        </Box>
+                                                    </>
+                                                )}
+                                                {JSON.parse(localStorage.getItem('scopes')).includes('import-co-dong') && (<>
+                                                    <Box className="col-sm-auto">
+                                                        <button type="button"
+                                                                onClick={downloadFileDemo}
+                                                                className="btn btn-outline-primary waves-effect waves-ligh">
+                                                            <i className="mdi mdi-download"></i>
+                                                            Tải về file mẫu
+                                                        </button>
+                                                    </Box>
+                                                    <Box className="col-sm-auto">
+                                                        <label onChange={handleImport}
+                                                               className="btn btn-outline-primary waves-effect waves-ligh"
+                                                               htmlFor="formId">
+                                                            <i className="mdi mdi-upload"></i>
+                                                            {file?.name || 'Tải lên danh sách cổ đông'}
+                                                            <input name="file" type="file" id="formId" hidden
+                                                                   accept="application/xlsx"/>
+                                                        </label>
+                                                    </Box>
+                                                    <Box className="col-sm-auto">
+                                                        <button type="button"
+                                                                onClick={uploadFileImport}
+                                                                className="btn btn-outline-primary waves-effect waves-ligh">
+                                                            <i className="mdi mdi-plus"></i>
+                                                            Tạo danh sách
+                                                        </button>
+                                                    </Box></>)}
                                             </Box>
-                                            <Box className="col-sm-auto">
-                                                <label onChange={handleImport}
-                                                       className="btn btn-outline-primary waves-effect waves-ligh"
-                                                       htmlFor="formId">
-                                                    <i className="mdi mdi-upload"></i>
-                                                    Tải lên danh sách cổ đông
-                                                    <input name="file" type="file" id="formId" hidden
-                                                           accept="application/xlsx"/>
-                                                </label>
-                                            </Box>
-                                            <Box className="col-sm-auto">
-                                                <button type="button"
-                                                        onClick={uploadFileImport}
-                                                        className="btn btn-outline-primary waves-effect waves-ligh">
-                                                    <i className="mdi mdi-plus"></i>
-                                                    Tạo danh sách
-                                                </button>
-                                            </Box></>)}
-                                    </Box>
+                                        )
+                                    }
                                     <Box className="row mb-2">
                                         <Box className="col-4">
                                             <input type="text" className="form-control"
@@ -222,26 +254,6 @@ function Shareholder() {
                                                 </button>
                                             </Box>
                                         </Box>
-                                    </Box>
-                                    <Box className="row justify-content-sm-end">
-                                        {JSON.parse(localStorage.getItem('scopes')).includes('export-password-co-dong') && (<>
-                                            <Box className="col-sm-auto">
-                                                <button type="button"
-                                                        onClick={downloadFilePassCD}
-                                                        className="btn btn-outline-primary waves-effect waves-ligh">
-                                                    <i className="mdi mdi-plus"></i>
-                                                    Xuất mật khẩu của Cổ đông
-                                                </button>
-                                            </Box>
-                                            <Box className="col-sm-auto">
-                                                <button type="button"
-                                                        className="btn btn-outline-primary waves-effect waves-ligh">
-                                                    <i className="mdi mdi-plus"></i>
-                                                    Khóa việc thay đổi Mật khẩu
-                                                </button>
-                                            </Box>
-                                        </>
-                                    )}
                                     </Box>
                                 </Box>
                             </Box>
