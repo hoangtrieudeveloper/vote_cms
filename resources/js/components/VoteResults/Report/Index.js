@@ -2,7 +2,7 @@ import React, {Component, useEffect, useState} from 'react';
 import {
     Box, Modal, Typography,
 } from "@mui/material";
-import {Link, useHistory} from "react-router-dom";
+import {a, useHistory} from "react-router-dom";
 import {VoteResultService} from "../../../model/VoteResultService";
 import Footer from "../../pages/Footer";
 

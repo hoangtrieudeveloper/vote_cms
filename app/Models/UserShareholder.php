@@ -344,7 +344,7 @@ class UserShareholder extends Model
 
     public function sumShareAuthor($column, $id)
     {
-        return UserShareAuthor::where($column, $id)->sum('total_authority');
+        return UserShareAuthor::where($column, $id)->where('status',self::AUTHORITY)->sum('total_authority');
     }
 
     public static function getAuthority($nameSearch)

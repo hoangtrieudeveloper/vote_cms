@@ -80,6 +80,7 @@ function Authority2() {
     const handleImport = (e) => {
         setFile(e.target.files[0]);
         e.target.value = null;
+        helpers.showToast('success', "Upload file thành công!");
     }
 
     const uploadFileImport = () => {
@@ -299,7 +300,7 @@ function Authority2() {
                                                         {i.total_authority}
                                                     </td>
                                                     <td>
-                                                        {i.status}
+                                                        <a href="/files/filedinhkem.pdf" target="_blank" download>filedinhkem</a>
                                                     </td>
                                                     <td>
                                                         {new Date(i.created_at).toLocaleDateString()}

@@ -23899,6 +23899,7 @@ function Authority2() {
   var handleImport = function handleImport(e) {
     setFile(e.target.files[0]);
     e.target.value = null;
+    _pages_Helpers__WEBPACK_IMPORTED_MODULE_6__["default"].showToast('success', "Upload file thành công!");
   };
   var uploadFileImport = function uploadFileImport() {
     console.log(file);
@@ -24118,7 +24119,11 @@ function Authority2() {
       key: index
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
       className: "text-center"
-    }, index + 1), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.name_1), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.cccd_1), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.name_2), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.cccd_2), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.phone_number_2), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.total_authority), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.status), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, new Date(i.created_at).toLocaleDateString()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.status != 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("select", {
+    }, index + 1), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.name_1), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.cccd_1), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.name_2), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.cccd_2), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.phone_number_2), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.total_authority), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("a", {
+      href: "/files/filedinhkem.pdf",
+      target: "_blank",
+      download: true
+    }, "filedinhkem")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, new Date(i.created_at).toLocaleDateString()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.status != 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("select", {
       className: "form-select mb-3",
       "aria-label": "Default select example",
       style: {
