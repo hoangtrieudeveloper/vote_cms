@@ -26,5 +26,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::any('/getAuthor', [AuthorityController::class, 'getAuthor'])->name('getAuthor'); //
         Route::any('/getByIdAuthor', [AuthorityController::class, 'getByIdAuthor'])->name('getByIdAuthor'); //
         Route::any('/addShare', [AuthorityController::class, 'addShare'])->name('addShare'); //
+
+
+        Route::any('/getListAuthor', [AuthorityController::class, 'getListAuthor'])->name('getListAuthor'); //
+        Route::any('/downloadUyQuyenDemo', [AuthorityController::class, 'downloadUyQuyenDemo'])->name('downloadUyQuyenDemo'); //
+        Route::any('/importAuthorHolder', [AuthorityController::class, 'importAuthorHolder'])->name('importAuthorHolder'); //
+        Route::any('/downloadFileExcel', [AuthorityController::class, 'downloadFileExcel'])->name('downloadFileExcel'); //
+        Route::any('/changeStatusAuthor', [AuthorityController::class, 'changeStatusAuthor'])->name('changeStatusAuthor'); //
     });
 });

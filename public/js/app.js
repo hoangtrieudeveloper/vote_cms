@@ -23774,13 +23774,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Box/Box.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Typography/Typography.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-/* harmony import */ var _model_congressService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../model/congressService */ "./resources/js/model/congressService.js");
-/* harmony import */ var _pages_Paginate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../pages/Paginate */ "./resources/js/components/pages/Paginate.js");
-/* harmony import */ var _pages_Helpers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../pages/Helpers */ "./resources/js/components/pages/Helpers.js");
-/* harmony import */ var _pages_Footer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../pages/Footer */ "./resources/js/components/pages/Footer.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Box/Box.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Typography/Typography.js");
+/* harmony import */ var _pages_Footer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../pages/Footer */ "./resources/js/components/pages/Footer.js");
+/* harmony import */ var _model_AuthorityService__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../model/AuthorityService */ "./resources/js/model/AuthorityService.js");
+/* harmony import */ var _pages_Pagination__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../pages/Pagination */ "./resources/js/components/pages/Pagination.js");
+/* harmony import */ var _pages_ToastNotifi__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../pages/ToastNotifi */ "./resources/js/components/pages/ToastNotifi.js");
+/* harmony import */ var _pages_Loading__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../pages/Loading */ "./resources/js/components/pages/Loading.js");
+/* harmony import */ var _pages_Helpers__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../pages/Helpers */ "./resources/js/components/pages/Helpers.js");
+/* harmony import */ var _model_userShareholderService__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../model/userShareholderService */ "./resources/js/model/userShareholderService.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -23794,69 +23796,166 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
+
 function Authority2() {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+  //paginate
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
     _useState2 = _slicedToArray(_useState, 2),
-    dataList = _useState2[0],
-    setDataList = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    pageCurrent = _useState2[0],
+    setPageCurrent = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
     _useState4 = _slicedToArray(_useState3, 2),
-    loading = _useState4[0],
-    setLoading = _useState4[1];
+    pageLast = _useState4[0],
+    setPageLast = _useState4[1];
   var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState6 = _slicedToArray(_useState5, 2),
     linkPage = _useState6[0],
     setLinkPage = _useState6[1];
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
+  //props
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState8 = _slicedToArray(_useState7, 2),
-    pageCurrent = _useState8[0],
-    setPageCurrent = _useState8[1];
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
+    checkAction = _useState8[0],
+    setCheckAction = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState10 = _slicedToArray(_useState9, 2),
-    pageLast = _useState10[0],
-    setPageLast = _useState10[1];
-  var deleteCongress = function deleteCongress(id) {
-    setLoading(true);
-    _model_congressService__WEBPACK_IMPORTED_MODULE_1__.congressService.deleted(id).then(function (data) {
-      setLoading(false);
-      if (data.status == 1) {
-        getListCongress();
-        _pages_Helpers__WEBPACK_IMPORTED_MODULE_3__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.mess);
-      } else _pages_Helpers__WEBPACK_IMPORTED_MODULE_3__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.mess);
-    });
+    loading = _useState10[0],
+    setLoading = _useState10[1];
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState12 = _slicedToArray(_useState11, 2),
+    data = _useState12[0],
+    setData = _useState12[1];
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    _useState14 = _slicedToArray(_useState13, 2),
+    nameSearch = _useState14[0],
+    setNameSearch = _useState14[1];
+  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    _useState16 = _slicedToArray(_useState15, 2),
+    file = _useState16[0],
+    setFile = _useState16[1];
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    _useState18 = _slicedToArray(_useState17, 2),
+    block = _useState18[0],
+    setBlock = _useState18[1];
+  var options = [{
+    value: "0",
+    label: "Chờ duyệt"
+  }, {
+    value: "1",
+    label: "Đã duyệt"
+  }, {
+    value: "2",
+    label: "Thất bại"
+  }];
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    _useState20 = _slicedToArray(_useState19, 2),
+    author = _useState20[0],
+    setAuthor = _useState20[1];
+  var options2 = [{
+    value: "0",
+    label: "Cổ đông ủy quyền"
+  }, {
+    value: "1",
+    label: "Cổ đông nhận ủy quyền"
+  }];
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    getListData(pageCurrent);
+  }, []);
+  var resetData = function resetData() {
+    setData([]);
+    setLinkPage([]);
+    setPageLast(1);
+    setPageCurrent(1);
   };
-  var getListCongress = function getListCongress(page) {
+  var getListData = function getListData() {
+    var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+    console.log(pageCurrent < pageLast);
     setPageCurrent(page);
     setLoading(true);
-    _model_congressService__WEBPACK_IMPORTED_MODULE_1__.congressService.getList(page).then(function (data) {
+    _model_AuthorityService__WEBPACK_IMPORTED_MODULE_2__.AuthorityService.getListAuthor(page, nameSearch, block, author).then(function (data) {
+      console.log('data', data);
       setLoading(false);
       if (data.status == 1) {
         var _data$data, _data$data2, _data$data3;
-        setDataList(data === null || data === void 0 ? void 0 : (_data$data = data.data) === null || _data$data === void 0 ? void 0 : _data$data.data);
+        setData(data === null || data === void 0 ? void 0 : (_data$data = data.data) === null || _data$data === void 0 ? void 0 : _data$data.data);
         setLinkPage(data === null || data === void 0 ? void 0 : (_data$data2 = data.data) === null || _data$data2 === void 0 ? void 0 : _data$data2.links);
         setPageLast(parseInt(data === null || data === void 0 ? void 0 : (_data$data3 = data.data) === null || _data$data3 === void 0 ? void 0 : _data$data3.last_page));
+        // helpers.showToast('success', data?.mess);
+      } else {
+        resetData();
+        // helpers.showToast('error', data?.mess);
       }
     });
   };
-  //useEffect
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    getListCongress(pageCurrent);
-  }, []);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+
+  var downloadFileDemo = function downloadFileDemo() {
+    setLoading(true);
+    _model_AuthorityService__WEBPACK_IMPORTED_MODULE_2__.AuthorityService.downloadUyQuyenDemo().then(function (res) {
+      setLoading(false);
+    })["catch"](function (error) {
+      setLoading(false);
+    });
+  };
+  var handleImport = function handleImport(e) {
+    setFile(e.target.files[0]);
+    e.target.value = null;
+  };
+  var uploadFileImport = function uploadFileImport() {
+    console.log(file);
+    if (file) {
+      _model_AuthorityService__WEBPACK_IMPORTED_MODULE_2__.AuthorityService.importAuthorHolder(file).then(function (data) {
+        setFile(null);
+        if (data.status == 1) {
+          _pages_Helpers__WEBPACK_IMPORTED_MODULE_6__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.mess);
+          getListData(pageCurrent);
+        } else {
+          _pages_Helpers__WEBPACK_IMPORTED_MODULE_6__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.mess);
+        }
+      });
+    } else {
+      _pages_Helpers__WEBPACK_IMPORTED_MODULE_6__["default"].showToast('error', 'Vui lòng tải lên danh sách cổ đông!');
+    }
+  };
+  var downloadFileExcel = function downloadFileExcel() {
+    setLoading(true);
+    _model_AuthorityService__WEBPACK_IMPORTED_MODULE_2__.AuthorityService.downloadFileExcel().then(function (res) {
+      setLoading(false);
+    })["catch"](function (error) {
+      setLoading(false);
+    });
+  };
+  var changeStatus = function changeStatus(id, status) {
+    setLoading(true);
+    _model_AuthorityService__WEBPACK_IMPORTED_MODULE_2__.AuthorityService.changeStatusAuthor(id, status).then(function (data) {
+      setLoading(false);
+      if (data.status == 1) {
+        _pages_Helpers__WEBPACK_IMPORTED_MODULE_6__["default"].showToast('success', data === null || data === void 0 ? void 0 : data.mess);
+        var opt = document.getElementById('dis-' + id);
+        opt.setAttribute("disabled", "");
+      } else {
+        _pages_Helpers__WEBPACK_IMPORTED_MODULE_6__["default"].showToast('error', data === null || data === void 0 ? void 0 : data.mess);
+      }
+    })["catch"](function (error) {
+      setLoading(false);
+    });
+  };
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
     className: "main-content"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_ToastNotifi__WEBPACK_IMPORTED_MODULE_4__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Loading__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    load: loading
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
     className: "page-content"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
     className: "container-fluid"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
     className: "row"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
     className: "col-12"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
     className: "page-title-box d-sm-flex align-items-center justify-content-between"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", {
     className: "mb-sm-0"
-  }, "DANH S\xC1CH \u1EE6Y QUY\u1EC0N"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, "DANH S\xC1CH \u1EE6Y QUY\u1EC0N"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
     className: "page-title-right"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ol", {
     className: "breadcrumb m-0"
@@ -23864,26 +23963,128 @@ function Authority2() {
     className: "breadcrumb-item"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("a", {
     href: "#"
-  }, "DANH S\xC1CH \u1EE6Y QUY\u1EC0N"))))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, "DANH S\xC1CH \u1EE6Y QUY\u1EC0N"))))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
     className: "row"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
     className: "col-xl-12"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
     className: "card"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
     className: "card-header align-items-center d-flex"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    className: "col-xl-8"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", {
     className: "card-title mb-0 flex-grow-1"
-  }, "Danh s\xE1ch")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, "Danh s\xE1ch")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    className: "col-xl-4"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    type: "button",
+    className: "btn btn-outline-success waves-effect waves-light marginR10",
+    onClick: downloadFileDemo
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
+    className: "mdi mdi-download"
+  }), "T\u1EA3i v\u1EC1 file m\u1EABu"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    onChange: handleImport,
+    className: "btn btn-outline-success waves-effect waves-light marginR10",
+    htmlFor: "formId",
+    id: "inputFile"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
+    className: "mdi mdi-upload"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    name: "file",
+    type: "file",
+    id: "formId",
+    hidden: true,
+    accept: "application/xlsx"
+  }), "T\u1EA3i l\xEAn danh s\xE1ch \u1EE7y quy\u1EC1n"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    type: "button",
+    className: "btn btn-outline-success waves-effect waves-light",
+    onClick: uploadFileImport
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
+    className: "mdi mdi-plus"
+  }), "T\u1EA1o danh s\xE1ch"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
     className: "card-body"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "live-preview"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "table-responsive table-card"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    className: "row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    className: "col-4"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    type: "text",
+    className: "form-control",
+    placeholder: 'Họ tên/CMND/CCCD...',
+    value: nameSearch,
+    onChange: function onChange(e) {
+      return setNameSearch(e.target.value);
+    }
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    className: "col-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("select", {
+    className: "form-select mb-3",
+    "aria-label": "Default select example",
+    onChange: function onChange(e) {
+      console.log(e.target.value);
+      setBlock(e.target.value);
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
+    value: "",
+    selected: true
+  }, "--- Tr\u1EA1ng th\xE1i ---"), options === null || options === void 0 ? void 0 : options.map(function (item, index) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
+      key: index,
+      value: item.value,
+      selected: item.value == block
+    }, item.label);
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    className: "col-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("select", {
+    className: "form-select mb-3",
+    "aria-label": "Default select example",
+    onChange: function onChange(e) {
+      console.log(e.target.value);
+      setAuthor(e.target.value);
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
+    value: "",
+    selected: true
+  }, "--- T\u1EA5t c\u1EA3 ---"), options2 === null || options2 === void 0 ? void 0 : options2.map(function (item, index) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
+      key: index,
+      value: item.value,
+      selected: item.value == author
+    }, item.label);
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    className: "col-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    type: "button",
+    onClick: function onClick() {
+      return getListData();
+    },
+    className: "btn btn-primary waves-effect waves-ligh"
+  }, "T\xECm ki\u1EBFm")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    className: "row justify-content-sm-end"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    className: "col-sm-auto"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    type: "button",
+    className: "btn btn-outline-success waves-effect waves-light marginR10",
+    onClick: downloadFileExcel
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
+    className: "mdi mdi-export"
+  }), "Xu\u1EA5t file excel")))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    className: "row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    className: "col-xl-12"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    className: "card"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    className: "card-body"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    className: "table-responsive table-card mb-3"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("table", {
-    className: "table align-middle mb-0"
+    className: "table table-borderless table-hover table-nowrap align-middle mb-0"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
-    rowSpan: "2"
+    rowSpan: "2",
+    className: "colSpan2"
   }, "#"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
     colSpan: "2",
     className: "textCenter"
@@ -23899,6 +24100,9 @@ function Authority2() {
   }, "File \u0111\xEDnh k\xE8m"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
     rowSpan: "2",
     className: "colSpan2"
+  }, "Ng\xE0y t\u1EA1o"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
+    rowSpan: "2",
+    className: "colSpan2"
   }, "Tr\u1EA1ng th\xE1i")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
     className: "textCenter"
   }, "H\u1ECD t\xEAn"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
@@ -23909,41 +24113,52 @@ function Authority2() {
     className: "textCenter"
   }, "CMND/CCCD"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
     className: "textCenter"
-  }, "S\u1ED1 \u0111i\u1EC7n tho\u1EA1i"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tbody", null, dataList.length > 0 ? dataList.map(function (i, index) {
+  }, "S\u1ED1 \u0111i\u1EC7n tho\u1EA1i"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tbody", null, data.length > 0 ? data === null || data === void 0 ? void 0 : data.map(function (i, index) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", {
       key: index
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
       className: "text-center"
-    }, index + 1), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.name_vn), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.name_en), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.sort), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.sort), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.sort), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.sort), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.sort), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-      className: "hstack gap-3 fs-15"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Link, {
-      to: "/cap-nhat-thu-tuc-khai-mac?id=" + i.id,
-      className: "link-primary"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
-      className: "ri-settings-4-line"
-    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Link, {
-      to: "/khai-bao-thu-tuc-khai-mac",
-      onClick: function onClick() {
-        deleteCongress(i.id);
+    }, index + 1), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.name_1), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.cccd_1), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.name_2), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.cccd_2), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.phone_number_2), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.total_authority), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.status), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, new Date(i.created_at).toLocaleDateString()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, i.status != 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("select", {
+      className: "form-select mb-3",
+      "aria-label": "Default select example",
+      style: {
+        width: "60%"
       },
-      "data-bs-toggle": "modal",
-      "data-bs-target": "#myModal"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
-      className: "ri-delete-bin-5-line"
-    })))));
+      disabled: true
+    }, options === null || options === void 0 ? void 0 : options.map(function (item, index) {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
+        key: index,
+        value: i.status,
+        selected: item.value == i.status
+      }, item.label);
+    })) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("select", {
+      className: "form-select mb-3",
+      "aria-label": "Default select example",
+      style: {
+        width: "60%"
+      },
+      onChange: function onChange(e) {
+        return changeStatus(i.id, e.target.value);
+      },
+      id: "dis-" + i.id
+    }, options === null || options === void 0 ? void 0 : options.map(function (item, index) {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
+        key: index,
+        value: item.value,
+        selected: item.value == i.status
+      }, item.label);
+    }))));
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
     colSpan: "9",
     className: "text-center"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
     variant: "subtitle1"
-  }, "Kh\xF4ng c\xF3 d\u1EEF li\u1EC7u!"))))))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Paginate__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  }, "Kh\xF4ng c\xF3 d\u1EEF li\u1EC7u!")))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Pagination__WEBPACK_IMPORTED_MODULE_3__["default"], {
     linkPage: linkPage,
     pageCurrent: pageCurrent,
     pageLast: pageLast,
-    pageCurentRollBack: function pageCurentRollBack(e) {
-      return getListCongress(e);
-    }
-  }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Footer__WEBPACK_IMPORTED_MODULE_4__["default"], null));
+    getListData: getListData
+  }))))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_Footer__WEBPACK_IMPORTED_MODULE_1__["default"], null));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Authority2);
 
@@ -35965,10 +36180,99 @@ var AuthorityService = {
   getUserAuthorByShareHolder: getUserAuthorByShareHolder,
   getAuthor: getAuthor,
   getByIdAuthor: getByIdAuthor,
-  addShare: addShare
+  addShare: addShare,
+  getListAuthor: getListAuthor,
+  downloadUyQuyenDemo: downloadUyQuyenDemo,
+  importAuthorHolder: importAuthorHolder,
+  downloadFileExcel: downloadFileExcel,
+  changeStatusAuthor: changeStatusAuthor
 };
 var user = JSON.parse(localStorage.getItem('user'));
 var api = "authority";
+function changeStatusAuthor(id, status) {
+  var requestOptions = {
+    method: 'POST',
+    'Content-Type': 'application/json',
+    headers: authHeader()
+  };
+  return fetch("".concat(_components_pages_GlobalSetting__WEBPACK_IMPORTED_MODULE_0__["default"].url, "api/").concat(api, "/changeStatusAuthor?id=").concat(id, "&status=").concat(status), requestOptions).then(handleResponse);
+}
+function downloadFileExcel() {
+  var requestOptions = {
+    method: 'GET',
+    'Content-Type': 'blob',
+    headers: authHeader()
+  };
+  return fetch("".concat(_components_pages_GlobalSetting__WEBPACK_IMPORTED_MODULE_0__["default"].url, "api/").concat(api, "/downloadFileExcel"), requestOptions).then(function (response) {
+    var blob = response.blob();
+    if (response.ok && blob != null && blob != undefined) {
+      return blob;
+    }
+    return Promise.reject(response);
+  }).then(function (blob) {
+    if (blob != null && blob != undefined) {
+      var url = window.URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = "DS_Uy_Quyen.xlsx";
+      document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
+      a.click();
+      a.remove(); //afterwards we remove the element again
+      return true;
+    }
+    return Promise.reject(blob);
+  })["catch"](function (response) {
+    console.log(response);
+  });
+}
+function importAuthorHolder(file) {
+  var formData = new FormData();
+  formData.append('file', file);
+  var requestOptions = {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer ' + user.remember_token
+    },
+    body: formData
+  };
+  return fetch("".concat(_components_pages_GlobalSetting__WEBPACK_IMPORTED_MODULE_0__["default"].url, "api/").concat(api, "/importAuthorHolder"), requestOptions).then(handleResponse);
+}
+function downloadUyQuyenDemo() {
+  var requestOptions = {
+    method: 'GET',
+    'Content-Type': 'blob',
+    headers: authHeader()
+  };
+  return fetch("".concat(_components_pages_GlobalSetting__WEBPACK_IMPORTED_MODULE_0__["default"].url, "api/").concat(api, "/downloadUyQuyenDemo"), requestOptions).then(function (response) {
+    var blob = response.blob();
+    if (response.ok && blob != null && blob != undefined) {
+      return blob;
+    }
+    return Promise.reject(response);
+  }).then(function (blob) {
+    if (blob != null && blob != undefined) {
+      var url = window.URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = "DanhsachUyquyen.xlsx";
+      document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
+      a.click();
+      a.remove(); //afterwards we remove the element again
+      return true;
+    }
+    return Promise.reject(blob);
+  })["catch"](function (response) {
+    console.log(response);
+  });
+}
+function getListAuthor(page, name, status, author) {
+  var requestOptions = {
+    method: 'GET',
+    'Content-Type': 'application/json',
+    headers: authHeader()
+  };
+  return fetch("".concat(_components_pages_GlobalSetting__WEBPACK_IMPORTED_MODULE_0__["default"].url, "api/").concat(api, "/getListAuthor?page=").concat(page, "&name=").concat(name, "&status=").concat(status, "&author=").concat(author), requestOptions).then(handleResponse);
+}
 function addShare(object) {
   var requestOptions = {
     method: 'POST',

@@ -414,6 +414,10 @@ class UserShareholder extends Model
         return UserShareholder::where([['user_id',Auth::user()->id],['is_auth',self::AUTHORITY]])->orderBy('id', 'desc')->paginate(10);
     }
 
+    public function getUserShareHolderById($id){
+        return UserShareholder::where('id',$id)->orderBy('id', 'desc')->first();
+    }
+
 
     //END Authority
 }

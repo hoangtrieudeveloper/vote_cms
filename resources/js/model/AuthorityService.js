@@ -11,10 +11,105 @@ export const AuthorityService = {
     getUserAuthorByShareHolder,
     getAuthor,
     getByIdAuthor,
-    addShare
+    addShare,
+    getListAuthor,
+    downloadUyQuyenDemo,
+    importAuthorHolder,
+    downloadFileExcel,
+    changeStatusAuthor
 };
 let user = JSON.parse(localStorage.getItem('user'));
 let api = "authority";
+
+function changeStatusAuthor(id, status) {
+    const requestOptions = {
+        method: 'POST',
+        'Content-Type': 'application/json',
+        headers: authHeader()
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/changeStatusAuthor?id=${id}&status=${status}`, requestOptions).then(handleResponse);
+}
+
+function downloadFileExcel() {
+    const requestOptions = {
+        method: 'GET',
+        'Content-Type': 'blob',
+        headers: authHeader()
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/downloadFileExcel`, requestOptions).then(response => {
+        let blob = response.blob();
+        if (response.ok && blob != null && blob != undefined) {
+            return blob;
+        }
+        return Promise.reject(response);
+    }).then(blob => {
+        if (blob != null && blob != undefined) {
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = "DS_Uy_Quyen.xlsx";
+            document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
+            a.click();
+            a.remove();  //afterwards we remove the element again
+            return true;
+        }
+        return Promise.reject(blob);
+    }).catch(response => {
+        console.log(response);
+    });
+}
+function importAuthorHolder(file) {
+    let formData = new FormData();
+    formData.append('file', file);
+    const requestOptions = {
+        method: 'POST',
+        headers: {'Authorization': 'Bearer ' + user.remember_token},
+        body: formData
+    };
+    return fetch(`${GlobalSetting.url}api/${api}/importAuthorHolder`, requestOptions).then(handleResponse);
+}
+function downloadUyQuyenDemo() {
+    const requestOptions = {
+        method: 'GET',
+        'Content-Type': 'blob',
+        headers: authHeader()
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/downloadUyQuyenDemo`, requestOptions).then(response => {
+        let blob = response.blob();
+        if (response.ok && blob != null && blob != undefined) {
+            return blob;
+        }
+        return Promise.reject(response);
+    }).then(blob => {
+        if (blob != null && blob != undefined) {
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = "DanhsachUyquyen.xlsx";
+            document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
+            a.click();
+            a.remove();  //afterwards we remove the element again
+            return true;
+        }
+        return Promise.reject(blob);
+    }).catch(response => {
+        console.log(response);
+    });
+}
+
+
+function getListAuthor(page, name, status,author) {
+    const requestOptions = {
+        method: 'GET',
+        'Content-Type': 'application/json',
+        headers: authHeader()
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/getListAuthor?page=${page}&name=${name}&status=${status}&author=${author}`, requestOptions).then(handleResponse);
+}
 
 function addShare(object) {
     const requestOptions = {

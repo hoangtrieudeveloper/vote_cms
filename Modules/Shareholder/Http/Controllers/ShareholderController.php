@@ -26,6 +26,16 @@ class ShareholderController extends Controller
    * Feedback
    */
 
+    public function getListExport(){
+        try {
+            $query = UserShareholder::getListCheckin(null, null);
+            $result = Utils::messegerAlert(1, "alert-success", 'Thành công!', $query);
+        } catch (\Exception $exception) {
+            $result = Utils::messegerAlert(2, "alert-danger", 'Thất bại!',);
+        }
+        return response()->json($result);
+    }
+
     public function getTkLogin(Request $request)
     {
         /*try {*/
