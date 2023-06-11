@@ -24036,24 +24036,6 @@ function Authority2() {
       selected: item.value == block
     }, item.label);
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    className: "col-3"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("select", {
-    className: "form-select mb-3",
-    "aria-label": "Default select example",
-    onChange: function onChange(e) {
-      console.log(e.target.value);
-      setAuthor(e.target.value);
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
-    value: "",
-    selected: true
-  }, "--- T\u1EA5t c\u1EA3 ---"), options2 === null || options2 === void 0 ? void 0 : options2.map(function (item, index) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
-      key: index,
-      value: item.value,
-      selected: item.value == author
-    }, item.label);
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
     className: "col-2"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     type: "button",
@@ -25660,7 +25642,10 @@ function CheckShareholder() {
       }
     }, "In Phi\u1EBFu Bi\u1EC3u Quy\u1EBFt"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
       className: "btn btn-success bg-gradient waves-effect waves-light",
-      "data-bs-dismiss": "modal"
+      "data-bs-dismiss": "modal",
+      onClick: function onClick() {
+        return openPdf(i.id);
+      }
     }, "In t\xE0i kho\u1EA3n \u0111\u0103ng nh\u1EADp")))))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
       type: "button",
       className: "btn btn-success btn-border margin-top",

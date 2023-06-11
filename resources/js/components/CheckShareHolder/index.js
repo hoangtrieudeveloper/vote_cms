@@ -348,7 +348,8 @@ function CheckShareholder() {
                                                                                         </button>
                                                                                         <button
                                                                                             className="btn btn-success bg-gradient waves-effect waves-light"
-                                                                                            data-bs-dismiss="modal">
+                                                                                            data-bs-dismiss="modal"
+                                                                                            onClick={() => openPdf(i.id)}>
                                                                                             In tài khoản đăng nhập
                                                                                         </button>
                                                                                     </Box>

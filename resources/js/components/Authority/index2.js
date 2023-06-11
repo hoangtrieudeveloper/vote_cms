@@ -207,20 +207,20 @@ function Authority2() {
                                             </select>
                                         </Box>
 
-                                        <Box className="col-3">
-                                            <select className="form-select mb-3"
-                                                    aria-label="Default select example" onChange={(e) => {
-                                                console.log(e.target.value);
-                                                setAuthor(e.target.value);
-                                            }}>
-                                                <option value="" selected>--- Tất cả ---</option>
-                                                {options2?.map((item, index) => (
-                                                    <option key={index} value={item.value}
-                                                            selected={item.value == author}>
-                                                        {item.label}
-                                                    </option>))}
-                                            </select>
-                                        </Box>
+                                        {/*<Box className="col-3">*/}
+                                        {/*    <select className="form-select mb-3"*/}
+                                        {/*            aria-label="Default select example" onChange={(e) => {*/}
+                                        {/*        console.log(e.target.value);*/}
+                                        {/*        setAuthor(e.target.value);*/}
+                                        {/*    }}>*/}
+                                        {/*        <option value="" selected>--- Tất cả ---</option>*/}
+                                        {/*        {options2?.map((item, index) => (*/}
+                                        {/*            <option key={index} value={item.value}*/}
+                                        {/*                    selected={item.value == author}>*/}
+                                        {/*                {item.label}*/}
+                                        {/*            </option>))}*/}
+                                        {/*    </select>*/}
+                                        {/*</Box>*/}
 
                                         <Box className="col-2">
                                             <button type="button"
