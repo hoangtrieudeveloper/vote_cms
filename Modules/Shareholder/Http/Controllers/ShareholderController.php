@@ -27,7 +27,8 @@ class ShareholderController extends Controller
    * Feedback
    */
 
-    public function getListExport(){
+    public function getListExport()
+    {
         try {
             $query = UserShareholder::getListCheckin(null, null);
             $result = Utils::messegerAlert(1, "alert-success", 'Thành công!', $query);
@@ -39,29 +40,20 @@ class ShareholderController extends Controller
 
     public function getTkLogin(Request $request)
     {
-        /*try {*/
-        $query = UserShareholder::getTkLogin($request->id);
-        $pdf = Pdf::loadView("myPDF", [
-            'title' => 'Hello world',
-            'description' => 'This is an example Laravel pdf tutorial.',
-        ]);
-        //Nếu muốn hiển thị file pdf theo chiều ngang
-        // $pdf->setPaper('A4', 'landscape');
+        try {
+            $query = UserShareholder::getTkLogin($request->id);
+            $pdf = Pdf::loadView("myPDF", [
+                'name' => $query->name,
+                'code' => $query->code_dksh,
+                'username' => $query->username,
+                'no_hash_password' => $query->no_hash_password,
+            ]);
+            return $pdf->download('myPDF.pdf');
+        } catch (\Exception $exception) {
+            $result = Utils::messegerAlert(2, "alert-danger", 'Thất bại!',);
+            return response()->json($result);
+        }
 
-        //Nếu muốn download file pdf
-        return $pdf->download('myPDF.pdf');
-
-        //Nếu muốn preview in pdf
-//        $headers = [
-//            'Content-Type' => 'application/pdf',
-//            'Content-Disposition' => 'inline; myPDF.pdf',
-//        ];
-//        return response()->json(mb_convert_encoding($pdf->stream("myPDF.pdf"), 'UTF-8', 'UTF-8'));
-        /*     $result = Utils::messegerAlert(1, "alert-success", 'Thành công!',$query);
-         } catch (\Exception $exception) {
-             $result = Utils::messegerAlert(2, "alert-danger", 'Thất bại!',);
-         }
-         return response()->json($result);*/
     }
 
     public function checkIn(Request $request)
@@ -202,7 +194,7 @@ class ShareholderController extends Controller
                 $query = $query->doesntHave('userSharesVote');
             }
         }
-        if (array_key_exists($jointType,UserShareholder::getListJointTypes())) {
+        if (array_key_exists($jointType, UserShareholder::getListJointTypes())) {
             $query = $query->whereHas('userSharesCheckin', function ($query) use ($jointType) {
                 $query->where('is_check', $jointType);
             });

@@ -343,7 +343,8 @@ function CheckShareholder() {
                                                                                         <button
                                                                                             className="btn btn-light bg-gradient waves-effect waves-light"
                                                                                             data-bs-dismiss="modal"
-                                                                                            style={{marginRight: 22}}>
+                                                                                            style={{marginRight: 22}}
+                                                                                            onClick={() => openPdf(i.id)}>
                                                                                             In Phiếu Biểu Quyết
                                                                                         </button>
                                                                                         <button
