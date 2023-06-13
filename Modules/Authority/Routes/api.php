@@ -33,5 +33,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::any('/importAuthorHolder', [AuthorityController::class, 'importAuthorHolder'])->name('importAuthorHolder'); //
         Route::any('/downloadFileExcel', [AuthorityController::class, 'downloadFileExcel'])->name('downloadFileExcel'); //
         Route::any('/changeStatusAuthor', [AuthorityController::class, 'changeStatusAuthor'])->name('changeStatusAuthor'); //
+        Route::any('/getAddressById', [AuthorityController::class, 'getAddressById'])->name('getAddressById'); //
+        Route::any('/updateAddress', [AuthorityController::class, 'updateAddress'])->name('updateAddress'); //
+        Route::any('/getAllUserAuthor', [AuthorityController::class, 'getAllUserAuthor'])->name('getAllUserAuthor'); //
     });
 });

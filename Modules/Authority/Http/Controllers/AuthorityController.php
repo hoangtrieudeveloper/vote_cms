@@ -2,6 +2,7 @@
 
 namespace Modules\Authority\Http\Controllers;
 
+use App\Models\SettingAuthor;
 use App\Models\ShareholderShare;
 use App\Models\UserShareAuthor;
 use App\Models\UserShareholder;
@@ -30,14 +31,58 @@ class AuthorityController extends Controller
         $this->userShareAuthor = $userShareAuthor;
     }
 
-    public function changeStatusAuthor(Request $request){
-//        try {
+
+    public function updateAddress(Request $request)
+    {
+        try {
+            $userId = Auth::user()->id;
+            $data = $request->all();
+            $dataAddorUpdate = [
+                'address' => $data['address'],
+                'address_en' => $data['address_en'],
+                'time_close' => $data['time_close'],
+                'time_close_en' => $data['time_close_en'],
+                'file_content' => $data['file_content'],
+                'file_content_en' => $data['file_content_en'],
+                'user_id' => $userId,
+            ];
+            if (isset($data['id']) && $data['id'] != null) {
+                $query = SettingAuthor::where('id', $data['id'])->first();
+                if ($query != null) {
+                    $dataAddorUpdate['id'] = $query->id;
+                    $res = $query->update($dataAddorUpdate);
+                }
+            } else {
+                $res = SettingAuthor::Create($dataAddorUpdate);
+            }
+            $result = Utils::messegerAlert(1, "alert-success", 'Cập nhật thành công!', $res);
+        } catch (\Exception $exception) {
+            $result = Utils::messegerAlert(2, "alert-danger", 'Cập nhật thất bại!',);
+        }
+        return response()->json($result);
+    }
+
+    public function getAddressById()
+    {
+        try {
+            $userId = Auth::user()->id;
+            $query = SettingAuthor::where('user_id', $userId)->first();
+            $result = Utils::messegerAlert(1, "alert-success", 'Lấy dữ liệu thành công!', $query);
+        } catch (\Exception $exception) {
+            $result = Utils::messegerAlert(2, "alert-danger", 'Lấy dữ liệu thất bại!',);
+        }
+        return response()->json($result);
+    }
+
+    public function changeStatusAuthor(Request $request)
+    {
+        try {
             $data = $request->all();
             $query = $this->userShareAuthor->updateStatusAuthor($data);
             $result = Utils::messegerAlert(1, "alert-success", 'Cập nhật thành công!', $query);
-//        } catch (\Exception $exception) {
-//            $result = Utils::messegerAlert(2, "alert-danger", 'Cập nhật thất bại!',);
-//        }
+        } catch (\Exception $exception) {
+            $result = Utils::messegerAlert(2, "alert-danger", 'Cập nhật thất bại!',);
+        }
         return response()->json($result);
     }
 
@@ -61,7 +106,7 @@ class AuthorityController extends Controller
                         ->setCellValue("F" . ($startRow + $idx), $row->phone_number_2)
                         ->setCellValue("G" . ($startRow + $idx), $row->total_authority)
                         ->setCellValue("H" . ($startRow + $idx), $row->total_authority)
-                        ->setCellValue("I" . ($startRow + $idx),  $row->status == 0 ? "Chờ duyệt" : $row->status == 1 ? "Đã duyệt" : "Thất bại");
+                        ->setCellValue("I" . ($startRow + $idx), $row->status == 0 ? "Chờ duyệt" : $row->status == 1 ? "Đã duyệt" : "Thất bại");
                 }
                 $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, $fileType);
                 header('Content-Description: File Transfer');
@@ -115,9 +160,9 @@ class AuthorityController extends Controller
                         $emailAuthor = trim($sheet->getCell('F' . $row)->getValue());
                         $totalShare = trim($sheet->getCell('G' . $row)->getValue());
 
-                        $userShareholder = UserShareholder::where('cccd','like',$cccdShareholder)->first();
+                        $userShareholder = UserShareholder::where('cccd', 'like', $cccdShareholder)->first();
                         if ($userShareholder != null) {
-                            $userAuthority = UserShareholder::where('cccd','like', $cccdAuthor)
+                            $userAuthority = UserShareholder::where('cccd', 'like', $cccdAuthor)
                                 ->where('is_auth', self::USER_AUTHORITY)->first();
 
                             if ($userAuthority == null) {
@@ -144,10 +189,10 @@ class AuthorityController extends Controller
                                 'user_id' => $user_id,
                             ];
                             $userAuthoritys = UserShareAuthor::Create($dataAuth);
-                        }else{
+                        } else {
                             $response = [
                                 "status" => 2,
-                                "mess" => "Cổ đông ".$nameShareholder. " không tồn tại!",
+                                "mess" => "Cổ đông " . $nameShareholder . " không tồn tại!",
                                 "erros" => [],
                             ];
                         }
@@ -254,6 +299,18 @@ class AuthorityController extends Controller
         } catch (\Exception $exception) {
             $result = Utils::messegerAlert(2, "alert-danger", 'Lỗi không lấy được thông tin!',);
         }
+        return response()->json($result);
+    }
+
+    public function getAllUserAuthor(Request $request)
+    {
+//        try {
+        $userId = Auth::id();
+        $query = $this->userShareHolder->getAllUserAuthor($request->nameSearch,$request->author);
+        $result = Utils::messegerAlert(1, "alert-success", 'Thành công!', $query);
+//        } catch (\Exception $exception) {
+//            $result = Utils::messegerAlert(2, "alert-danger", 'Lỗi không lấy được thông tin!',);
+//        }
         return response()->json($result);
     }
 

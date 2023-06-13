@@ -31,6 +31,7 @@ function CreateAuthority() {
     const [detailAuth, setDetailAuth] = useState({});
     const [authority, setAuthor] = useState({});
     const [totalAuth, setTotalAuth] = useState({});
+    const [totalAuth2, setTotalAuth2] = useState({});
     const [idShareHolder, setIdShareHolder] = useState({});
 
     const resetData = () => {
@@ -69,17 +70,20 @@ function CreateAuthority() {
                 if (data.status == 1) {
                     setAuthor(data?.data);
                     setTotalAuth(data?.data?.totalALL);
+                    setTotalAuth2(data?.data?.totalALL);
                     setIdShareHolder(data?.data?.id);
-                } else Helpers.showToast('error', data?.mess);
+                } else helpers.showToast('error', data?.mess);
             });
     }
 
     async function createAuthority() {
         if (detailAuth.cccd === '') {
-            Helpers.showToast('error', 'Vui lòng nhập căn cước công dân!');
+            helpers.showToast('error', 'Vui lòng nhập căn cước công dân!');
         } else if (detailAuth.no_hash_password === '') {
-            Helpers.showToast('error', 'Vui lòng nhập mật khẩu!');
-        } else {
+            helpers.showToast('error', 'Vui lòng nhập mật khẩu!');
+        } else if (totalAuth >= totalAuth2) {
+            helpers.showToast('error', 'Sổ cổ phần còn ủy quyền phải nhỏ hơn số cổ phần còn lại!');
+        }else {
             detailAuth.total = totalAuth;
             detailAuth.idShareHolder = idShareHolder;
             setLoading(true);
@@ -89,7 +93,8 @@ function CreateAuthority() {
                         setLoading(false);
                         if (data?.status == 1) {
                             helpers.showToast('success', data?.mess);
-                            getAuthor(pageCurrent);
+                            getListById(params.get('id') || "");
+                            getListData(pageCurrent,params.get('id') || "");
                         } else {
                             helpers.showToast('error', data?.mess);
                         }
@@ -117,7 +122,6 @@ function CreateAuthority() {
             });
     }
     const getByIdAuthor = (id) => {
-        setDetailAuth({});
         setLoading(true);
         AuthorityService.getByIdAuthor(id)
             .then(data => {
@@ -448,12 +452,14 @@ function CreateAuthority() {
                                                                             <Box className="col-xxl-6">
                                                                                 <label
                                                                                     htmlFor="cleave-date-format"
-                                                                                    className="form-label">Số cổ
-                                                                                    phần còn lại</label>
+                                                                                    className="form-label">Số cổ phần còn lại</label>
                                                                                 <TextField
                                                                                     className="form-control"
                                                                                     name="total"
-                                                                                    onChange={e => onInputChange(e)}
+                                                                                    type="number"
+                                                                                    fullWidth
+                                                                                    required
+                                                                                    onChange={e => setTotalAuth(e.target.value)}
                                                                                     sx={{
                                                                                         'input': {
                                                                                             '&::placeholder': {
@@ -461,6 +467,7 @@ function CreateAuthority() {
                                                                                             }
                                                                                         },
                                                                                     }}
+                                                                                    variant="outlined"
                                                                                     value={totalAuth}
                                                                                 />
                                                                             </Box>

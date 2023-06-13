@@ -16,10 +16,31 @@ export const AuthorityService = {
     downloadUyQuyenDemo,
     importAuthorHolder,
     downloadFileExcel,
-    changeStatusAuthor
+    changeStatusAuthor,
+    getAddressById,
+    updateAddress,
+    getAllUserAuthor
+
 };
 let user = JSON.parse(localStorage.getItem('user'));
 let api = "authority";
+function updateAddress(object) {
+    const requestOptions = {
+        method: 'POST',
+        headers: authHeader(),
+        body: JSON.stringify(object)
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/updateAddress`, requestOptions).then(handleResponse);
+}
+
+function getAddressById() {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader(),
+    };
+    return fetch(`${GlobalSetting.url}api/${api}/getAddressById`, requestOptions).then(handleResponse);
+}
 
 function changeStatusAuthor(id, status) {
     const requestOptions = {
@@ -153,6 +174,16 @@ function getAllUserShareHolder(page,nameSearch) {
 
     return fetch(`${GlobalSetting.url}api/${api}/getAllUserShareHolder?page=${page}&nameSearch=${nameSearch}`, requestOptions).then(handleResponse);
 }
+function getAllUserAuthor(page,nameSearch,author = null) {
+    const requestOptions = {
+        method: 'GET',
+        'Content-Type': 'application/json',
+        headers: authHeader()
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/getAllUserAuthor?page=${page}&nameSearch=${nameSearch}&author=${author}`, requestOptions).then(handleResponse);
+}
+
 function edit(object) {
     const requestOptions = {
         method: 'POST',

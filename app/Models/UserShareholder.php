@@ -25,6 +25,7 @@ class UserShareholder extends Model
     const NOT_CHECKIN = 0;
 
 //    AUTHORITY STATUS
+    const PEN_AUTHORITY = 0;
     const AUTHORITY = 1;
     const NO_AUTHORITY = 2;
 
@@ -313,7 +314,7 @@ class UserShareholder extends Model
         $setTotalAuthority = 0;
         $getTotalAuthority = 0;
         $query = UserShareholder::query();
-        $query = $query->where('user_id', $user_id);
+        $query = $query->where('user_shareholder.user_id', $user_id);
         if ($nameSearch != null) {
             $query = $query->where(function ($query) use ($nameSearch) {
                 $query->where('name', 'like', '%' . $nameSearch . '%')
@@ -321,8 +322,7 @@ class UserShareholder extends Model
                     ->orWhere('phone_number', 'like', '%' . $nameSearch . '%');
             });
         }
-        $query = $query->orderBy('name', 'asc')
-            ->paginate(10);
+        $query = $query->paginate(10);
         if ($query != null) {
             foreach ($query as $item) {
                 $item['date_range'] = Carbon::parse($item->date_range)->format('d-m-Y');
@@ -330,9 +330,9 @@ class UserShareholder extends Model
                 $total = ShareholderShare::where([['user_shares_id', $item->id], ['user_id', $user_id]])->first();
                 $item['total'] = $total != null ? $total->total : 0;
                 if ($item->is_auth != self::AUTHORITY) {
-                    $setTotalAuthority = self::sumShareAuthor('id_shareholder', $item->id);
+                    $setTotalAuthority = self::sumShareAuthor('id_shareholder', $item->id,self::AUTHORITY);
                 } else {
-                    $getTotalAuthority = self::sumShareAuthor('id_author', $item->id);
+                    $getTotalAuthority = self::sumShareAuthor('id_author', $item->id,self::AUTHORITY);
                 }
                 $item['setAuthority'] = $setTotalAuthority;
                 $item['getAuthority'] = $getTotalAuthority;
@@ -342,9 +342,55 @@ class UserShareholder extends Model
         return $query;
     }
 
-    public function sumShareAuthor($column, $id)
+    public static function getAllUserAuthor($nameSearch, $author)
     {
-        return UserShareAuthor::where($column, $id)->where('status',self::AUTHORITY)->sum('total_authority');
+        $user_id = Auth::user()->id;
+        $setTotalAuthority = 0;
+        $setTotalAuthority2 = 0;
+        $getTotalAuthority = 0;
+
+
+        $query = UserShareholder::query();
+        $query = $query->where('user_shareholder.user_id', $user_id);
+        if ($nameSearch != null) {
+            $query = $query->where(function ($query) use ($nameSearch) {
+                $query->where('name', 'like', '%' . $nameSearch . '%')
+                    ->orWhere('cccd', 'like', '%' . $nameSearch . '%')
+                    ->orWhere('phone_number', 'like', '%' . $nameSearch . '%');
+            });
+        }
+        if ($author != null) {
+            $columnAuthor = 'id_shareholder';
+            if ($author == self::AUTHORITY) {
+                $columnAuthor = 'id_author';
+            };
+            $queryAuthor = UserShareAuthor::where('user_id',Auth::user()->id)->select($columnAuthor)->get()->unique($columnAuthor)->toArray();
+            $query = $query->whereIn('id',$queryAuthor);
+        }
+        $query = $query->paginate(10);
+        if ($query != null) {
+            foreach ($query as $item) {
+                $total = ShareholderShare::where([['user_shares_id', $item->id], ['user_id', $user_id]])->first();
+                $item['total'] = $total != null ? $total->total : 0;
+                if ($item->is_auth != self::AUTHORITY) {
+                    $setTotalAuthority = self::sumShareAuthor('id_shareholder', $item->id,self::PEN_AUTHORITY);
+                    $setTotalAuthority2 = self::sumShareAuthor('id_shareholder', $item->id,self::AUTHORITY);
+                } else {
+                    $getTotalAuthority = self::sumShareAuthor('id_author', $item->id,self::AUTHORITY);
+                }
+                $item['setAuthority'] = $setTotalAuthority;
+                $item['setAuthority2'] = $setTotalAuthority2;
+                $item['getAuthority'] = $getTotalAuthority;
+                $item['totalALL'] = ($item['total'] + $item['getAuthority']) - $item['setAuthority2'];
+            }
+        }
+        return $query;
+    }
+
+
+    public function sumShareAuthor($column, $id,$status)
+    {
+        return UserShareAuthor::where($column, $id)->where('status', $status)->sum('total_authority');
     }
 
     public static function getAuthority($nameSearch)
@@ -416,8 +462,9 @@ class UserShareholder extends Model
         return UserShareholder::where([['user_id', Auth::user()->id], ['is_auth', self::AUTHORITY]])->orderBy('id', 'desc')->paginate(10);
     }
 
-    public function getUserShareHolderById($id){
-        return UserShareholder::where('id',$id)->orderBy('id', 'desc')->first();
+    public function getUserShareHolderById($id)
+    {
+        return UserShareholder::where('id', $id)->orderBy('id', 'desc')->first();
     }
 
 

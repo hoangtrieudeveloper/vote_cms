@@ -9,14 +9,17 @@ import ToastNotifi from "../pages/ToastNotifi";
 import Loading from "../pages/Loading";
 import helpers from "../pages/Helpers";
 import {userShareholderService} from "../../model/userShareholderService";
+import {Link} from "react-router-dom";
 
 function Authority2() {
+
+    //TAB-1
     //paginate
     const [pageCurrent, setPageCurrent] = useState(1);
     const [pageLast, setPageLast] = useState(1);
     const [linkPage, setLinkPage] = useState([]);
+
     //props
-    const [checkAction, setCheckAction] = useState(false);
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const [nameSearch, setNameSearch] = useState('');
@@ -30,6 +33,7 @@ function Authority2() {
     ];
 
     const [author, setAuthor] = useState('');
+    const [author2, setAuthor2] = useState('');
     const options2 = [
         {value: "0", label: "Cổ đông ủy quyền"},
         {value: "1", label: "Cổ đông nhận ủy quyền"},
@@ -47,24 +51,49 @@ function Authority2() {
     }
 
     const getListData = (page = 1) => {
-        console.log(pageCurrent < pageLast);
-        setPageCurrent(page);
-        setLoading(true);
-        AuthorityService.getListAuthor(page, nameSearch, block, author)
-            .then(data => {
-                console.log('data', data);
-                setLoading(false);
-                if (data.status == 1) {
-                    setData(data?.data?.data);
-                    setLinkPage(data?.data?.links);
-                    setPageLast(parseInt(data?.data?.last_page));
-                    // helpers.showToast('success', data?.mess);
-                } else {
-                    resetData();
-                    // helpers.showToast('error', data?.mess);
+        if (author != '') {
+            setPageCurrentTab2(page);
+            setLoading(true);
+            AuthorityService.getAllUserAuthor(page, nameSearch, author)
+                .then(data => {
+                    setLoading(false);
+                    setAuthor2(author);
+                    if (data.status == 1) {
+                        document.getElementById("option-2").style.display = "none";
+                        document.getElementById("table-2").style.display = "block";
+                        document.getElementById("table-1").style.display = "none";
+                        setDataTab2(data?.data?.data);
+                        setLinkPageTab2(data?.data?.links);
+                        setPageLastTab2(parseInt(data?.data?.last_page));
+                        // helpers.showToast('success', data?.mess);
+                    } else {
+                        resetData();
+                        // helpers.showToast('error', data?.mess);
 
-                }
-            });
+                    }
+                });
+        } else {
+            setPageCurrent(page);
+            setLoading(true);
+            AuthorityService.getListAuthor(page, nameSearch, block, author)
+                .then(data => {
+                    console.log('data', data);
+                    document.getElementById("option-2").style.display = "block";
+                    document.getElementById("table-2").style.display = "none";
+                    document.getElementById("table-1").style.display = "block";
+                    setLoading(false);
+                    if (data.status == 1) {
+                        setData(data?.data?.data);
+                        setLinkPage(data?.data?.links);
+                        setPageLast(parseInt(data?.data?.last_page));
+                        // helpers.showToast('success', data?.mess);
+                    } else {
+                        resetData();
+                        // helpers.showToast('error', data?.mess);
+
+                    }
+                });
+        }
     }
 
     const downloadFileDemo = () => {
@@ -129,6 +158,40 @@ function Authority2() {
         })
     }
 
+    //END TAB-1
+
+
+    //TAB-2
+    //paginate
+    const [pageCurrentTab2, setPageCurrentTab2] = useState(1);
+    const [pageLastTab2, setPageLastTab2] = useState(1);
+    const [linkPageTab2, setLinkPageTab2] = useState([]);
+    //props
+    const [dataTab2, setDataTab2] = useState([]);
+    const [nameSearchTab2, setNameSearchTab2] = useState('');
+
+    const getListDataTab2 = (page = 1) => {
+
+        setPageCurrentTab2(page);
+        setLoading(true);
+        AuthorityService.getAllUserShareHolder(page, nameSearch)
+            .then(data => {
+                setLoading(false);
+                if (data.status == 1) {
+                    setDataTab2(data?.data?.data);
+                    setLinkPageTab2(data?.data?.links);
+                    setPageLastTab2(parseInt(data?.data?.last_page));
+                    // helpers.showToast('success', data?.mess);
+                } else {
+                    resetData();
+                    // helpers.showToast('error', data?.mess);
+
+                }
+            });
+    }
+
+    //END TAB-2
+
     return (
         <Box className="main-content">
             <ToastNotifi></ToastNotifi>
@@ -192,10 +255,9 @@ function Authority2() {
                                                    value={nameSearch}
                                                    onChange={(e) => setNameSearch(e.target.value)}/>
                                         </Box>
-                                        <Box className="col-3">
+                                        <Box className="col-3" id="option-2">
                                             <select className="form-select mb-3"
                                                     aria-label="Default select example" onChange={(e) => {
-                                                console.log(e.target.value);
                                                 setBlock(e.target.value);
                                             }}>
                                                 <option value="" selected>--- Trạng thái ---</option>
@@ -207,20 +269,20 @@ function Authority2() {
                                             </select>
                                         </Box>
 
-                                        {/*<Box className="col-3">*/}
-                                        {/*    <select className="form-select mb-3"*/}
-                                        {/*            aria-label="Default select example" onChange={(e) => {*/}
-                                        {/*        console.log(e.target.value);*/}
-                                        {/*        setAuthor(e.target.value);*/}
-                                        {/*    }}>*/}
-                                        {/*        <option value="" selected>--- Tất cả ---</option>*/}
-                                        {/*        {options2?.map((item, index) => (*/}
-                                        {/*            <option key={index} value={item.value}*/}
-                                        {/*                    selected={item.value == author}>*/}
-                                        {/*                {item.label}*/}
-                                        {/*            </option>))}*/}
-                                        {/*    </select>*/}
-                                        {/*</Box>*/}
+                                        <Box className="col-3">
+                                            <select className="form-select mb-3"
+                                                    aria-label="Default select example" onChange={(e) => {
+                                                console.log(e.target.value);
+                                                setAuthor(e.target.value);
+                                            }}>
+                                                <option value="" selected>--- Tất cả ---</option>
+                                                {options2?.map((item, index) => (
+                                                    <option key={index} value={item.value}
+                                                            selected={item.value == author}>
+                                                        {item.label}
+                                                    </option>))}
+                                            </select>
+                                        </Box>
 
                                         <Box className="col-2">
                                             <button type="button"
@@ -249,11 +311,106 @@ function Authority2() {
                     <Box className="row">
                         <Box className="col-xl-12">
                             <Box className="card">
-                                <Box className="card-body">
+                                <Box className="card-body displayNone" id="table-2">
                                     <Box className="table-responsive table-card mb-3">
                                         <table
                                             className="table table-borderless table-hover table-nowrap align-middle mb-0">
-                                            <thead>
+                                            <thead className="table-light">
+                                            <tr className="text-muted">
+                                                <th scope="col">Mã CĐ</th>
+                                                <th scope="col">Họ và tên</th>
+                                                <th scope="col">CMND/CCCD</th>
+                                                <th scope="col">CP sở hữu</th>
+                                                {author2 == 0 ?
+                                                    <th scope="col">CP ủy quyền đã xử lý</th>
+                                                    :
+                                                    ''
+                                                }
+                                                {author2 == 0 ?
+                                                    <th scope="col">CP chờ xử lý</th>
+                                                    :
+                                                    ''
+                                                }
+                                                {author2 == 1 ?
+                                                    <th scope="col">Cổ phần nhận ủy quyền (3)</th>
+                                                    :
+                                                    ''
+                                                }
+                                                <th scope="col">CP còn lại</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {dataTab2.length > 0 ? dataTab2?.map((i, index) => (
+                                                <tr key={index}>
+                                                    <td className="text-center">
+                                                        {index + 1}
+                                                    </td>
+                                                    <td>
+                                                        {i.name}
+                                                    </td>
+                                                    <td>
+                                                        {i.cccd}
+                                                    </td>
+                                                    <td>
+                                                                            <span
+                                                                                className="badge badge-soft-success p-2">{helpers.formatNumber(i.total)}</span>
+
+                                                    </td>
+                                                    {author2 == 0 ?
+                                                        <td>
+                                                                            <span
+                                                                                className="badge badge-soft-warning p-2">
+                                                                          {helpers.formatNumber(i.setAuthority2)}
+                                                                            </span>
+                                                        </td>
+                                                        :
+                                                        ''
+                                                    }
+                                                    {author2 == 0 ?
+                                                        <td>
+                                                                            <span
+                                                                                className="badge badge-soft-warning p-2">
+                                                                          {helpers.formatNumber(i.setAuthority)}
+                                                                            </span>
+                                                        </td>
+                                                        :
+                                                        ''
+                                                    }
+                                                    {author2 == 1 ?
+                                                        <td>
+                                                                             <span
+                                                                                 className="badge badge-soft-secondary p-2">
+                                                                            {helpers.formatNumber(i.getAuthority)}
+                                                                             </span>
+                                                        </td>
+                                                        :
+                                                        ''
+                                                    }
+                                                    <td>
+                                                                            <span
+                                                                                className="badge text-bg-success">
+                                                                            {helpers.formatNumber(i.totalALL)}
+                                                                            </span>
+                                                    </td>
+                                                </tr>
+                                            )) : <tr>
+                                                <td colSpan="9" className="text-center"><Typography
+                                                    variant="subtitle1">Không
+                                                    có dữ liệu!</Typography>
+                                                </td>
+                                            </tr>}
+                                            </tbody>
+                                        </table>
+                                    </Box>
+                                    <Pagination linkPage={linkPageTab2} pageCurrent={pageCurrentTab2}
+                                                pageLast={pageLastTab2}
+                                                getListData={getListDataTab2}/>
+                                </Box>
+                                <Box className="card-body" id="table-1">
+                                    <Box className="table-responsive table-card mb-3">
+                                        <table
+                                            className="table table-borderless table-hover table-nowrap align-middle mb-0">
+                                            <thead className="table-light">
                                             <tr>
                                                 <th rowSpan="2" className="colSpan2">#</th>
                                                 <th colSpan="2" className="textCenter">Thông tin người ủy
@@ -300,7 +457,8 @@ function Authority2() {
                                                         {i.total_authority}
                                                     </td>
                                                     <td>
-                                                        <a href="/files/filedinhkem.pdf" target="_blank" download>filedinhkem</a>
+                                                        <a href="/files/filedinhkem.pdf" target="_blank"
+                                                           download>filedinhkem</a>
                                                     </td>
                                                     <td>
                                                         {new Date(i.created_at).toLocaleDateString()}
@@ -310,7 +468,7 @@ function Authority2() {
                                                             i.status != 0 ?
                                                                 <select className="form-select mb-3"
                                                                         aria-label="Default select example"
-                                                                        style={{width:"60%"}}
+                                                                        style={{width: "60%"}}
                                                                         disabled
                                                                 >
                                                                     {options?.map((item, index) => (
@@ -322,7 +480,7 @@ function Authority2() {
                                                                 :
                                                                 <select className="form-select mb-3"
                                                                         aria-label="Default select example"
-                                                                        style={{width:"60%"}}
+                                                                        style={{width: "60%"}}
                                                                         onChange={(e) => changeStatus(i.id, e.target.value)}
                                                                         id={"dis-" + i.id}
                                                                 >

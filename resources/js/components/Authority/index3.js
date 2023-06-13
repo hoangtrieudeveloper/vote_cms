@@ -8,9 +8,9 @@ import Pagination from "../pages/Pagination";
 import ToastNotifi from "../pages/ToastNotifi";
 import Loading from "../pages/Loading";
 import helpers from "../pages/Helpers";
-import Helpers from "../pages/Helpers";
 import {Link} from "react-router-dom";
 import {congressService} from "../../model/congressService";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 function Authority3() {
     //paginate
@@ -65,7 +65,7 @@ function Authority3() {
                 setLoading(false);
                 if (data.status == 1) {
                     setAuthority(data?.data);
-                } else Helpers.showToast('error', data?.mess);
+                } else helpers.showToast('error', data?.mess);
             });
     }
 
@@ -83,10 +83,10 @@ function Authority3() {
                     data => {
                         setLoading(false);
                         if (data?.status == 1) {
-                            Helpers.showToast('success', data?.mess);
+                            helpers.showToast('success', data?.mess);
                             getListData(pageCurrent);
                         } else {
-                            Helpers.showToast('error', data?.mess);
+                            helpers.showToast('error', data?.mess);
                         }
                     }
                 );
@@ -107,15 +107,118 @@ function Authority3() {
                     data => {
                         setLoading(false);
                         if (data?.status == 1) {
-                            Helpers.showToast('success', data?.mess);
+                            helpers.showToast('success', data?.mess);
                             getListData(pageCurrent);
                         } else {
-                            Helpers.showToast('error', data?.mess);
+                            helpers.showToast('error', data?.mess);
                         }
                     }
                 );
         }
     }
+
+
+    //TAB-2
+
+    const [address, setAddress] = useState({
+        address: "",
+        address_en: "",
+        time_close: "",
+        time_close_en: "",
+        file_content: "",
+        file_content_en: "",
+    });
+
+    const onInputChangeAddress = e => {
+        setAddress({...address, [e.target.name]: e.target.value});
+    };
+
+    //upload file TV
+    const [listFile, setListFile] = useState('');
+    const handleUploadImage = (e) => {
+        const file = e.target.files[0];
+        congressService.uploadFileAction(file)
+            .then(data => {
+                setListFile(data);
+            });
+    }
+    const removeFile = () => {
+        setListFile('');
+    }
+
+    //upload File ENG
+    const [listFileEng, setListFileEng] = useState('');
+    const handleUploadImageEng = (e) => {
+        const file = e.target.files[0];
+        congressService.uploadFileAction(file)
+            .then(dataEng => {
+                setListFileEng(dataEng);
+            });
+    }
+    const removeFileEng = () => {
+        setListFileEng('');
+    }
+    //end upload file
+
+
+    //getById
+    async function getAddressById(id) {
+        AuthorityService.getAddressById(id)
+            .then(
+                data => {
+                    if (data.status == 1) {
+                        if (data?.data != null) {
+                            setAddress(data?.data);
+                            setListFile(data?.data?.file_content || '');
+                            setListFileEng(data?.data?.file_content_en || '');
+                        } else {
+                            setAddress({
+                                address: "",
+                                address_en: "",
+                                time_close: "",
+                                time_close_en: "",
+                                file_content: "",
+                                file_content_en: "",
+                            });
+                        }
+                    } else {
+                        helpers.showToast('error', data?.mess)
+                    }
+                }
+            );
+    }
+
+
+    //update data
+    async function UpdateAddressAuthor() {
+        if (address.address === '') {
+            helpers.showToast('error', 'Vui lòng nhập địa chỉ nhận giấy ủy quyền!');
+        } else if (address.address_en === '') {
+            helpers.showToast('error', 'Vui lòng nhập địa chỉ nhận giấy ủy quyền (Tiếng Anh)!');
+        } else if (address.time_close === '') {
+            helpers.showToast('error', 'Vui lòng nhập thời gian!');
+        } else if (address.time_close_en === '') {
+            helpers.showToast('error', 'Vui lòng nhập thời gian (Tiếng Anh)!');
+        } else {
+            setLoading(true);
+            address.file_content = listFile;
+            address.file_content_en = listFileEng;
+            AuthorityService.updateAddress(address)
+                .then(
+                    data => {
+                        setLoading(false);
+                        if (data?.status == 1) {
+                            helpers.showToast('success', data?.mess);
+                        } else {
+                            helpers.showToast('error', data?.mess);
+                        }
+                    }
+                );
+        }
+    }
+
+
+    //END TAB-2
 
 
     return (
@@ -155,7 +258,9 @@ function Authority3() {
                                         </li>
                                         <li className="nav-item">
                                             <a className="nav-link fs-14 color" data-bs-toggle="tab" href="#activities"
-                                               role="tab">
+                                               role="tab"
+                                               onClick={getAddressById}
+                                            >
                                                 <i className="ri-list-unordered d-inline-block d-md-none"></i> <span
                                                 className="d-none d-md-inline-block">Thiết lập nội dung ủy quyền</span>
                                             </a>
@@ -602,8 +707,240 @@ function Authority3() {
                                     <Box className="tab-pane fade" id="activities" role="tabpanel">
                                         <Box className="card">
                                             <Box className="card-body">
-                                                <h5 className="card-title mb-3">Thiết lập nội dung ủy quyền pending</h5>
+                                                <Box>
+                                                    <Box className="row">
+                                                        <Box className="col-xl-6">
+                                                            <Box className="mb-3">
+                                                                <label htmlFor="cleave-date" className="form-label">Địa
+                                                                    chỉ nhận giấy ủy quyền<Typography variant="span"
+                                                                                                      color="red">*</Typography></label>
+                                                                <TextField
+                                                                    className="form-control"
+                                                                    fullWidth
+                                                                    name="address"
+                                                                    type='text'
+                                                                    required
+                                                                    onChange={e => onInputChangeAddress(e)}
+                                                                    sx={{
+                                                                        'input': {
+                                                                            '&::placeholder': {
+                                                                                fontSize: 16,
+                                                                            }
+                                                                        },
+                                                                    }}
+                                                                    label="Địa chỉ nhận giấy ủy quyền"
+                                                                    variant="outlined"
+                                                                    value={address.address}
+                                                                />
+                                                            </Box>
+                                                        </Box>
+                                                        <Box className="col-xl-6">
+                                                            <Box className="mb-3">
+                                                                <label htmlFor="cleave-date-format"
+                                                                       className="form-label">Thời gian<Typography
+                                                                    variant="span"
+                                                                    color="red">*</Typography></label>
+                                                                <TextField
+                                                                    className="form-control"
+                                                                    fullWidth
+                                                                    name="time_close"
+                                                                    type='text'
+                                                                    required
+                                                                    onChange={e => onInputChangeAddress(e)}
+                                                                    sx={{
+                                                                        'input': {
+                                                                            '&::placeholder': {
+                                                                                fontSize: 16,
+                                                                            }
+                                                                        },
+                                                                    }}
+                                                                    label="Thời gian"
+                                                                    variant="outlined"
+                                                                    value={address.time_close}
+                                                                />
+                                                            </Box>
+                                                        </Box>
+                                                    </Box>
+                                                </Box>
+                                                <Box>
+                                                    <Box className="row">
+                                                        <Box className="col-xl-6">
+                                                            <Box className="mb-3">
+                                                                <label htmlFor="cleave-date" className="form-label">Địa
+                                                                    chỉ nhận giấy ủy quyền(Tiếng anh)<Typography
+                                                                        variant="span"
+                                                                        color="red">*</Typography></label>
+                                                                <TextField
+                                                                    className="form-control"
+                                                                    fullWidth
+                                                                    name="address_en"
+                                                                    type='text'
+                                                                    required
+                                                                    onChange={e => onInputChangeAddress(e)}
+                                                                    sx={{
+                                                                        'input': {
+                                                                            '&::placeholder': {
+                                                                                fontSize: 16,
+                                                                            }
+                                                                        },
+                                                                    }}
+                                                                    label="Địa chỉ nhận giấy ủy quyền(Tiếng anh)"
+                                                                    variant="outlined"
+                                                                    value={address.address_en}
+                                                                />
+                                                            </Box>
+                                                        </Box>
+                                                        <Box className="col-xl-6">
+                                                            <Box className="mb-3">
+                                                                <label htmlFor="cleave-date-format"
+                                                                       className="form-label">Thời gian(Tiếng
+                                                                    Anh)<Typography variant="span"
+                                                                                    color="red">*</Typography></label>
+                                                                <TextField
+                                                                    className="form-control"
+                                                                    fullWidth
+                                                                    name="time_close_en"
+                                                                    type='text'
+                                                                    required
+                                                                    onChange={e => onInputChangeAddress(e)}
+                                                                    sx={{
+                                                                        'input': {
+                                                                            '&::placeholder': {
+                                                                                fontSize: 16,
+                                                                            }
+                                                                        },
+                                                                    }}
+                                                                    label="Thời gian(Tiếng Anh)"
+                                                                    variant="outlined"
+                                                                    value={address.time_close_en}
+                                                                />
+                                                            </Box>
+                                                        </Box>
+                                                    </Box>
+                                                </Box>
+                                                <Box className="row">
+                                                    <Box className="col-lg-6">
+                                                        <Box className="card">
+                                                            <Box className="card-body">
+                                                                <Box>
+                                                                    <label onChange={handleUploadImage} htmlFor="formId"
+                                                                           className={"btn btn-default mb-3 w-100"}>
+                                                                        <Box className="mb-3">
+                                                                            <i className="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                                                                        </Box>
+                                                                        <input name="fileTv" type="file" id="formId"
+                                                                               hidden
+                                                                               accept="application/pdf"/>
+                                                                        <h6>Upload File Nội dung</h6>
+                                                                    </label>
+                                                                </Box>
+                                                                {listFile != '' &&
+                                                                    <ul className="list-unstyled mb-0"
+                                                                        id="dropzone-preview">
+                                                                        <li className="mt-2">
+                                                                            <Box className="border rounded">
+                                                                                <Box className="d-flex p-2">
+                                                                                    <Box className="flex-shrink-0 me-3">
+                                                                                        <Box
+                                                                                            className="avatar-sm bg-light rounded">
+                                                                                            <img
+                                                                                                className="img-fluid rounded d-block"
+                                                                                                src="assets/images/pdf.png"
+                                                                                                alt="Dropzone-Image"/>
+                                                                                        </Box>
+                                                                                    </Box>
+                                                                                    <Box className="flex-grow-1">
+                                                                                        <Box className="pt-1">
+                                                                                            <h5 className="fs-14 mb-1">{listFile}</h5>
+                                                                                            <p className="fs-13 text-muted mb-0"></p>
+                                                                                            <strong
+                                                                                                className="error text-danger"></strong>
+                                                                                        </Box>
+                                                                                    </Box>
+                                                                                    <Box className="flex-shrink-0 ms-3">
+                                                                                        <button
+                                                                                            onClick={() => removeFile()}
+                                                                                            className="btn btn-sm btn-danger">Xóa
+                                                                                        </button>
+                                                                                    </Box>
+                                                                                </Box>
+                                                                            </Box>
+                                                                        </li>
+                                                                    </ul>}
+                                                            </Box>
+                                                        </Box>
+                                                    </Box>
+                                                    <Box className="col-lg-6">
+                                                        <Box className="card">
+                                                            <Box className="card-body">
+                                                                <Box>
+                                                                    <label onChange={handleUploadImageEng}
+                                                                           htmlFor="formIdEng"
+                                                                           className={"btn btn-default mb-3 w-100"}>
+                                                                        <Box className="mb-3">
+                                                                            <i className="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                                                                        </Box>
+                                                                        <input name="fileEng" type="file" id="formIdEng"
+                                                                               hidden
+                                                                               accept="application/pdf"/>
+                                                                        <h6>Upload File Nội dung (Tiếng anh)</h6>
+                                                                    </label>
+                                                                </Box>
+                                                                {listFileEng != '' &&
+                                                                    <ul className="list-unstyled mb-0"
+                                                                        id="dropzone-preview">
+                                                                        <li className="mt-2">
+                                                                            <Box className="border rounded">
+                                                                                <Box className="d-flex p-2">
+                                                                                    <Box className="flex-shrink-0 me-3">
+                                                                                        <Box
+                                                                                            className="avatar-sm bg-light rounded">
+                                                                                            <img
+                                                                                                className="img-fluid rounded d-block"
+                                                                                                src="assets/images/pdf.png"
+                                                                                                alt="Dropzone-Image"/>
+                                                                                        </Box>
+                                                                                    </Box>
+                                                                                    <Box className="flex-grow-1">
+                                                                                        <Box className="pt-1">
+                                                                                            <h5 className="fs-14 mb-1">{listFileEng}</h5>
+                                                                                            <p className="fs-13 text-muted mb-0"></p>
+                                                                                            <strong
+                                                                                                className="error text-danger"></strong>
+                                                                                        </Box>
+                                                                                    </Box>
+                                                                                    <Box className="flex-shrink-0 ms-3">
+                                                                                        <button
+                                                                                            onClick={() => removeFileEng()}
+                                                                                            className="btn btn-sm btn-danger">Xóa
+                                                                                        </button>
+                                                                                    </Box>
+                                                                                </Box>
+                                                                            </Box>
+                                                                        </li>
+                                                                    </ul>}
+                                                            </Box>
+                                                        </Box>
+                                                    </Box>
+                                                </Box>
 
+                                                <Box className="text-center">
+                                                    <LoadingButton
+                                                        onClick={UpdateAddressAuthor}
+                                                        className="ad-btn ad-login-member bg-success mt-3"
+                                                        variant="outlined"
+                                                        startIcon={<i className="mdi mdi-plus"></i>}
+                                                        loading={loading}
+                                                        disabled={loading}
+                                                        sx={{
+                                                            color: 'white',
+                                                            fontSize: 13,
+                                                            fontWeight: 400,
+                                                        }}
+                                                    >
+                                                        {!loading ? 'Cập Nhật' : ''}
+                                                    </LoadingButton>
+                                                </Box>
                                             </Box>
                                         </Box>
                                     </Box>
