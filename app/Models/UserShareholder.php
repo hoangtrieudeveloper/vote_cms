@@ -269,9 +269,9 @@ class UserShareholder extends Model
 
             //authority
             if ($user_share->is_auth != self::AUTHORITY) {
-                $setTotalAuthority = self::sumShareAuthor('id_shareholder', $user_share->id);
+                $setTotalAuthority = self::sumShareAuthor('id_shareholder', $user_share->id,self::AUTHORITY);
             } else {
-                $getTotalAuthority = self::sumShareAuthor('id_author', $user_share->id);
+                $getTotalAuthority = self::sumShareAuthor('id_author', $user_share->id,self::AUTHORITY);
             }
             $user_share['setAuthority'] = $setTotalAuthority;
             $user_share['getAuthority'] = $getTotalAuthority;

@@ -19,7 +19,8 @@ export const AuthorityService = {
     changeStatusAuthor,
     getAddressById,
     updateAddress,
-    getAllUserAuthor
+    getAllUserAuthor,
+    downloadFilePDF
 
 };
 let user = JSON.parse(localStorage.getItem('user'));
@@ -50,6 +51,36 @@ function changeStatusAuthor(id, status) {
     };
 
     return fetch(`${GlobalSetting.url}api/${api}/changeStatusAuthor?id=${id}&status=${status}`, requestOptions).then(handleResponse);
+}
+
+function downloadFilePDF(id) {
+    const requestOptions = {
+        method: 'GET',
+        'Content-Type': 'blob',
+        headers: authHeader()
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/downloadFilePDF?id=${id}`, requestOptions).then(response => {
+        let blob = response.blob();
+        if (response.ok && blob != null && blob != undefined) {
+            return blob;
+        }
+        return Promise.reject(response);
+    }).then(blob => {
+        if (blob != null && blob != undefined) {
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = "filedinhkem.pdf";
+            document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
+            a.click();
+            a.remove();  //afterwards we remove the element again
+            return true;
+        }
+        return Promise.reject(blob);
+    }).catch(response => {
+        console.log(response);
+    });
 }
 
 function downloadFileExcel() {

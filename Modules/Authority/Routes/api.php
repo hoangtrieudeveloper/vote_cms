@@ -36,5 +36,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::any('/getAddressById', [AuthorityController::class, 'getAddressById'])->name('getAddressById'); //
         Route::any('/updateAddress', [AuthorityController::class, 'updateAddress'])->name('updateAddress'); //
         Route::any('/getAllUserAuthor', [AuthorityController::class, 'getAllUserAuthor'])->name('getAllUserAuthor'); //
+        Route::any('/downloadFilePDF', [AuthorityController::class, 'downloadFilePDF'])->name('downloadFilePDF'); //
     });
 });

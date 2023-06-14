@@ -192,6 +192,16 @@ function Authority2() {
 
     //END TAB-2
 
+    const downloadFilePDF = (id) => {
+        setLoading(true);
+        AuthorityService.downloadFilePDF(id).then((res) => {
+                setLoading(false);
+            }
+        ).catch((error) => {
+            setLoading(false);
+        })
+    }
+
     return (
         <Box className="main-content">
             <ToastNotifi></ToastNotifi>
@@ -457,8 +467,11 @@ function Authority2() {
                                                         {i.total_authority}
                                                     </td>
                                                     <td>
-                                                        <a href="/files/filedinhkem.pdf" target="_blank"
-                                                           download>filedinhkem</a>
+                                                        <Link to="/danh-sach-uy-quyen"
+                                                              onClick={() => {
+                                                                  downloadFilePDF(i.id)
+                                                              }}
+                                                            >filedinhkem.pdf</Link>
                                                     </td>
                                                     <td>
                                                         {new Date(i.created_at).toLocaleDateString()}

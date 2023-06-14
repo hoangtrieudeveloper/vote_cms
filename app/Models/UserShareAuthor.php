@@ -40,7 +40,7 @@ class UserShareAuthor extends Model
         return UserShareAuthor::Create($data);
     }
 
-    public function getList($cccd, $staus, $author)
+    public function getList($cccd, $staus, $author, $id = null)
     {
         $query = UserShareAuthor::query();
         $query = $query->join('user_shareholder as ag', 'ag.id', '=', 'user_shares_author.id_shareholder')
@@ -57,15 +57,26 @@ class UserShareAuthor extends Model
         $query = $query->select(
             DB::raw("ag.name as name_1"),
             DB::raw("ag.cccd as cccd_1"),
+            DB::raw("ag.address as address_1"),
+            DB::raw("ag.phone_number as phone_number_1"),
+            DB::raw("ag.date_range as date_range_1"),
+            DB::raw("ag.issued_by as issued_by_1"),
             DB::raw("bg.name as name_2"),
             DB::raw("bg.cccd as cccd_2"),
+            DB::raw("bg.address as address_2"),
             DB::raw("bg.phone_number as phone_number_2"),
+            DB::raw("bg.date_range as date_range_2"),
+            DB::raw("bg.issued_by as issued_by_2"),
             'total_authority',
             'status',
             'user_shares_author.created_at',
             'user_shares_author.id',
-        )->orderByDesc('user_shares_author.id')
-            ->paginate(10);
+        )->orderByDesc('user_shares_author.id');
+        if ($id != null) {
+            $query = $query->where('user_shares_author.id', $id)->first();
+        } else {
+            $query = $query->paginate(10);
+        }
         return $query;
     }
 }

@@ -105,7 +105,7 @@ export default function Sidebar({...props}) {
                                 <i className="ri-pages-line"></i> <span data-key="t-apps">Quản lý ủy quyền</span>
                             </a>
                             <Box
-                                className={route.includes('quan-ly-uy-quyen') ? "collapse menu-dropdown show" : "collapse menu-dropdown"}
+                                className={route.includes('xu-ly-uy-quyen') || route.includes('danh-sach-uy-quyen')  || route.includes('thiet-lap-thong-tin-uy-quyen')  ? "collapse menu-dropdown show" : "collapse menu-dropdown"}
                                 id="shareholderuy">
                                 <ul className="nav nav-sm flex-column">
                                     {JSON.parse(localStorage.getItem('scopes')).includes('xu-ly-uy-quyen') &&
@@ -196,14 +196,14 @@ export default function Sidebar({...props}) {
                             </Box>
                         </li>}
 
-                        {localStorage.getItem('scopes').includes('checkin-thu-cong') && <li className="nav-item">
-                            <a className={route.includes('checkin-thu-cong') ? "nav-link menu-link active" : "nav-link menu-link"}
+                        {localStorage.getItem('scopes').includes('kiem-tra-tu-cach') && <li className="nav-item">
+                            <a className={route.includes('kiem-tra-tu-cach') ? "nav-link menu-link active" : "nav-link menu-link"}
                                href="#manager_report1" data-bs-toggle="collapse"
                                role="button" aria-expanded="false" aria-controls="sidebarApps">
                                 <i className="ri-file-list-3-line"></i> <span data-key="t-apps"> Kiểm tra tư cách CĐ</span>
                             </a>
                             <Box
-                                className={route.includes('checkin-thu-cong') ? "collapse menu-dropdown show" : "collapse menu-dropdown"}
+                                className={route.includes('checkin-thu-cong') || route.includes('export-report-co-dong') ? "collapse menu-dropdown show" : "collapse menu-dropdown"}
                                 id="manager_report1">
                                 <ul className="nav nav-sm flex-column">
                                     {JSON.parse(localStorage.getItem('scopes')).includes('checkin-thu-cong') &&

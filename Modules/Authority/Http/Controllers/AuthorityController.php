@@ -7,6 +7,8 @@ use App\Models\ShareholderShare;
 use App\Models\UserShareAuthor;
 use App\Models\UserShareholder;
 use App\Utils;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -29,6 +31,41 @@ class AuthorityController extends Controller
     {
         $this->userShareHolder = $userShareholder;
         $this->userShareAuthor = $userShareAuthor;
+    }
+
+    public function downloadFilePDF(Request $request)
+    {
+        try {
+
+        $query = $this->userShareAuthor->getList(null, null, null, $request->id);
+        $pdf = Pdf::loadView("Authority/PDF", [
+            "name_1" => $query->name_1,
+            "cccd_1" => $query->cccd_1,
+            "address_1" => $query->address_1,
+            "date_range_1" => $query->date_range_1,
+            "issued_by_1" => $query->issued_by_1,
+            "phone_number_1" => $query->phone_number_1,
+            "name_2" => $query->name_2,
+            "cccd_2" => $query->cccd_2,
+            "phone_number_2" => $query->phone_number_2,
+            "address_2" => $query->address_2 != null ? $query->address_2 : '',
+            "date_range_2" => $query->date_range_2 != null ? $query->date_range_2 : '',
+            "issued_by_2" => $query->issued_by_2 != null ? $query->issued_by_2 : '',
+            "total_authority" => $query->total_authority,
+            "status" => $query->status,
+            "created_at" => Carbon::parse($query->created_at)->format('d-m-Y'),
+            "day" =>Carbon::parse($query->created_at)->format('d'),
+            "month" =>Carbon::parse($query->created_at)->format('m'),
+            "year" =>Carbon::parse($query->created_at)->format('Y'),
+        ]);
+
+            return $pdf->download('filedinhkem.pdf');
+
+
+        } catch (\Exception $exception) {
+            $result = Utils::messegerAlert(2, "alert-danger", 'Thất bại!',);
+            return response()->json($result);
+        }
     }
 
 
@@ -304,13 +341,13 @@ class AuthorityController extends Controller
 
     public function getAllUserAuthor(Request $request)
     {
-//        try {
-        $userId = Auth::id();
-        $query = $this->userShareHolder->getAllUserAuthor($request->nameSearch,$request->author);
-        $result = Utils::messegerAlert(1, "alert-success", 'Thành công!', $query);
-//        } catch (\Exception $exception) {
-//            $result = Utils::messegerAlert(2, "alert-danger", 'Lỗi không lấy được thông tin!',);
-//        }
+        try {
+            $userId = Auth::id();
+            $query = $this->userShareHolder->getAllUserAuthor($request->nameSearch, $request->author);
+            $result = Utils::messegerAlert(1, "alert-success", 'Thành công!', $query);
+        } catch (\Exception $exception) {
+            $result = Utils::messegerAlert(2, "alert-danger", 'Lỗi không lấy được thông tin!',);
+        }
         return response()->json($result);
     }
 

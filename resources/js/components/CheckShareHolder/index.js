@@ -319,7 +319,7 @@ function CheckShareholder() {
                                                                                 <input type="text"
                                                                                        className="form-control"
                                                                                        disabled
-                                                                                       value={helpers.formatNumber(checkin.total)}
+                                                                                       value={helpers.formatNumber(checkin.totalALL)}
                                                                                 />
                                                                             </Box>
                                                                             <Box className="modal-body text-center">
