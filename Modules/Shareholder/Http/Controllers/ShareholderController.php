@@ -4,8 +4,11 @@ namespace Modules\Shareholder\Http\Controllers;
 
 use App\Models\ShareholderShare;
 use App\Models\User;
+use App\Models\UserShareAuthor;
+use App\Models\UserShareCheckin;
 use App\Models\UserShareholder;
 use App\Models\UserSharesVote;
+use App\Models\VoteCongressContent;
 use App\Utils;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -27,7 +30,61 @@ class ShareholderController extends Controller
    * Feedback
    */
 
-    public function getListExport()
+    public function statistical()
+    {
+        try {
+            $userId = Auth::user()->id;
+            // cổ đông
+            $totalCD1 = UserShareholder::where('user_id', $userId)->count();
+            $totalCP1 = ShareholderShare::where('user_id', $userId)->sum('total');
+            $ratio = '';
+
+            //online
+            $checkIn = UserShareCheckin::where('is_check', 2)->select('user_shares_id')->get()->toArray();
+            $totalCD2 = UserSharesVote::whereIn('id_user_shares', $checkIn)->count();
+            $totalCP2 = ShareholderShare::whereIn('user_shares_id', $checkIn)->sum('total');
+            $ratio2 = '';
+
+            //trực tiếp
+            $checkInOff = UserShareCheckin::where('is_check', 1)->select('user_shares_id')->get()->toArray();
+            $totalCD3 = UserSharesVote::whereIn('id_user_shares', $checkInOff)->count();
+            $totalCP3 = ShareholderShare::whereIn('user_shares_id', $checkInOff)->sum('total');
+            $ratio3 = '';
+
+            $totalCD4 = UserShareAuthor::where([['status', 1], ['user_id', $userId]])->get()->unique('id_shareholder')->count();
+            $totalCP4 = UserShareAuthor::where([['status', 1], ['user_id', $userId]])->sum('total_authority');
+            $ratio4 = '';
+
+            $query = [
+                'total1' => [
+                    'totalCD1' => $totalCD1,
+                    'totalCP1' => $totalCP1,
+                    'ratio1' => "0.01786",
+                ],
+                'total2' => [
+                    'totalCD2' => $totalCD2,
+                    'totalCP2' => $totalCP2,
+                    'ratio2' => "0.01786",
+                ],
+                'total3' => [
+                    'totalCD3' => $totalCD3,
+                    'totalCP3' => $totalCP3,
+                    'ratio3' => "0.01786",
+                ],
+                'total4' => [
+                    'totalCD4' => $totalCD4,
+                    'totalCP4' => $totalCP4,
+                    'ratio4' => "0.01786",
+                ],
+            ];
+            $result = Utils::messegerAlert(1, "alert-success", 'Thành công!', $query);
+        } catch (\Exception $exception) {
+            $result = Utils::messegerAlert(2, "alert-danger", 'Thất bại!',);
+        }
+        return response()->json($result);
+    }
+
+    public function getListExport(Request $request)
     {
         try {
             $query = UserShareholder::getListCheckin(null, null);
@@ -55,6 +112,31 @@ class ShareholderController extends Controller
         }
 
     }
+
+    public function getCongress(Request $request)
+    {
+        try {
+            $query = UserShareholder::getTkLogin($request->id);
+            $total = ShareholderShare::where('user_shares_id', $query->id)->first();
+            $pdf = Pdf::loadView("Congress\PDF", [
+                'congress_1' => VoteCongressContent::getCongressById(1),
+                'congress_2' => VoteCongressContent::getCongressById(2),
+                'congress_3' => VoteCongressContent::getCongressById(3),
+                'day' => date('dd'),
+                'month' => date('MM'),
+                'year' => date('yyyy'),
+                'name' => $query->name,
+                'code' => $query->code_dksh,
+                'total' => $total != null ? $total->total : null,
+            ]);
+            return $pdf->download('myPDF.pdf');
+        } catch (\Exception $exception) {
+            $result = Utils::messegerAlert(2, "alert-danger", 'Thất bại!',);
+            return response()->json($result);
+        }
+
+    }
+
 
     public function checkIn(Request $request)
     {

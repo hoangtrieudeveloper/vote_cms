@@ -467,6 +467,6 @@ class UserShareholder extends Model
         return UserShareholder::where('id', $id)->orderBy('id', 'desc')->first();
     }
 
-
     //END Authority
+
 }

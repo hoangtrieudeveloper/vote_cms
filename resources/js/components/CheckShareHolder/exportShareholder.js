@@ -17,7 +17,10 @@ function ExportShareHolder() {
     //props
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
-    const [total, setTotal] = useState([]);
+    const [total1, setTotal1] = useState([]);
+    const [total2, setTotal2] = useState([]);
+    const [total3, setTotal3] = useState([]);
+    const [total4, setTotal4] = useState([]);
 
     useEffect(() => {
         statisticalShareHolder();
@@ -36,7 +39,10 @@ function ExportShareHolder() {
             .then(data => {
                 setLoading(false);
                 if (data.status == 1) {
-                    setTotal(data?.data);
+                    setTotal1(data?.data?.total1);
+                    setTotal2(data?.data?.total2);
+                    setTotal3(data?.data?.total3);
+                    setTotal4(data?.data?.total4);
                     // Helpers.showToast('success', data?.mess);
                 } else {
                     resetData();
@@ -52,7 +58,6 @@ function ExportShareHolder() {
         setLoading(true);
         userShareholderService.getListExport(page)
             .then(data => {
-                console.log('data', data);
                 setLoading(false);
                 if (data.status == 1) {
                     setData(data?.data?.data);
@@ -107,7 +112,7 @@ function ExportShareHolder() {
                                                                data-bs-toggle="dropdown" aria-haspopup="true"
                                                                aria-expanded="false">
                                                             <span
-                                                                className="fw-semibold text-uppercase fs-12 ">10</span>
+                                                                className="fw-semibold text-uppercase fs-12 ">{helpers.formatNumber(total1.totalCD1)}</span>
                                                             </a>
 
                                                         </Box>
@@ -123,7 +128,7 @@ function ExportShareHolder() {
                                                                     <h6 className="fs-14 mb-1">Tổng số CP:</h6>
                                                                 </Box>
                                                                 <Box className="flex-shrink-0 text-end">
-                                                                    <h6 className="mb-1 ">13.630</h6>
+                                                                    <h6 className="mb-1 ">{helpers.formatNumber(total1.totalCP1)}</h6>
                                                                 </Box>
                                                             </Box>
 
@@ -133,7 +138,7 @@ function ExportShareHolder() {
                                                                     <h6 className="fs-14 mb-1">Tỷ lệ:</h6>
                                                                 </Box>
                                                                 <Box className="flex-shrink-0 text-end">
-                                                                    <h6 className="mb-1 ">0.01786%</h6>
+                                                                    <h6 className="mb-1 ">{total1.ratio1}%</h6>
                                                                 </Box>
                                                             </Box>
 
@@ -153,7 +158,7 @@ function ExportShareHolder() {
                                                                data-bs-toggle="dropdown" aria-haspopup="true"
                                                                aria-expanded="false">
                                                             <span
-                                                                className="fw-semibold text-uppercase fs-12 ">10</span>
+                                                                className="fw-semibold text-uppercase fs-12 ">{helpers.formatNumber(total2.totalCD2)}</span>
                                                             </a>
 
                                                         </Box>
@@ -169,7 +174,7 @@ function ExportShareHolder() {
                                                                     <h6 className="fs-14 mb-1">Số lượng CP:</h6>
                                                                 </Box>
                                                                 <Box className="flex-shrink-0 text-end">
-                                                                    <h6 className="mb-1 ">13.630</h6>
+                                                                    <h6 className="mb-1 ">{helpers.formatNumber(total2.totalCP2)}</h6>
                                                                 </Box>
                                                             </Box>
 
@@ -179,7 +184,7 @@ function ExportShareHolder() {
                                                                     <h6 className="fs-14 mb-1">Tỷ lệ:</h6>
                                                                 </Box>
                                                                 <Box className="flex-shrink-0 text-end">
-                                                                    <h6 className="mb-1 ">0.01786%</h6>
+                                                                    <h6 className="mb-1 ">{total2.ratio2}%</h6>
                                                                 </Box>
                                                             </Box>
 
@@ -199,7 +204,7 @@ function ExportShareHolder() {
                                                                data-bs-toggle="dropdown" aria-haspopup="true"
                                                                aria-expanded="false">
                                                             <span
-                                                                className="fw-semibold text-uppercase fs-12">10</span>
+                                                                className="fw-semibold text-uppercase fs-12">{helpers.formatNumber(total3.totalCD3)}</span>
                                                             </a>
 
                                                         </Box>
@@ -215,7 +220,7 @@ function ExportShareHolder() {
                                                                     <h6 className="fs-14 mb-1">Tổng số CP:</h6>
                                                                 </Box>
                                                                 <Box className="flex-shrink-0 text-end">
-                                                                    <h6 className="mb-1">13.630</h6>
+                                                                    <h6 className="mb-1">{helpers.formatNumber(total3.totalCD3)}</h6>
                                                                 </Box>
                                                             </Box>
 
@@ -225,7 +230,7 @@ function ExportShareHolder() {
                                                                     <h6 className="fs-14 mb-1">Tỷ lệ:</h6>
                                                                 </Box>
                                                                 <Box className="flex-shrink-0 text-end">
-                                                                    <h6 className="mb-1 ">0.01786%</h6>
+                                                                    <h6 className="mb-1 ">{total3.ratio3}%</h6>
                                                                 </Box>
                                                             </Box>
 
@@ -245,7 +250,7 @@ function ExportShareHolder() {
                                                                data-bs-toggle="dropdown" aria-haspopup="true"
                                                                aria-expanded="false">
                                                             <span
-                                                                className="fw-semibold text-uppercase fs-12">10</span>
+                                                                className="fw-semibold text-uppercase fs-12">{helpers.formatNumber(total4.totalCD4)}</span>
                                                             </a>
 
                                                         </Box>
@@ -261,7 +266,7 @@ function ExportShareHolder() {
                                                                     <h6 className="fs-14 mb-1">Tổng số CP:</h6>
                                                                 </Box>
                                                                 <Box className="flex-shrink-0 text-end">
-                                                                    <h6 className="mb-1 ">13.630</h6>
+                                                                    <h6 className="mb-1 ">{helpers.formatNumber(total4.totalCP4)}</h6>
                                                                 </Box>
                                                             </Box>
 
@@ -271,7 +276,7 @@ function ExportShareHolder() {
                                                                     <h6 className="fs-14 mb-1">Tỷ lệ:</h6>
                                                                 </Box>
                                                                 <Box className="flex-shrink-0 text-end">
-                                                                    <h6 className="mb-1">0.01786%</h6>
+                                                                    <h6 className="mb-1">{total4.ratio4}%</h6>
                                                                 </Box>
                                                             </Box>
 
@@ -322,7 +327,7 @@ function ExportShareHolder() {
                                                         <i className="bx bx-download"></i>
                                                     </td>
                                                     <td>
-                                                        uploads/BienBanKiemTraCoDongTemplate_19_10_31__06_06_2023.docx
+                                                        uploads/DanhSachCheckin_19_10_31__06_06_2023.docx
                                                         <i className="bx bx-download"></i>
                                                     </td>
                                                     <td>

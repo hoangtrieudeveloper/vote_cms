@@ -22,6 +22,7 @@ export const userShareholderService = {
     exportCoDong,
     getListExport,
     statistical,
+    getCongress
 };
 let user = JSON.parse(localStorage.getItem('user'));
 let api = "shareholder";
@@ -55,6 +56,31 @@ function getTkLogin(id) {
     };
 
     return fetch(`${GlobalSetting.url}api/${api}/getTkLogin?id=${id}`, requestOptions).then(response => {
+        let blob = response.blob();
+        if (response.ok && blob != null && blob != undefined) {
+            return blob;
+        }
+        return Promise.reject(response);
+    }).then(blob => {
+        if (blob != null && blob != undefined) {
+            var fileURL = window.URL.createObjectURL(blob);
+            window.open(fileURL, "_blank");
+            return true;
+        }
+        return Promise.reject(blob);
+    }).catch(response => {
+        console.log(response);
+    });
+}
+
+function getCongress(id) {
+    const requestOptions = {
+        method: 'GET',
+        'Content-Type': 'application/pdf',
+        headers: authHeader()
+    };
+
+    return fetch(`${GlobalSetting.url}api/${api}/getCongress?id=${id}`, requestOptions).then(response => {
         let blob = response.blob();
         if (response.ok && blob != null && blob != undefined) {
             return blob;

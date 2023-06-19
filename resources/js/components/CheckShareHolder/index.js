@@ -22,6 +22,7 @@ function CheckShareholder() {
     const [nameSearch, setNameSearch] = useState('');
 
     const [block, setBlock] = useState('');
+    const [idUser, setIdUser] = useState('');
     const options = [
         {value: "0", label: "Chưa check in"},
         {value: "1", label: "Đã check in"},
@@ -87,8 +88,20 @@ function CheckShareholder() {
         });
     }
 
+    const openPdfBieuQuyet = (id) => {
+        setLoading(true);
+        userShareholderService.getCongress(id)
+            .then(res => {
+                setLoading(false);
+            }).catch((error) => {
+            setLoading(false);
+        });
+    }
+
+
     const getListById = (id) => {
         setLoading(true);
+        setIdUser(id);
         userShareholderService.getListById(id)
             .then(data => {
                 console.log('data', data);
@@ -344,13 +357,13 @@ function CheckShareholder() {
                                                                                             className="btn btn-light bg-gradient waves-effect waves-light"
                                                                                             data-bs-dismiss="modal"
                                                                                             style={{marginRight: 22}}
-                                                                                            onClick={() => openPdf(i.id)}>
+                                                                                            onClick={() => openPdfBieuQuyet(idUser)}>
                                                                                             In Phiếu Biểu Quyết
                                                                                         </button>
                                                                                         <button
                                                                                             className="btn btn-success bg-gradient waves-effect waves-light"
                                                                                             data-bs-dismiss="modal"
-                                                                                            onClick={() => openPdf(i.id)}>
+                                                                                            onClick={() => openPdf(idUser)}>
                                                                                             In tài khoản đăng nhập
                                                                                         </button>
                                                                                     </Box>
@@ -363,8 +376,9 @@ function CheckShareholder() {
                                                         </Box>
                                                         <button type="button"
                                                                 className="btn btn-success btn-border margin-top"
-                                                                data-bs-toggle="modal" data-bs-target="#firstmodal">QR
-                                                            code
+                                                                data-bs-toggle="modal" data-bs-target="#firstmodal"
+                                                                onClick={(e) => setIdUser(i.id)}
+                                                        >QR code
                                                         </button>
                                                         <Box className="modal fade" id="firstmodal" aria-hidden="true"
                                                              tabIndex="-1">
@@ -383,7 +397,7 @@ function CheckShareholder() {
                                                                                 thực hiện đăng nhập cho Cổ đông</p>
                                                                             <button
                                                                                 className="btn btn-secondary waves-effect waves-light"
-                                                                                onClick={() => openPdf(i.id)}>
+                                                                                onClick={() => openPdf(idUser)}>
                                                                                 In Tài khoản đăng nhập
                                                                             </button>
                                                                         </Box>
