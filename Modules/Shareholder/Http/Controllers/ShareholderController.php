@@ -115,6 +115,7 @@ class ShareholderController extends Controller
 
     public function getCongress(Request $request)
     {
+        date_default_timezone_set("Asia/Ho_Chi_Minh");
         try {
             $query = UserShareholder::getTkLogin($request->id);
             $total = ShareholderShare::where('user_shares_id', $query->id)->first();
@@ -122,12 +123,12 @@ class ShareholderController extends Controller
                 'congress_1' => VoteCongressContent::getCongressById(1),
                 'congress_2' => VoteCongressContent::getCongressById(2),
                 'congress_3' => VoteCongressContent::getCongressById(3),
-                'day' => date('dd'),
-                'month' => date('MM'),
-                'year' => date('yyyy'),
+                'day' => date('d'),
+                'month' => date('m'),
+                'year' => date('Y'),
                 'name' => $query->name,
                 'code' => $query->code_dksh,
-                'total' => $total != null ? $total->total : null,
+                'total' => $total != null ? number_format($total->total , 0, ',', '.') : null,
             ]);
             return $pdf->download('myPDF.pdf');
         } catch (\Exception $exception) {
